@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@handharr-labs/core": "*",
+    "@handharr-labs/ui-cikal": "*",
     "@handharr-labs/ui-xpnsio": "*",
     "@handharr-labs/web-client": "*",
     "next": "16.2.9",

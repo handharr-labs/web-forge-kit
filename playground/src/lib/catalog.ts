@@ -7,6 +7,12 @@ export interface DesignSystem {
 
 export const designSystems: DesignSystem[] = [
   {
+    slug: "cikal",
+    name: "ui-cikal",
+    description: "Design system for CIKAL school competitions (beta) — components, tokens, and utilities.",
+    version: "0.1.0-beta",
+  },
+  {
     slug: "xpnsio",
     name: "ui-xpnsio",
     description: "Design system for the Xpnsio expense tracking app — components, tokens, and utilities.",
