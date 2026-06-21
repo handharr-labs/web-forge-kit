@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@handharr-labs/ui-xpnsio";
-import "@handharr-labs/ui-cikal/tokens/globals.css";
+import "@handharr-labs/ui-cikal-showcase/tokens/globals.css";
 import "@handharr-labs/ui-xpnsio/tokens/globals.css";
 import "@handharr-labs/ui-base-bronze/tokens/globals.css";
 import "@handharr-labs/ui-base-silver/tokens/globals.css";

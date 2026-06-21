@@ -1,7 +1,7 @@
 # Tiered Design System: Bronze, Silver, Gold
 
 **Date:** 2026-06-22
-**Status:** In Progress — steps 1–4, 8–9 done; steps 5–7 deferred to follow-up
+**Status:** Complete — all steps done
 
 ## Context
 
@@ -165,9 +165,9 @@ A client package (`ui-{name}`) is always priced at the tier it's built on top of
 2. [x] **Scaffold `ui-base-bronze`** — full component set at Bronze design language, version `0.1.0-beta`. Packages published to GitHub Packages registry.
 3. [x] **Scaffold `ui-base-silver`** — full component set at Silver design language, version `0.1.0-beta`.
 4. [x] **Scaffold `ui-base-gold`** — full component set at Gold design language, version `0.1.0-beta`. Includes Skeleton atom, floating label Field, gradient Button, dark mode tokens, `EventGrid` loading state.
-5. [ ] **Rename `ui-cikal` → `ui-cikal-showcase`** — deferred. Requires adding TierProvider switcher. _(Follow-up)_
-6. [ ] **Playground tier switcher** — add `TierProvider` context + switcher UI at `/ds/cikal`; components render from the active tier package under `.brand-cikal`. _(Follow-up)_
-7. [ ] **Annotate tier-invariant organisms** — add "Same across all tiers" label in the playground for components without a per-tier implementation. _(Follow-up)_
+5. [x] **Rename `ui-cikal` → `ui-cikal-showcase`** — `packages/ui-cikal` moved to `packages/ui-cikal-showcase`; bespoke components removed; package marked `private`; deps point to tier packages.
+6. [x] **Playground tier switcher** — `TierProvider` + `useTierComponents` in the showcase package; `TierSwitcher` segmented control at top of `/ds/cikal`; components render from active tier under `.brand-cikal`.
+7. [x] **Annotate tier-invariant organisms** — `tierInvariant` prop on `Section` renders "Same across all tiers" chip on Colors, Typography, Badge, Card, Avatar, Form Controls, SearchBar, EventCard, EventGrid, NavBar, HeroSection, Footer. Field and Button are tier-variant (no chip).
 8. [x] **Playground tier catalogs** — added `/ds/bronze`, `/ds/silver`, `/ds/gold` pages; each shows Color Tokens, Typography, all Atoms, all Molecules (with tier-specific Field layout), all Organisms, and a Composed Form.
 9. [x] **Update CLAUDE.md packages table** — Bronze, Silver, Gold rows already present from earlier doc update.
 
