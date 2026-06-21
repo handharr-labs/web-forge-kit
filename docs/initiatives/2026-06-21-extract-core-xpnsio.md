@@ -1,7 +1,7 @@
 # Extract core modules from `xpnsio` into forgekit packages
 
 **Date:** 2026-06-21
-**Status:** Planning
+**Status:** Done
 
 ## Context
 
