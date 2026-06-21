@@ -1,30 +1,41 @@
 'use client';
 
-import { formatCurrency } from '../../utils/format-currency';
-
-type ParticipantStatus = 'pending' | 'proof_uploaded' | 'approved' | 'rejected';
+import type { ParticipantStatus } from './manage-participant-card';
 
 interface PublicParticipantCardProps {
   name: string;
-  amount: number;
+  formattedAmount: string;
   isCreator: boolean;
   creatorBadgeLabel: string;
   status: ParticipantStatus;
+  statusText?: Partial<Record<ParticipantStatus, string>>;
+  selectSelfLabel?: string;
   email?: string;
   onSelectSelf?: () => void;
   children?: React.ReactNode;
 }
 
+const DEFAULT_STATUS_TEXT: Record<ParticipantStatus, string> = {
+  pending: '',
+  proof_uploaded: 'Proof submitted — awaiting approval',
+  approved: 'Paid',
+  rejected: 'Proof rejected — contact the creator',
+};
+
 export function PublicParticipantCard({
   name,
-  amount,
+  formattedAmount,
   isCreator,
   creatorBadgeLabel,
   status,
+  statusText,
+  selectSelfLabel,
   email,
   onSelectSelf,
   children,
 }: PublicParticipantCardProps) {
+  const texts = { ...DEFAULT_STATUS_TEXT, ...statusText };
+
   if (isCreator) {
     return (
       <div className="rounded-xl ring-1 ring-green-500/20 bg-green-500/10 p-4 space-y-3">
@@ -38,10 +49,10 @@ export function PublicParticipantCard({
             </p>
             {email && <p className="text-xs text-muted-foreground">{email}</p>}
             <p className="text-sm font-medium text-green-500 dark:text-green-400">
-              {formatCurrency(amount, 'IDR')}
+              {formattedAmount}
             </p>
           </div>
-          <span className="text-xs font-medium text-green-500 dark:text-green-400">Paid</span>
+          <span className="text-xs font-medium text-green-500 dark:text-green-400">{texts.approved}</span>
         </div>
         {children && <div>{children}</div>}
       </div>
@@ -55,14 +66,14 @@ export function PublicParticipantCard({
           <div>
             <p className="font-semibold capitalize">{name}</p>
             {email && <p className="text-xs text-muted-foreground">{email}</p>}
-            <p className="text-sm font-medium">{formatCurrency(amount, 'IDR')}</p>
+            <p className="text-sm font-medium">{formattedAmount}</p>
           </div>
           {onSelectSelf && (
             <button
               onClick={onSelectSelf}
               className="text-sm font-medium px-3 py-1.5 rounded-lg border border-border hover:bg-accent transition-colors min-h-[44px] flex items-center"
             >
-              I'm {name}
+              {selectSelfLabel ?? `I'm ${name}`}
             </button>
           )}
         </div>
@@ -78,10 +89,10 @@ export function PublicParticipantCard({
           <div>
             <p className="font-semibold capitalize">{name}</p>
             {email && <p className="text-xs text-muted-foreground">{email}</p>}
-            <p className="text-sm font-medium">{formatCurrency(amount, 'IDR')}</p>
+            <p className="text-sm font-medium">{formattedAmount}</p>
           </div>
           <span className="text-xs font-medium text-yellow-700 dark:text-yellow-400">
-            Proof submitted — awaiting approval
+            {texts.proof_uploaded}
           </span>
         </div>
         {children && <div>{children}</div>}
@@ -96,26 +107,25 @@ export function PublicParticipantCard({
           <div>
             <p className="font-semibold capitalize">{name}</p>
             {email && <p className="text-xs text-muted-foreground">{email}</p>}
-            <p className="text-sm font-medium">{formatCurrency(amount, 'IDR')}</p>
+            <p className="text-sm font-medium">{formattedAmount}</p>
           </div>
-          <span className="text-xs font-medium text-green-700 dark:text-green-400">Paid</span>
+          <span className="text-xs font-medium text-green-700 dark:text-green-400">{texts.approved}</span>
         </div>
         {children && <div>{children}</div>}
       </div>
     );
   }
 
-  // rejected
   return (
     <div className="rounded-xl ring-1 ring-red-500/20 bg-red-500/10 p-4 space-y-3">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-semibold capitalize">{name}</p>
           {email && <p className="text-xs text-muted-foreground">{email}</p>}
-          <p className="text-sm font-medium">{formatCurrency(amount, 'IDR')}</p>
+          <p className="text-sm font-medium">{formattedAmount}</p>
         </div>
         <span className="text-xs font-medium text-red-700 dark:text-red-400">
-          Proof rejected — contact the creator
+          {texts.rejected}
         </span>
       </div>
       {children && <div>{children}</div>}
