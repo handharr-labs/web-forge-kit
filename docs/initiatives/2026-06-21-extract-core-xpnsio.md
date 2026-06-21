@@ -1,7 +1,7 @@
 # Extract core modules from `xpnsio` into forgekit packages
 
 **Date:** 2026-06-21
-**Status:** Done
+**Status:** Done (Phases 1–4) · Phase 5 pending
 
 ## Context
 
@@ -481,6 +481,105 @@ Work happens in **forgekit repo**.
    - `lib/db.ts` → `createDrizzlePostgresClient(...)` one-liner
    - `lib/safe-action.ts` → use `handleServerActionError`
    - `shared/data/mappers/DbErrorMapper.ts` → extend `DefaultDbErrorMapper`
+
+### Phase 5: Extract Supabase auth factories
+
+**Trigger:** implement when a second Supabase app exists, or proactively to standardise now.
+
+#### Design constraints
+
+- `createSupabaseServerClient` in xpnsio calls `cookies()` from `next/headers` internally — the package version must **accept cookie handlers as a param** so it's not coupled to Next.js.
+- `@supabase/ssr` and `@supabase/supabase-js` are optional **peer deps** (apps that don't use Supabase install neither).
+- xpnsio's `lib/auth.ts` keeps the `async` wrapper (must still `await cookies()`) but delegates client creation to the package.
+
+#### Additions to `web-server` (bump to 0.2.0)
+
+```ts
+// web-server/src/auth/supabase.ts
+import { createServerClient, createBrowserClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
+
+export interface SupabaseCookieHandlers {
+  getAll(): { name: string; value: string }[];
+  setAll(cookies: { name: string; value: string; options?: Record<string, unknown> }[]): void;
+}
+
+export function createSupabaseServerClient(
+  url: string,
+  anonKey: string,
+  cookieHandlers: SupabaseCookieHandlers,
+) {
+  return createServerClient(url, anonKey, { cookies: cookieHandlers });
+}
+
+export function createSupabaseAdminClient(url: string, serviceRoleKey: string) {
+  return createClient(url, serviceRoleKey);
+}
+```
+
+Add `@supabase/ssr` + `@supabase/supabase-js` as optional peer deps + dev deps.
+
+#### Additions to `web-client` (bump to 0.4.0)
+
+```ts
+// web-client/src/auth/supabase.ts
+import { createBrowserClient } from '@supabase/ssr';
+
+export function createSupabaseBrowserClient(url: string, anonKey: string) {
+  return createBrowserClient(url, anonKey);
+}
+```
+
+Add `@supabase/ssr` as optional peer dep + dev dep.
+
+#### xpnsio after migration
+
+`lib/auth.ts`:
+```ts
+import 'server-only';
+import { cookies } from 'next/headers';
+import {
+  createSupabaseServerClient as createServerClient,
+  createSupabaseAdminClient,
+} from '@handharr-labs/web-server/auth/supabase';
+
+export async function createSupabaseServerClient() {
+  const cookieStore = await cookies();
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      getAll: () => cookieStore.getAll(),
+      setAll: (cookiesToSet) => {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options)
+          );
+        } catch { /* Server Component — middleware handles refresh */ }
+      },
+    },
+  );
+}
+
+export const supabaseAdmin = createSupabaseAdminClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+);
+```
+
+`lib/supabase-browser.ts`:
+```ts
+import { createSupabaseBrowserClient as createClient } from '@handharr-labs/web-client/auth/supabase';
+
+export function createSupabaseBrowserClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  );
+}
+```
+
+`middleware.ts` stays as-is (imports `@supabase/ssr` directly — tightly coupled to Next.js request/response shape).
 
 ---
 
