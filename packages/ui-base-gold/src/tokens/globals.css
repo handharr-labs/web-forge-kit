@@ -1,0 +1,95 @@
+/* Gold tier tokens — scoped to .tier-gold */
+/* Richer neutral palette: deeper blue, gradient primary, elevation shadows, dark mode */
+
+.tier-gold {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.13 0.02 265);
+  --card: oklch(0.995 0 0);
+  --card-foreground: oklch(0.13 0.02 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.02 265);
+  --primary: oklch(0.45 0.20 265);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.93 0.01 265);
+  --secondary-foreground: oklch(0.13 0.02 265);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.48 0.01 265);
+  --accent: oklch(0.93 0.01 265);
+  --accent-foreground: oklch(0.13 0.02 265);
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0.87 0.01 265);
+  --input: oklch(0.91 0 0);
+  --ring: oklch(0.45 0.20 265);
+  --radius: 0.5rem;
+  --chart-1: oklch(0.45 0.20 265);
+  --chart-2: oklch(0.55 0.16 150);
+  --chart-3: oklch(0.62 0.14 40);
+  --chart-4: oklch(0.52 0.17 295);
+  --chart-5: oklch(0.58 0.18 15);
+  --sidebar: oklch(0.97 0 0);
+  --sidebar-foreground: oklch(0.13 0.02 265);
+  --sidebar-primary: oklch(0.45 0.20 265);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.93 0.01 265);
+  --sidebar-accent-foreground: oklch(0.13 0.02 265);
+  --sidebar-border: oklch(0.87 0.01 265);
+  --sidebar-ring: oklch(0.45 0.20 265);
+  /* Gold extras */
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.08);
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.10), 0 2px 4px -1px oklch(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.12), 0 4px 6px -2px oklch(0 0 0 / 0.05);
+}
+
+/* Dark mode */
+.tier-gold.dark {
+  --background: oklch(0.12 0.02 265);
+  --foreground: oklch(0.97 0 0);
+  --card: oklch(0.16 0.02 265);
+  --card-foreground: oklch(0.97 0 0);
+  --popover: oklch(0.16 0.02 265);
+  --popover-foreground: oklch(0.97 0 0);
+  --primary: oklch(0.65 0.18 265);
+  --primary-foreground: oklch(0.10 0.02 265);
+  --secondary: oklch(0.22 0.02 265);
+  --secondary-foreground: oklch(0.90 0 0);
+  --muted: oklch(0.20 0.01 265);
+  --muted-foreground: oklch(0.60 0 0);
+  --accent: oklch(0.22 0.02 265);
+  --accent-foreground: oklch(0.90 0 0);
+  --destructive: oklch(0.65 0.22 27);
+  --border: oklch(0.25 0.02 265);
+  --input: oklch(0.22 0.02 265);
+  --ring: oklch(0.65 0.18 265);
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.30);
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.35), 0 2px 4px -1px oklch(0 0 0 / 0.20);
+  --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.40), 0 4px 6px -2px oklch(0 0 0 / 0.25);
+}
+
+/* Typography scale */
+.tier-gold .typo-page-title    { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.75rem; }
+.tier-gold .typo-section-title { font-size: 1.125rem; font-weight: 600; line-height: 1.75rem; }
+.tier-gold .typo-card-title    { font-size: 1rem; font-weight: 600; line-height: 1.5rem; }
+.tier-gold .typo-hero          { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; line-height: 2rem; }
+.tier-gold .typo-body          { font-size: 0.875rem; line-height: 1.25rem; }
+.tier-gold .typo-label         { font-size: 0.875rem; font-weight: 500; line-height: 1.25rem; }
+.tier-gold .typo-section-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1rem; }
+.tier-gold .typo-caption       { font-size: 0.75rem; line-height: 1rem; color: var(--muted-foreground); }
+.tier-gold .typo-badge         { font-size: 0.75rem; font-weight: 500; line-height: 1rem; }
+
+@media screen and (min-width: 768px) {
+  .tier-gold .typo-page-title { font-size: 1.5rem; line-height: 2rem; }
+  .tier-gold .typo-hero       { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
+@media screen and (max-width: 1024px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+.w-\(--anchor-width\)          { width: var(--anchor-width); }
+.max-h-\(--available-height\)  { max-height: var(--available-height); }
+.origin-\(--transform-origin\) { transform-origin: var(--transform-origin); }
+
+[data-slot="select-content"] {
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+}
