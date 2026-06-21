@@ -1,28 +1,28 @@
 import { Play, Pencil, Trash2, Layers } from 'lucide-react';
 import { Button } from '../atoms/button';
 
-export interface BudgetSettingCardVM {
+export interface ActionCardVM {
   id: string;
   name: string;
   formattedBudget: string;
   categoryCountLabel: string;
 }
 
-interface BudgetSettingCardProps {
-  setting: BudgetSettingCardVM;
+interface ActionCardProps {
+  setting: ActionCardVM;
   isApplying: boolean;
   onApply: (id: string) => void;
   onEdit: (id: string) => void;
   onDelete: (id: string, name: string) => void;
 }
 
-export function BudgetSettingCard({
+export function ActionCard({
   setting,
   isApplying,
   onApply,
   onEdit,
   onDelete,
-}: BudgetSettingCardProps) {
+}: ActionCardProps) {
   return (
     <div className="rounded-2xl ring-1 ring-border bg-card overflow-hidden">
       <div className="p-5 space-y-4">

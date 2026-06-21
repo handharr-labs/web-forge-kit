@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 
-export interface RecentTransactionVM {
+export interface ListPreviewItemVM {
   id: string;
   label: string;
   description?: string;
@@ -9,17 +9,17 @@ export interface RecentTransactionVM {
   variant: 'income' | 'expense';
 }
 
-interface RecentTransactionsSectionProps {
-  transactions: ReadonlyArray<RecentTransactionVM>;
+interface ListPreviewSectionProps {
+  transactions: ReadonlyArray<ListPreviewItemVM>;
   onViewAll: () => void;
   onSelect: (id: string) => void;
 }
 
-export function RecentTransactionsSection({
+export function ListPreviewSection({
   transactions,
   onViewAll,
   onSelect,
-}: RecentTransactionsSectionProps) {
+}: ListPreviewSectionProps) {
   if (transactions.length === 0) return null;
 
   return (

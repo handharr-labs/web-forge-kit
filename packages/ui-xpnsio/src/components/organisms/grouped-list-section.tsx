@@ -1,8 +1,8 @@
 import { Button } from '../atoms/button';
-import { CategoryColorDot } from '../atoms/category-color-dot';
+import { ColorDot } from '../atoms/color-dot';
 import { ChevronRight } from 'lucide-react';
 
-export interface TransactionItemVM {
+export interface GroupedListItemVM {
   id: string;
   label: string;
   description?: string;
@@ -11,25 +11,25 @@ export interface TransactionItemVM {
   categoryColor?: string;
 }
 
-export interface TransactionDateGroupVM {
+export interface DateGroupVM {
   date: string;
   formattedDate: string;
-  items: TransactionItemVM[];
+  items: GroupedListItemVM[];
 }
 
-interface TransactionListSectionProps {
-  groups: TransactionDateGroupVM[];
+interface GroupedListSectionProps {
+  groups: DateGroupVM[];
   hasMore: boolean;
   onLoadMore: () => void;
   onSelect: (id: string) => void;
 }
 
-export function TransactionListSection({
+export function GroupedListSection({
   groups,
   hasMore,
   onLoadMore,
   onSelect,
-}: TransactionListSectionProps) {
+}: GroupedListSectionProps) {
   return (
     <div className="space-y-6">
       {groups.map((group) => (
@@ -51,7 +51,7 @@ export function TransactionListSection({
               >
                 <div className="flex-shrink-0">
                   {tx.categoryColor ? (
-                    <CategoryColorDot color={tx.categoryColor} size="md" />
+                    <ColorDot color={tx.categoryColor} size="md" />
                   ) : (
                     <div
                       className={`w-4 h-4 rounded-full ${

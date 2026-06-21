@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
 
-interface PaymentAccountItemProps {
+interface CopyRowProps {
   id: string;
   bankName: string;
   accountNumber: string;
 }
 
-export function PaymentAccountItem({ id, bankName, accountNumber }: PaymentAccountItemProps) {
+export function CopyRow({ id, bankName, accountNumber }: CopyRowProps) {
   const [copied, setCopied] = useState(false);
 
   const copyAccount = () => {

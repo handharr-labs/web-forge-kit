@@ -1,11 +1,11 @@
 'use client';
 
-interface ProofImageModalProps {
+interface ImageModalProps {
   imageUrl: string | null;
   onClose: () => void;
 }
 
-export function ProofImageModal({ imageUrl, onClose }: ProofImageModalProps) {
+export function ImageModal({ imageUrl, onClose }: ImageModalProps) {
   if (!imageUrl) return null;
 
   return (

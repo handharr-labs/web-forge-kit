@@ -33,7 +33,7 @@ const healthConfig: Record<StatusVariant, {
   },
 };
 
-export interface BudgetOverviewCardProps {
+export interface StatOverviewCardProps {
   formattedRemaining: string;
   formattedBudget: string;
   formattedSpent: string;
@@ -43,7 +43,7 @@ export interface BudgetOverviewCardProps {
   isOverrun: boolean;
 }
 
-export function BudgetOverviewCard({
+export function StatOverviewCard({
   formattedRemaining,
   formattedBudget,
   formattedSpent,
@@ -51,7 +51,7 @@ export function BudgetOverviewCard({
   status,
   statusLabel,
   isOverrun,
-}: BudgetOverviewCardProps) {
+}: StatOverviewCardProps) {
   const config = healthConfig[status];
   const Icon = config.Icon;
 

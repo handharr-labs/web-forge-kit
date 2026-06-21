@@ -46,7 +46,7 @@ interface ProgressDisplay {
   label: string;
 }
 
-export interface DailyCategoryCardVM {
+export interface DailyProgressCardVM {
   type: 'daily';
   id: string;
   name: string;
@@ -60,7 +60,7 @@ export interface DailyCategoryCardVM {
   weekProgress: ProgressDisplay;
 }
 
-export interface WeeklyCategoryCardVM {
+export interface WeeklyProgressCardVM {
   type: 'weekly';
   id: string;
   name: string;
@@ -74,7 +74,7 @@ export interface WeeklyCategoryCardVM {
   monthlyProgress: ProgressDisplay;
 }
 
-export interface MonthlyCategoryCardVM {
+export interface MonthlyProgressCardVM {
   type: 'monthly';
   id: string;
   name: string;
@@ -82,20 +82,20 @@ export interface MonthlyCategoryCardVM {
   spentLabel: string;
 }
 
-export type CategoryCardVM = DailyCategoryCardVM | WeeklyCategoryCardVM | MonthlyCategoryCardVM;
+export type ProgressCardVM = DailyProgressCardVM | WeeklyProgressCardVM | MonthlyProgressCardVM;
 
-export interface CategoryGroupVM {
+export interface ProgressGroupVM {
   period: string;
   label: string;
-  items: CategoryCardVM[];
+  items: ProgressCardVM[];
 }
 
-interface CategoryBreakdownSectionProps {
+interface ProgressCardGridProps {
   title: string;
-  groups: CategoryGroupVM[];
+  groups: ProgressGroupVM[];
 }
 
-function DailyCategoryCard({ vm }: { vm: DailyCategoryCardVM }) {
+function DailyProgressCard({ vm }: { vm: DailyProgressCardVM }) {
   return (
     <Card size="sm" className="hover:ring-foreground/20 transition-all cursor-pointer group">
       <CardContent className="pt-3 space-y-4">
@@ -135,7 +135,7 @@ function DailyCategoryCard({ vm }: { vm: DailyCategoryCardVM }) {
   );
 }
 
-function WeeklyCategoryCard({ vm }: { vm: WeeklyCategoryCardVM }) {
+function WeeklyProgressCard({ vm }: { vm: WeeklyProgressCardVM }) {
   return (
     <Card size="sm" className="hover:ring-foreground/20 transition-all cursor-pointer group">
       <CardContent className="pt-3 space-y-4">
@@ -178,7 +178,7 @@ function WeeklyCategoryCard({ vm }: { vm: WeeklyCategoryCardVM }) {
   );
 }
 
-function MonthlyCategoryCard({ vm }: { vm: MonthlyCategoryCardVM }) {
+function MonthlyProgressCard({ vm }: { vm: MonthlyProgressCardVM }) {
   return (
     <Card size="sm" className="hover:ring-foreground/20 transition-all cursor-pointer group">
       <CardContent className="pt-3 space-y-3">
@@ -196,7 +196,7 @@ function MonthlyCategoryCard({ vm }: { vm: MonthlyCategoryCardVM }) {
   );
 }
 
-export function CategoryBreakdownSection({ title, groups }: CategoryBreakdownSectionProps) {
+export function ProgressCardGrid({ title, groups }: ProgressCardGridProps) {
   if (groups.length === 0) return null;
 
   return (
@@ -214,9 +214,9 @@ export function CategoryBreakdownSection({ title, groups }: CategoryBreakdownSec
 
           <div className="grid gap-3 md:grid-cols-2">
             {group.items.map((vm) => {
-              if (vm.type === 'daily') return <DailyCategoryCard key={vm.id} vm={vm} />;
-              if (vm.type === 'weekly') return <WeeklyCategoryCard key={vm.id} vm={vm} />;
-              return <MonthlyCategoryCard key={vm.id} vm={vm} />;
+              if (vm.type === 'daily') return <DailyProgressCard key={vm.id} vm={vm} />;
+              if (vm.type === 'weekly') return <WeeklyProgressCard key={vm.id} vm={vm} />;
+              return <MonthlyProgressCard key={vm.id} vm={vm} />;
             })}
           </div>
         </div>
