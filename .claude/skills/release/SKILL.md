@@ -1,10 +1,10 @@
 ---
 name: release
-description: Release packages — commit unstaged work, bump semver, tag, and push. Usage - /release [patch|minor|major] [package-name]. Releases all packages if no package specified.
+description: Release packages — commit unstaged work, bump semver, tag, push, and publish to GitHub Packages. Usage - /release [patch|minor|major] [package-name]. Releases all packages if no package specified.
 user-invocable: true
 ---
 
-Bump the version of one or more packages in this monorepo following semver, then commit, tag, and push.
+Bump the version of one or more packages in this monorepo following semver, then commit, tag, push, and publish to GitHub Packages.
 
 ## Arguments
 
@@ -62,7 +62,17 @@ Tag the commit. Format:
 
 Run `git push && git push --tags` to push everything to remote.
 
-### 10. Report
+### 10. Publish to GitHub Packages
+
+Check if `GITHUB_TOKEN` (or `NODE_AUTH_TOKEN`) is set. If not, warn the user and skip publishing:
+> Token not found. Run `export GITHUB_TOKEN=ghp_...` and then `/publish` to publish manually.
+
+If the token is available, for each bumped package:
+```bash
+npm publish --workspace packages/{name}
+```
+
+### 11. Report
 
 Print a summary:
 ```
@@ -71,6 +81,7 @@ Bumped:
   @handharr-labs/web-client: 0.1.0 → 0.2.0
 
 Tags: @handharr-labs/core@0.2.0, @handharr-labs/web-client@0.2.0
+Published to https://npm.pkg.github.com
 Pushed to origin/main.
 ```
 
