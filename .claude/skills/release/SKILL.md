@@ -1,6 +1,6 @@
 ---
 name: release
-description: Release packages — commit unstaged work, bump semver, tag, push, and publish to GitHub Packages. Usage - /release [patch|minor|major] [package-name]. Releases all packages if no package specified.
+description: Release packages — commit unstaged work, bump semver, tag, push, and publish to GitHub Packages. Usage - /release [patch|minor|major] [package-name]. Auto-detects changed packages if no package specified.
 user-invocable: true
 ---
 
@@ -10,7 +10,7 @@ Bump the version of one or more packages in this monorepo following semver, then
 
 - `$ARGUMENTS` — expects `[patch|minor|major] [package-name]`
   - First arg: semver bump level (`patch`, `minor`, or `major`). Required.
-  - Second arg: package name (e.g. `core`, `web-client`, `ui-xpnsio`). Optional — if omitted, bump ALL publishable packages.
+  - Second arg: package name (e.g. `core`, `web-client`, `ui-xpnsio`). Optional — if omitted, auto-detect which packages have changes.
 
 ## Steps
 
@@ -29,7 +29,28 @@ Parse from `$ARGUMENTS`. If no bump level is provided, ask the user.
 
 ### 3. Identify target packages
 
-List all directories under `packages/`. If a package name was given, match it (with or without `@handharr-labs/` prefix). If not, target all packages.
+List all directories under `packages/`.
+
+- **If a package name was given:** match it (with or without `@handharr-labs/` prefix) and use that as the sole target.
+- **If no package name was given:** auto-detect which packages have changes since the last release tag.
+
+**Auto-detection logic:**
+
+For each package, find its most recent git tag using:
+```bash
+git tag --list "@handharr-labs/{name}@*" --sort=-version:refname | head -1
+```
+
+Then check if any files under `packages/{name}/` changed since that tag:
+```bash
+git diff --name-only {last-tag}..HEAD -- packages/{name}/
+```
+
+- If changes are found → include the package.
+- If no tag exists for the package → include it (treat as never released).
+- If no changes since last tag → skip it.
+
+If no packages have changes, abort and report: `No packages have changes since their last release. Nothing to bump.`
 
 ### 4. Read current versions
 
@@ -50,7 +71,8 @@ Change the `"version"` field in each target's `package.json`.
 
 Stage only the bumped `package.json` files and commit:
 - Single package: `chore: bump @handharr-labs/{name} to x.y.z`
-- All packages: `chore: bump all packages to x.y.z`
+- Multiple packages (same version): `chore: bump all packages to x.y.z`
+- Multiple packages (different versions): `chore: bump packages {name1} to x.y.z, {name2} to x.y.z`
 
 ### 8. Create git tags
 
@@ -90,5 +112,5 @@ Pushed to origin/main.
 - Never bump the root `package.json` version — it's private and not published.
 - Never modify `package-lock.json` directly — run `npm install` after bumping if needed.
 - If a package has `"private": true`, skip it unless explicitly named.
-- Keep versions in sync across all publishable packages (when bumping all).
+- Do NOT force-sync versions across packages — each package is bumped independently based on its own changes.
 - Sync cross-references: workspace packages use `"*"` for internal deps, so do NOT update dependency versions when bumping.
