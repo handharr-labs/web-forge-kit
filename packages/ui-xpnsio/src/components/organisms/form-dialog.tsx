@@ -10,22 +10,22 @@ export interface IconOption {
   Icon: ComponentType<{ className?: string }>;
 }
 
-export interface CategoryFormState {
+export interface FormDialogState {
   name: string;
   masterCategory: 'daily' | 'weekly' | 'monthly';
   color: string;
   icon: string;
 }
 
-interface CategoryFormDialogProps {
+interface FormDialogProps {
   isEdit: boolean;
-  form: CategoryFormState;
+  form: FormDialogState;
   colorOptions: string[];
   iconOptions: IconOption[];
   periodOptions?: { value: 'daily' | 'weekly' | 'monthly'; label: string }[];
   isSaving: boolean;
   error: string | null;
-  onFormChange: (patch: Partial<CategoryFormState>) => void;
+  onFormChange: (patch: Partial<FormDialogState>) => void;
   onSubmit: (e: React.FormEvent) => void;
   onClose: () => void;
 }
@@ -36,7 +36,7 @@ const DEFAULT_PERIODS: { value: 'daily' | 'weekly' | 'monthly'; label: string }[
   { value: 'monthly', label: 'Monthly' },
 ];
 
-export function CategoryFormDialog({
+export function FormDialog({
   isEdit,
   form,
   colorOptions,
@@ -47,7 +47,7 @@ export function CategoryFormDialog({
   onFormChange,
   onSubmit,
   onClose,
-}: CategoryFormDialogProps) {
+}: FormDialogProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm">
       <div className="bg-background rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">

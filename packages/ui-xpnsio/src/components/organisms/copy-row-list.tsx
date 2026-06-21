@@ -1,4 +1,4 @@
-import { PaymentAccountItem } from './payment-account-item';
+import { CopyRow } from './copy-row';
 
 interface PaymentAccount {
   id: string;
@@ -6,18 +6,18 @@ interface PaymentAccount {
   accountNumber: string;
 }
 
-interface PaymentAccountListProps {
+interface CopyRowListProps {
   label?: string;
   accounts: PaymentAccount[];
 }
 
-export function PaymentAccountList({ label = 'Payment accounts', accounts }: PaymentAccountListProps) {
+export function CopyRowList({ label = 'Payment accounts', accounts }: CopyRowListProps) {
   return (
     <div>
       <p className="text-sm font-medium text-muted-foreground mb-2">{label}</p>
       <div className="rounded-2xl bg-muted/50 ring-1 ring-border divide-y divide-border overflow-hidden">
         {accounts.map((acc) => (
-          <PaymentAccountItem
+          <CopyRow
             key={acc.id}
             id={acc.id}
             bankName={acc.bankName}

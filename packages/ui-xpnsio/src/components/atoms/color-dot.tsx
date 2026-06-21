@@ -1,9 +1,9 @@
-interface CategoryColorDotProps {
+interface ColorDotProps {
   color: string;
   size?: 'sm' | 'md';
 }
 
-export function CategoryColorDot({ color, size = 'sm' }: CategoryColorDotProps) {
+export function ColorDot({ color, size = 'sm' }: ColorDotProps) {
   const sizeClass = size === 'md' ? 'w-4 h-4' : 'w-3 h-3';
   return (
     <span

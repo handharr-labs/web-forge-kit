@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import { Copy, Check, ExternalLink } from 'lucide-react';
 
-interface ShareLinkRowProps {
+interface ShareLinkProps {
   url: string;
   href: string;
 }
 
-export function ShareLinkRow({ url, href }: ShareLinkRowProps) {
+export function ShareLink({ url, href }: ShareLinkProps) {
   const [copied, setCopied] = useState(false);
 
   const copyLink = () => {

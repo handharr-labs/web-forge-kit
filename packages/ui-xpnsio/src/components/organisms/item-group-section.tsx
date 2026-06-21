@@ -3,28 +3,28 @@
 import type { ComponentType } from 'react';
 import { Pencil, Trash2 } from 'lucide-react';
 import { Button } from '../atoms/button';
-import { CategoryColorDot } from '../atoms/category-color-dot';
+import { ColorDot } from '../atoms/color-dot';
 
-export interface CategoryItemVM {
+export interface GroupItemVM {
   id: string;
   name: string;
   color: string;
   icon: ComponentType<{ className?: string }>;
 }
 
-interface CategoryGroupSectionProps {
+interface ItemGroupSectionProps {
   masterLabel: string;
-  items: CategoryItemVM[];
+  items: GroupItemVM[];
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export function CategoryGroupSection({
+export function ItemGroupSection({
   masterLabel,
   items,
   onEdit,
   onDelete,
-}: CategoryGroupSectionProps) {
+}: ItemGroupSectionProps) {
   return (
     <section className="space-y-3">
       <div className="flex items-center gap-3">
@@ -43,7 +43,7 @@ export function CategoryGroupSection({
               key={item.id}
               className="flex items-center gap-3 p-4 rounded-xl ring-1 ring-border bg-card hover:bg-muted/30 transition-colors group"
             >
-              <CategoryColorDot color={item.color} size="md" />
+              <ColorDot color={item.color} size="md" />
 
               <div className="flex-1 min-w-0 flex items-center gap-2">
                 <span className="font-medium truncate">{item.name}</span>

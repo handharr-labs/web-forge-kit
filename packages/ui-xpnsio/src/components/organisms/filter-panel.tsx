@@ -8,7 +8,7 @@ export interface FilterOption {
   name: string;
 }
 
-export interface TransactionFilters {
+export interface FilterState {
   startDate: string;
   endDate: string;
   categoryId: string;
@@ -16,21 +16,21 @@ export interface TransactionFilters {
   description: string;
 }
 
-interface TransactionFilterPanelProps {
+interface FilterPanelProps {
   categoryOptions: FilterOption[];
-  filters: TransactionFilters;
-  onFiltersChange: (patch: Partial<TransactionFilters>) => void;
+  filters: FilterState;
+  onFiltersChange: (patch: Partial<FilterState>) => void;
   onApply: () => void;
   onClear: () => void;
 }
 
-export function TransactionFilterPanel({
+export function FilterPanel({
   categoryOptions,
   filters,
   onFiltersChange,
   onApply,
   onClear,
-}: TransactionFilterPanelProps) {
+}: FilterPanelProps) {
   const hasFilters = filters.startDate || filters.endDate || filters.categoryId || filters.type;
 
   return (

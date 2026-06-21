@@ -27,7 +27,7 @@ export {
   SelectTrigger,
   SelectValue,
 } from './components/atoms/select';
-export { CategoryColorDot } from './components/atoms/category-color-dot';
+export { ColorDot } from './components/atoms/color-dot';
 export { CurrencyInput } from './components/atoms/currency-input';
 
 // Components — Molecules
@@ -37,27 +37,25 @@ export { MonthNavigator } from './components/molecules/month-navigator';
 export { BottomNav } from './components/organisms/bottom-nav';
 export type { BottomNavItem } from './components/organisms/bottom-nav';
 export { DeleteConfirmDialog } from './components/organisms/delete-confirm-dialog';
-export { ManageParticipantCard } from './components/organisms/manage-participant-card';
-export type { ParticipantStatus } from './components/organisms/manage-participant-card';
-export { PaymentAccountItem } from './components/organisms/payment-account-item';
-export { PaymentAccountList } from './components/organisms/payment-account-list';
-export { ProofActionsRow } from './components/organisms/proof-actions-row';
-export { ProofImageModal } from './components/organisms/proof-image-modal';
-export { PublicParticipantCard } from './components/organisms/public-participant-card';
-export { ShareLinkRow } from './components/organisms/share-link-row';
-export { BudgetOverviewCard } from './components/organisms/budget-overview-card';
-export type { BudgetOverviewCardProps } from './components/organisms/budget-overview-card';
-export { CategoryBreakdownSection } from './components/organisms/category-breakdown-section';
-export type { CategoryGroupVM, CategoryCardVM, DailyCategoryCardVM, WeeklyCategoryCardVM, MonthlyCategoryCardVM } from './components/organisms/category-breakdown-section';
-export { RecentTransactionsSection } from './components/organisms/recent-transactions-section';
-export type { RecentTransactionVM } from './components/organisms/recent-transactions-section';
-export { TransactionListSection } from './components/organisms/transaction-list-section';
-export type { TransactionItemVM, TransactionDateGroupVM } from './components/organisms/transaction-list-section';
-export { TransactionFilterPanel } from './components/organisms/transaction-filter-panel';
-export type { FilterOption, TransactionFilters } from './components/organisms/transaction-filter-panel';
-export { BudgetSettingCard } from './components/organisms/budget-setting-card';
-export type { BudgetSettingCardVM } from './components/organisms/budget-setting-card';
-export { CategoryGroupSection } from './components/organisms/category-group-section';
-export type { CategoryItemVM } from './components/organisms/category-group-section';
-export { CategoryFormDialog } from './components/organisms/category-form-dialog';
-export type { IconOption, CategoryFormState } from './components/organisms/category-form-dialog';
+export { StatusCard } from './components/organisms/status-card';
+export type { StatusVariant } from './components/organisms/status-card';
+export { CopyRow } from './components/organisms/copy-row';
+export { CopyRowList } from './components/organisms/copy-row-list';
+export { ImageModal } from './components/organisms/image-modal';
+export { ShareLink } from './components/organisms/share-link';
+export { StatOverviewCard } from './components/organisms/stat-overview-card';
+export type { StatOverviewCardProps } from './components/organisms/stat-overview-card';
+export { ProgressCardGrid } from './components/organisms/progress-card-grid';
+export type { ProgressGroupVM, ProgressCardVM, DailyProgressCardVM, WeeklyProgressCardVM, MonthlyProgressCardVM } from './components/organisms/progress-card-grid';
+export { ListPreviewSection } from './components/organisms/list-preview-section';
+export type { ListPreviewItemVM } from './components/organisms/list-preview-section';
+export { GroupedListSection } from './components/organisms/grouped-list-section';
+export type { GroupedListItemVM, DateGroupVM } from './components/organisms/grouped-list-section';
+export { FilterPanel } from './components/organisms/filter-panel';
+export type { FilterOption, FilterState } from './components/organisms/filter-panel';
+export { ActionCard } from './components/organisms/action-card';
+export type { ActionCardVM } from './components/organisms/action-card';
+export { ItemGroupSection } from './components/organisms/item-group-section';
+export type { GroupItemVM } from './components/organisms/item-group-section';
+export { FormDialog } from './components/organisms/form-dialog';
+export type { IconOption, FormDialogState } from './components/organisms/form-dialog';
