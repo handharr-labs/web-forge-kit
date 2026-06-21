@@ -1,7 +1,7 @@
 # Extract core modules from `xpnsio` into forgekit packages
 
 **Date:** 2026-06-21
-**Status:** Done (Phases 1–4) · Phase 5 pending
+**Status:** Done (Phases 1–5)
 
 ## Context
 
@@ -482,7 +482,9 @@ Work happens in **forgekit repo**.
    - `lib/safe-action.ts` → use `handleServerActionError`
    - `shared/data/mappers/DbErrorMapper.ts` → extend `DefaultDbErrorMapper`
 
-### Phase 5: Extract Supabase auth factories
+### Phase 5: Extract Supabase auth factories ✓
+
+**Published:** `@handharr-labs/web-server@0.2.0`, `@handharr-labs/web-client@0.4.0` (2026-06-21)
 
 **Trigger:** implement when a second Supabase app exists, or proactively to standardise now.
 
