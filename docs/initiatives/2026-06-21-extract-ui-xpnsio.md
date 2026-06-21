@@ -1,203 +1,114 @@
 # Extract `ui-xpnsio` design system package
 
 **Date:** 2026-06-21
-**Status:** Planned
+**Status:** In Progress — refactoring scope
 
 ## Context
 
-`xpnsio` is a Next.js expense-tracking app with a design system spread across `src/components/ui/`, `src/shared/presentation/`, `src/lib/utils.ts`, and `src/app/globals.css`. The components range from low-level primitives (Button, Card, Select) to app-level organisms (BottomNav, DeleteConfirmDialog, ShareLinkRow) and shared utilities (formatCurrency, formatRelativeDate, usePullToRefresh).
+`xpnsio` is a Next.js expense-tracking app. We extracted its design system into `@handharr-labs/ui-xpnsio` — components, tokens, utilities, and constants. The initial extraction was broad: we pulled everything reusable. After integrating and testing, we identified that some of what we extracted is **business logic or app config**, not design system material.
 
-This is the first `ui-{name}` package in `web-forge-kit`, establishing the pattern for future app-specific design systems. The goal is **batteries-included**: downstream apps install the package and get everything they need — components, tokens, utilities, providers, and constants.
+This doc now reflects the refined scope after the first integration pass.
 
-**Decisions locked in:**
-- Package name: `@handharr-labs/ui-xpnsio`.
-- Standalone — no shared base layer, no dependency on `core` or `web-client`.
-- Source extracted from `xpnsio` repo, not forked or symlinked.
-- Tailwind v4 + PostCSS, Base UI primitives, CVA for variants.
-- **All dependencies are direct** (batteries-included) — except `react` / `react-dom` as peer.
+## Design system boundary
 
-## Source inventory (from xpnsio)
+**Rule: if it has business logic, domain types, or app-specific config baked in — it's not design system material.**
 
-### UI primitives (`src/components/ui/`)
+A design system owns **visual identity**: components, tokens, styling utilities, and theme providers. Components must be configurable through props, never hardcoded to a specific app's domain.
 
-| Component | File | Primitives | Notes |
-|---|---|---|---|
-| Button | `button.tsx` | `@base-ui/react/button` + CVA | 6 variants (default, outline, secondary, ghost, destructive, link), 7 sizes |
-| Card | `card.tsx` | Pure React | 7 compound subcomponents (Card, CardHeader, CardTitle, CardDescription, CardAction, CardContent, CardFooter), `size` prop |
-| Select | `select.tsx` | `@base-ui/react/select` | 10 subcomponents, portal-based dropdown, `sm`/`default` sizes |
+## What stays in `ui-xpnsio`
 
-### Shared atoms (`src/shared/presentation/common/atoms/`)
+### Tokens
+- `tokens/globals.css` — raw CSS variables (`:root`, `.dark`), iOS input fix, Select workarounds
 
+### Utilities
+- `cn()` — `clsx` + `tailwind-merge`
+
+### Providers
+- `ThemeProvider` — `next-themes` wrapper
+
+### Components — Atoms
 | Component | Notes |
 |---|---|
-| CategoryColorDot | Renders a colored circle by `color` + `size` prop. Pure UI. |
-| CurrencyInput | Formatted currency input field. Imports `getLocale` from `formatCurrency`. |
+| Button | Base UI + CVA. 6 variants, 7 sizes. Pure UI. |
+| Card | 7 compound subcomponents. Pure UI. |
+| Select | Base UI. 10 subcomponents. Pure UI. |
+| CategoryColorDot | Colored circle by `color` + `size`. Pure UI. |
+| CurrencyInput | **Refactor needed** — decouple `getLocale` dependency. Accept a `formatValue` callback prop instead of importing `formatCurrency` internally. |
 
-### Shared molecules (`src/shared/presentation/common/molecules/`)
-
+### Components — Molecules
 | Component | Notes |
 |---|---|
-| MonthNavigator | Prev/next month arrows with label. Pure callback props. |
+| MonthNavigator | Prev/next arrows with label. Pure callback props. |
 
-### Shared organisms (`src/shared/presentation/common/organisms/`)
+### Components — Organisms (refactor to be generic)
 
-| Component | Notes |
-|---|---|
-| BottomNav | Fixed bottom navigation bar. 5 items with icons. Imports `ROUTES`, `useRouter`, `usePathname`. |
-| DeleteConfirmDialog | Modal confirmation dialog. Uses Button. Pure callback props. |
-| ManageParticipantCard | Participant card with proof status + approve/reject. Imports `formatCurrency`, `ProofActionsRow`. |
-| PaymentAccountItem | Bank account display with copy-to-clipboard. |
-| PaymentAccountList | Composes PaymentAccountItem list. |
-| ProofActionsRow | Approve/reject button pair. Uses Button. |
-| ProofImageModal | Image lightbox modal with close button. |
-| PublicParticipantCard | Read-only participant card with status badge. Imports `formatCurrency`. |
-| ShareLinkRow | URL display with copy + open-link actions. |
-
-### Providers (`src/shared/presentation/providers/`)
-
-| Provider | Notes |
-|---|---|
-| ThemeProvider | Thin wrapper around `next-themes`. Default dark, class-based. |
-
-### Utilities (`src/shared/presentation/utils/`)
-
-| Utility | Exports | Notes |
+| Component | Current problem | Refactored API |
 |---|---|---|
-| `formatCurrency.ts` | `getLocale`, `formatCurrency`, `formatCompactCurrency` | Intl.NumberFormat-based. Supports IDR, USD, SGD, MYR, EUR. |
-| `formatRelativeDate.ts` | `formatRelativeDate`, `formatFullDate` | "Today", "Yesterday", or locale-formatted date. |
-| `formatWeekRange.ts` | `formatWeekRange` | "21 Jun – 27 Jun" style week range. |
-| `utils.ts` (lib) | `cn` | `clsx` + `tailwind-merge` class merger. |
+| BottomNav | Hardcoded routes + icons | Accept `items: { icon, label, path, fab? }[]` + `currentPath` as props. Remove internal `useRouter`/`usePathname` — let the app pass an `onNavigate` callback. |
+| DeleteConfirmDialog | Already generic | No changes needed. |
+| ManageParticipantCard | Imports `formatCurrency`, hardcodes `'IDR'`, has hardcoded status labels | Accept `formattedAmount: string`, status labels as props. Remove internal `formatCurrency` import. |
+| PublicParticipantCard | Imports `formatCurrency`, hardcodes `'IDR'`, has hardcoded status text | Accept `formattedAmount: string`, status text as props. Remove internal `formatCurrency` import. |
+| PaymentAccountItem | Already generic | No changes needed. |
+| PaymentAccountList | Already generic | No changes needed. |
+| ProofActionsRow | Already generic | No changes needed. |
+| ProofImageModal | Already generic | No changes needed. |
+| ShareLinkRow | Already generic | No changes needed. |
 
-### Hooks (`src/shared/presentation/hooks/`)
+## What moves OUT of `ui-xpnsio`
 
-| Hook | Notes |
+### → Back to xpnsio app (app-specific)
+| What | Why |
 |---|---|
-| `usePullToRefresh` | Touch-based pull-to-refresh with damping. Returns `containerRef`, `pullDistance`, `isRefreshing`. |
+| `constants/routes.ts` | App navigation paths — not design. |
+| `constants/currency-options.ts` | Business domain data — not design. |
 
-### Constants (`src/shared/presentation/constants/`)
-
-| Constant | Notes |
+### → `@handharr-labs/core` (platform-agnostic business logic)
+| What | Why |
 |---|---|
-| `CURRENCY_OPTIONS` | Dropdown options for IDR, USD, SGD, MYR, EUR. |
+| `utils/format-currency.ts` | Business formatting (Intl.NumberFormat). Pure TS, no UI dependency. |
+| `utils/format-relative-date.ts` | Business formatting. Pure TS. |
+| `utils/format-week-range.ts` | Business formatting. Pure TS. |
+| `types/query-state.ts` | App state type. Pure TS. |
 
-### Navigation (`src/shared/presentation/navigation/`)
-
-| Export | Notes |
+### → `@handharr-labs/web-client` (frontend utility)
+| What | Why |
 |---|---|
-| `ROUTES` | All app route paths as constants/functions. |
+| `hooks/use-pull-to-refresh.ts` | Touch UX utility — browser API, not visual design. |
 
-### Types (`src/shared/presentation/common/`)
+## Refactoring steps
 
-| Type | Notes |
-|---|---|
-| `QueryState<T>` | Discriminated union: `idle` / `loading` / `success` / `error`. |
+### Phase 1: Move non-UI code out
 
-### Design tokens (`src/app/globals.css`)
+1. Move `formatCurrency`, `formatRelativeDate`, `formatWeekRange`, `QueryState` → `@handharr-labs/core`.
+2. Move `usePullToRefresh` → `@handharr-labs/web-client`.
+3. Move `ROUTES`, `CURRENCY_OPTIONS` → back to xpnsio app.
+4. Update all imports in xpnsio.
+5. Remove moved files from `ui-xpnsio`, update barrel.
 
-| Category | Tokens |
-|---|---|
-| Colors (OKLCH) | `--primary`, `--secondary`, `--accent`, `--muted`, `--destructive`, `--card`, `--popover`, `--input`, `--border`, `--ring` (each with `-foreground`) |
-| Sidebar | 8 tokens (`--sidebar-background`, `--sidebar-foreground`, `--sidebar-primary`, etc.) |
-| Charts | `--chart-1` through `--chart-5` |
-| Radius | `--radius` base (0.625rem) + 7 calculated levels (sm → 4xl) |
-| Fonts | `--font-sans` (Nunito), `--font-mono` (Geist Mono) |
-| Themes | Light (:root) + Dark (.dark), default dark |
+### Phase 2: Make organisms generic
 
-## Dependencies
+6. **BottomNav** — accept `items` array + `onNavigate` callback + `currentPath` prop. Remove `useRouter`, `usePathname`, `ROUTES` imports.
+7. **ManageParticipantCard** — accept `formattedAmount: string` instead of `amount: number`. Accept status label overrides as optional props.
+8. **PublicParticipantCard** — same as ManageParticipantCard.
+9. **CurrencyInput** — accept `formatValue: (value: number) => string` callback instead of importing `getLocale`.
 
-All direct (batteries-included) — downstream app just installs `@handharr-labs/ui-xpnsio`.
+### Phase 3: Clean up
 
-| Package | Version | Purpose |
-|---|---|---|
-| `react`, `react-dom` | ≥18 | **Peer** — app provides single instance |
-| `@base-ui/react` | ^1.2.0 | Headless UI primitives (Button, Select) |
-| `class-variance-authority` | 0.7.1 | Component variants |
-| `clsx` | 2.1.1 | Class name utility |
-| `tailwind-merge` | 3.5.0 | Tailwind class conflict resolution |
-| `tw-animate-css` | 1.4.0 | Animation utilities |
-| `lucide-react` | 0.577.0 | Icons (Select, BottomNav, ShareLinkRow, etc.) |
-| `tailwindcss` | 4.2.1 | CSS framework |
-| `@tailwindcss/postcss` | 4.2.1 | PostCSS plugin |
-| `next-themes` | 0.4.6 | Theme provider |
-| `next` | ≥14 | **Peer** — `useRouter`, `usePathname` used by BottomNav |
-
-## Target structure
-
-```
-packages/ui-xpnsio/
-  package.json              # @handharr-labs/ui-xpnsio (standalone, no internal deps)
-  tsconfig.json
-  src/
-    index.ts                # Barrel export
-    tokens/
-      globals.css           # OKLCH palette, radius, fonts, base layer
-    utils/
-      cn.ts                 # clsx + tailwind-merge
-      format-currency.ts    # getLocale, formatCurrency, formatCompactCurrency
-      format-relative-date.ts
-      format-week-range.ts
-    types/
-      query-state.ts        # QueryState<T>
-    constants/
-      currency-options.ts
-      routes.ts             # ROUTES object
-    hooks/
-      use-pull-to-refresh.ts
-    providers/
-      theme-provider.tsx
-    components/
-      atoms/
-        button.tsx
-        card.tsx
-        select.tsx
-        category-color-dot.tsx
-        currency-input.tsx
-      molecules/
-        month-navigator.tsx
-      organisms/
-        bottom-nav.tsx
-        delete-confirm-dialog.tsx
-        manage-participant-card.tsx
-        payment-account-item.tsx
-        payment-account-list.tsx
-        proof-actions-row.tsx
-        proof-image-modal.tsx
-        public-participant-card.tsx
-        share-link-row.tsx
-```
-
-## Not extracting
-
-- **Feature Views** (LoginView, DashboardView, TransactionsView, etc.) — these compose components with domain hooks, use cases, and data fetching. They belong in the app.
-- **Feature organisms** (BudgetSettingCard, CategoryFormDialog, CategoryGroupSection, TransactionFilterPanel, etc.) — tightly coupled to domain models and feature-specific state.
-- **getCategoryIcon** — maps domain category types to icons, belongs in feature code.
-- **QueryClientProvider** — infrastructure wiring, not design system.
-- **useAppRouter** — app-specific navigation hook.
-- **Server actions** (`actions/categories.ts`) — data layer, not UI.
-- **Font loading** (Next.js `next/font`) — stays in app's `layout.tsx`.
-
-## Steps
-
-1. **Write initiative doc** — this file.
-2. **Scaffold `packages/ui-xpnsio/`** — `package.json`, `tsconfig.json`, directory structure.
-3. **Extract tokens** — Pull CSS variables and base layer from xpnsio's `globals.css` into `tokens/globals.css`.
-4. **Copy utilities** — `cn`, `formatCurrency`, `formatRelativeDate`, `formatWeekRange`.
-5. **Copy types + constants** — `QueryState`, `CURRENCY_OPTIONS`, `ROUTES`.
-6. **Copy hooks** — `usePullToRefresh`.
-7. **Copy providers** — `ThemeProvider`.
-8. **Copy components** — All atoms, molecules, organisms listed above.
-9. **Rewrite imports** — Update all internal `@/` imports to relative paths within the package.
-10. **Create barrel** — `src/index.ts` exporting everything.
-11. **Wire dependencies** — All deps as direct, `react`/`react-dom`/`next` as peer.
-12. **Verify** — `npm install`, `npm run type-check`.
-13. **Update xpnsio** — Replace local imports with `@handharr-labs/ui-xpnsio` (separate PR in xpnsio repo).
+10. Remove `tailwindcss`, `@tailwindcss/postcss` from `ui-xpnsio` dependencies (app owns the build).
+11. Remove `next` from peer dependencies if BottomNav no longer uses `useRouter`/`usePathname`.
+12. Update initiative doc status to Done.
 
 ## Verification
 
-- `npm install` resolves with `ui-xpnsio` in the workspace graph.
-- `npm run type-check` passes for `ui-xpnsio`.
-- Components render correctly when imported in `playground/`.
+- `npm run type-check` passes in all workspaces.
+- xpnsio `npm run dev` renders correctly.
+- No business logic or app-specific config remains in `ui-xpnsio`.
+- All organisms are configurable through props.
 
-## Out of scope
+## Lessons learned (from initial integration)
 
-Migrating xpnsio to consume this package, adding new components, Storybook, and the tsup/dist build pipeline.
+1. **Tokens CSS split**: `@theme inline`, `@layer base`, `@custom-variant dark` must live in the app's `globals.css` alongside `@import "tailwindcss"` — Tailwind's `@apply` directives don't resolve across `@import` boundaries.
+2. **Package exports raw CSS variables only**: `:root`/`.dark` token values + CSS workarounds. The app wires them into Tailwind.
+3. **`transpilePackages`** is required in `next.config.ts` for Next.js to process TypeScript from the package.
+4. **`file:` links don't work with Turbopack** — always test via published registry versions.
+5. **Components must be prop-driven**: any component that imports business logic (formatCurrency, ROUTES) is not a true design system component.

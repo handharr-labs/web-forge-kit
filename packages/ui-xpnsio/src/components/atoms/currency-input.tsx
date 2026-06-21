@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { getLocale } from '../../utils/format-currency';
 
-function formatAmount(value: number, currency: string): string {
+function defaultFormatDisplay(value: number): string {
   if (value === 0) return '';
-  return value.toLocaleString(getLocale(currency));
+  return value.toLocaleString();
 }
 
 function parseAmount(raw: string): number {
@@ -16,7 +15,8 @@ function parseAmount(raw: string): number {
 interface CurrencyInputProps {
   value: number;
   onChange: (value: number) => void;
-  currency?: string;
+  formatDisplay?: (value: number) => string;
+  currencyLabel?: string;
   placeholder?: string;
   className?: string;
   required?: boolean;
@@ -25,28 +25,29 @@ interface CurrencyInputProps {
 export function CurrencyInput({
   value,
   onChange,
-  currency = 'IDR',
+  formatDisplay = defaultFormatDisplay,
+  currencyLabel = 'IDR',
   placeholder = '0',
   className = '',
   required,
 }: CurrencyInputProps) {
-  const [display, setDisplay] = useState(() => formatAmount(value, currency));
+  const [display, setDisplay] = useState(() => formatDisplay(value));
   const isFocusedRef = useRef(false);
   const lastValueRef = useRef(value);
 
   useEffect(() => {
     if (!isFocusedRef.current) {
-      setDisplay(value > 0 ? formatAmount(value, currency) : '');
+      setDisplay(value > 0 ? formatDisplay(value) : '');
       lastValueRef.current = value;
     } else if (value !== lastValueRef.current) {
-      setDisplay(value > 0 ? formatAmount(value, currency) : '');
+      setDisplay(value > 0 ? formatDisplay(value) : '');
       lastValueRef.current = value;
     }
-  }, [currency, value]);
+  }, [formatDisplay, value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const numeric = parseAmount(e.target.value);
-    setDisplay(numeric > 0 ? formatAmount(numeric, currency) : '');
+    setDisplay(numeric > 0 ? formatDisplay(numeric) : '');
     lastValueRef.current = numeric;
     onChange(numeric);
   };
@@ -57,7 +58,7 @@ export function CurrencyInput({
 
   const handleBlur = () => {
     isFocusedRef.current = false;
-    setDisplay(value > 0 ? formatAmount(value, currency) : '');
+    setDisplay(value > 0 ? formatDisplay(value) : '');
   };
 
   return (
@@ -65,7 +66,7 @@ export function CurrencyInput({
       <span
         className="self-stretch flex items-center justify-center px-3 bg-muted text-sm border-r text-muted-foreground font-medium min-w-[3.5rem] flex-shrink-0"
       >
-        {currency}
+        {currencyLabel}
       </span>
       <input
         type="text"

@@ -1,10 +1,9 @@
 'use client';
 
 import { ImageIcon } from 'lucide-react';
-import { formatCurrency } from '../../utils/format-currency';
 import { ProofActionsRow } from './proof-actions-row';
 
-type ParticipantStatus = 'pending' | 'proof_uploaded' | 'approved' | 'rejected';
+export type ParticipantStatus = 'pending' | 'proof_uploaded' | 'approved' | 'rejected';
 
 const STATUS_STYLES: Record<ParticipantStatus, string> = {
   pending: 'bg-muted text-muted-foreground',
@@ -13,7 +12,7 @@ const STATUS_STYLES: Record<ParticipantStatus, string> = {
   rejected: 'bg-red-500/10 text-red-700 dark:text-red-400',
 };
 
-const STATUS_LABEL: Record<ParticipantStatus, string> = {
+const DEFAULT_STATUS_LABELS: Record<ParticipantStatus, string> = {
   pending: 'Pending',
   proof_uploaded: 'Proof uploaded',
   approved: 'Approved',
@@ -22,8 +21,9 @@ const STATUS_LABEL: Record<ParticipantStatus, string> = {
 
 interface ManageParticipantCardProps {
   name: string;
-  amount: number;
+  formattedAmount: string;
   status: ParticipantStatus;
+  statusLabels?: Partial<Record<ParticipantStatus, string>>;
   isCreator?: boolean;
   creatorBadgeLabel?: string;
   proofImageUrl?: string | null;
@@ -35,8 +35,9 @@ interface ManageParticipantCardProps {
 
 export function ManageParticipantCard({
   name,
-  amount,
+  formattedAmount,
   status,
+  statusLabels,
   isCreator = false,
   creatorBadgeLabel = 'Creator',
   proofImageUrl,
@@ -45,6 +46,7 @@ export function ManageParticipantCard({
   onApprove,
   onReject,
 }: ManageParticipantCardProps) {
+  const labels = { ...DEFAULT_STATUS_LABELS, ...statusLabels };
   const displayStatus: ParticipantStatus = isCreator ? 'approved' : status;
 
   return (
@@ -59,10 +61,10 @@ export function ManageParticipantCard({
               </span>
             )}
           </p>
-          <p className="text-sm font-medium text-primary">{formatCurrency(amount, 'IDR')}</p>
+          <p className="text-sm font-medium text-primary">{formattedAmount}</p>
         </div>
         <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${STATUS_STYLES[displayStatus]}`}>
-          {STATUS_LABEL[displayStatus]}
+          {labels[displayStatus]}
         </span>
       </div>
 
