@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/web-server",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Backend primitives for Handharr Labs Next.js apps — DB adapters, server action utilities",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -14,11 +14,15 @@
   },
   "peerDependencies": {
     "drizzle-orm": ">=0.4",
-    "postgres": ">=3"
+    "postgres": ">=3",
+    "@supabase/ssr": ">=0.5",
+    "@supabase/supabase-js": ">=2"
   },
   "peerDependenciesMeta": {
     "drizzle-orm": { "optional": true },
-    "postgres": { "optional": true }
+    "postgres": { "optional": true },
+    "@supabase/ssr": { "optional": true },
+    "@supabase/supabase-js": { "optional": true }
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -29,6 +33,8 @@
     "directory": "packages/web-server"
   },
   "devDependencies": {
+    "@supabase/ssr": "0.9.0",
+    "@supabase/supabase-js": "2.98.0",
     "@types/node": "25.9.3",
     "drizzle-orm": "0.45.1",
     "postgres": "3.4.8"
