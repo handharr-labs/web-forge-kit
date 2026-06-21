@@ -67,6 +67,22 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Typography scale */
+.typo-page-title     { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.75rem; }
+.typo-section-title  { font-size: 1.125rem; font-weight: 600; line-height: 1.75rem; }
+.typo-card-title     { font-size: 1rem; font-weight: 600; line-height: 1.5rem; }
+.typo-hero           { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; line-height: 2rem; }
+.typo-body           { font-size: 0.875rem; line-height: 1.25rem; }
+.typo-label          { font-size: 0.875rem; font-weight: 500; line-height: 1.25rem; }
+.typo-section-label  { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1rem; }
+.typo-caption        { font-size: 0.75rem; line-height: 1rem; color: var(--muted-foreground); }
+.typo-badge          { font-size: 0.75rem; font-weight: 500; line-height: 1rem; }
+
+@media screen and (min-width: 768px) {
+  .typo-page-title   { font-size: 1.5rem; line-height: 2rem; }
+  .typo-hero         { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
 @media screen and (max-width: 1024px) {
   input, select, textarea {
     font-size: 16px !important;
