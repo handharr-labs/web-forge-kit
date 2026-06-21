@@ -1,0 +1,16 @@
+{
+  "name": "@handharr-labs/web-kit",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "playground"
+  ],
+  "scripts": {
+    "type-check": "npm run type-check --workspaces --if-present",
+    "playground:dev": "npm run dev -w playground"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
+  }
+}
