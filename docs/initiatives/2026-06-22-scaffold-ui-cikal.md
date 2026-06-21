@@ -1,7 +1,7 @@
 # Scaffold `ui-cikal` design system package
 
 **Date:** 2026-06-22
-**Status:** In Progress
+**Status:** Done
 
 ## Context
 
@@ -42,7 +42,7 @@ Tokens are scoped under `.brand-cikal` (not `:root`) so the package coexists wit
 
 **Light mode only** — dark mode deferred until post-prototype client feedback.
 
-## Package contents (`@handharr-labs/ui-cikal@0.1.0-beta`)
+## Package contents (`@handharr-labs/ui-cikal@0.2.0`)
 
 ### Tokens
 - Color palette (OKLCH, light mode, scoped under `.brand-cikal`)
@@ -97,7 +97,7 @@ Tokens are scoped under `.brand-cikal` (not `:root`) so the package coexists wit
 9. ✅ **Atoms (form)** — `Input`, `Textarea`, `Label`, `Select`, `Checkbox`, `Switch`, `RadioGroup` + `Radio`.
 10. ✅ **Molecules (form)** — `Field` wrapper.
 11. ✅ **Playground form showcase** — Atoms — Form Controls, Molecules — Field, Composed — Registration Form.
-12. **Publish** — `npm publish --tag beta` `0.1.0-beta` to GitHub Packages.
+12. ✅ **Publish** — all 5 packages published to GitHub Packages (`@handharr-labs/ui-cikal@0.2.0` and all others at their new minor versions).
 
 ## Verification
 
