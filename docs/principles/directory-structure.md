@@ -72,11 +72,12 @@ packages/web-client/src/
 
 ## @handharr-labs/web-server
 
-Backend-specific primitives — server middleware, DB adapters, server utilities.
+Backend-specific primitives — DB adapters, server action utilities.
 
 ```
 packages/web-server/src/
-  (to be defined as backend patterns emerge)
+  db/             DatabaseClient interface, createDrizzlePostgresClient (subpath: db/drizzle)
+  actions/        handleServerActionError, ServerActionResult
 ```
 
 ---
