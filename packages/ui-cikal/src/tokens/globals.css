@@ -1,0 +1,76 @@
+/* CIKAL brand tokens — scoped to .brand-cikal to avoid collision with other design systems */
+/*
+  Palette derived from cikal.co.id:
+  Primary   — amber/golden yellow  (nav bar, footer, CTA buttons)
+  Foreground — navy blue            (headings, body text)
+  Secondary  — purple/lavender      (section backgrounds, accents)
+  Accent     — orange               (decorative highlights, icon accents)
+*/
+
+.brand-cikal {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.22 0.07 258);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.07 258);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.07 258);
+  --primary: oklch(0.77 0.16 68);
+  --primary-foreground: oklch(0.22 0.07 258);
+  --secondary: oklch(0.65 0.08 295);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.63 0.17 44);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0.90 0 0);
+  --input: oklch(0.92 0 0);
+  --ring: oklch(0.77 0.16 68);
+  --chart-1: oklch(0.77 0.16 68);
+  --chart-2: oklch(0.22 0.07 258);
+  --chart-3: oklch(0.65 0.08 295);
+  --chart-4: oklch(0.63 0.17 44);
+  --chart-5: oklch(0.55 0.14 155);
+  --radius: 0.5rem;
+  --sidebar: oklch(0.97 0 0);
+  --sidebar-foreground: oklch(0.22 0.07 258);
+  --sidebar-primary: oklch(0.77 0.16 68);
+  --sidebar-primary-foreground: oklch(0.22 0.07 258);
+  --sidebar-accent: oklch(0.65 0.08 295);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.90 0 0);
+  --sidebar-ring: oklch(0.77 0.16 68);
+}
+
+/* Typography scale */
+.brand-cikal .typo-page-title    { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.75rem; }
+.brand-cikal .typo-section-title { font-size: 1.125rem; font-weight: 600; line-height: 1.75rem; }
+.brand-cikal .typo-card-title    { font-size: 1rem; font-weight: 600; line-height: 1.5rem; }
+.brand-cikal .typo-hero          { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; line-height: 2rem; }
+.brand-cikal .typo-body          { font-size: 0.875rem; line-height: 1.25rem; }
+.brand-cikal .typo-label         { font-size: 0.875rem; font-weight: 500; line-height: 1.25rem; }
+.brand-cikal .typo-section-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1rem; }
+.brand-cikal .typo-caption       { font-size: 0.75rem; line-height: 1rem; color: var(--muted-foreground); }
+.brand-cikal .typo-badge         { font-size: 0.75rem; font-weight: 500; line-height: 1rem; }
+
+@media screen and (min-width: 768px) {
+  .brand-cikal .typo-page-title  { font-size: 1.5rem; line-height: 2rem; }
+  .brand-cikal .typo-hero        { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
+/* iOS input zoom fix */
+@media screen and (max-width: 1024px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Base UI anchor-positioning utility classes */
+.w-\(--anchor-width\)          { width: var(--anchor-width); }
+.max-h-\(--available-height\)  { max-height: var(--available-height); }
+.origin-\(--transform-origin\) { transform-origin: var(--transform-origin); }
+
+[data-slot="select-content"] {
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+}
