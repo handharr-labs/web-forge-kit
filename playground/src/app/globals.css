@@ -2,3 +2,6 @@
 @source "../../";
 @source "../../../packages/ui-cikal/src";
 @source "../../../packages/ui-xpnsio/src";
+@source "../../../packages/ui-base-bronze/src";
+@source "../../../packages/ui-base-silver/src";
+@source "../../../packages/ui-base-gold/src";
