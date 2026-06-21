@@ -1,11 +1,11 @@
-# Scaffold `web-kit` shared-packages repo
+# Scaffold `web-forge-kit` shared-packages repo
 
 **Date:** 2026-06-21
 **Status:** In Progress
 
 ## Context
 
-This repo is currently `nextjs-clean-arch`: a Next.js host app in `src/` (with an empty `src/features/`) plus an embedded `packages/core` (`@app/core`) that holds every shared primitive. The goal is to turn it into **`handharr-labs/web-kit`** — a standalone repo of shared packages that downstream app repos install from GitHub Packages. The principle docs in `docs/principles/` already define the target package map; this plan makes the code match the docs.
+This repo is currently `nextjs-clean-arch`: a Next.js host app in `src/` (with an empty `src/features/`) plus an embedded `packages/core` (`@app/core`) that holds every shared primitive. The goal is to turn it into **`handharr-labs/web-forge-kit`** — a standalone repo of shared packages that downstream app repos install from GitHub Packages. The principle docs in `docs/principles/` already define the target package map; this plan makes the code match the docs.
 
 **Decisions locked in:**
 - Host app in `src/` → moved into a non-published **`playground/`** workspace (live test harness for the packages).
@@ -17,7 +17,7 @@ This repo is currently `nextjs-clean-arch`: a Next.js host app in `src/` (with a
 ## Target structure
 
 ```
-web-kit/
+web-forge-kit/
   package.json                      # private root; workspaces: packages/*, playground
   tsconfig.base.json                # shared compiler options
   .npmrc                            # @handharr-labs:registry = GitHub Packages

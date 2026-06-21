@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Handharr Labs · Web Kit — shared packages for Next.js apps
+Handharr Labs · Web Forge Kit — shared packages for Next.js apps
 
 ## Architecture
 

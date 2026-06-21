@@ -6,10 +6,10 @@ What goes where — package layout, feature structure, and dependency graph.
 
 ## Package Map
 
-This repo (`web-kit`) contains shared packages. Downstream apps import what they need.
+This repo (`web-forge-kit`) contains shared packages. Downstream apps import what they need.
 
 ```
-@handharr-labs/web-kit (this repo)
+@handharr-labs/web-forge-kit (this repo)
   packages/
     core/                     # Platform-agnostic architecture primitives
     web-client/               # Frontend: ApiClient, FetchPolicy, CacheClient, file utils
