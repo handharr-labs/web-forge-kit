@@ -1,0 +1,66 @@
+/* Silver tier tokens — scoped to .tier-silver */
+/* Neutral palette: professional blue primary, polished defaults */
+
+.tier-silver {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0.01 265);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.01 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.01 265);
+  --primary: oklch(0.45 0.14 265);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.94 0 0);
+  --secondary-foreground: oklch(0.15 0.01 265);
+  --muted: oklch(0.96 0 0);
+  --muted-foreground: oklch(0.50 0 0);
+  --accent: oklch(0.94 0 0);
+  --accent-foreground: oklch(0.15 0.01 265);
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0.88 0 0);
+  --input: oklch(0.90 0 0);
+  --ring: oklch(0.45 0.14 265);
+  --radius: 0.5rem;
+  --chart-1: oklch(0.45 0.14 265);
+  --chart-2: oklch(0.58 0.14 150);
+  --chart-3: oklch(0.65 0.12 40);
+  --chart-4: oklch(0.55 0.15 295);
+  --chart-5: oklch(0.60 0.16 15);
+  --sidebar: oklch(0.97 0 0);
+  --sidebar-foreground: oklch(0.15 0.01 265);
+  --sidebar-primary: oklch(0.45 0.14 265);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.94 0 0);
+  --sidebar-accent-foreground: oklch(0.15 0.01 265);
+  --sidebar-border: oklch(0.88 0 0);
+  --sidebar-ring: oklch(0.45 0.14 265);
+}
+
+/* Typography scale */
+.tier-silver .typo-page-title    { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.75rem; }
+.tier-silver .typo-section-title { font-size: 1.125rem; font-weight: 600; line-height: 1.75rem; }
+.tier-silver .typo-card-title    { font-size: 1rem; font-weight: 600; line-height: 1.5rem; }
+.tier-silver .typo-hero          { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; line-height: 2rem; }
+.tier-silver .typo-body          { font-size: 0.875rem; line-height: 1.25rem; }
+.tier-silver .typo-label         { font-size: 0.875rem; font-weight: 500; line-height: 1.25rem; }
+.tier-silver .typo-section-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1rem; }
+.tier-silver .typo-caption       { font-size: 0.75rem; line-height: 1rem; color: var(--muted-foreground); }
+.tier-silver .typo-badge         { font-size: 0.75rem; font-weight: 500; line-height: 1rem; }
+
+@media screen and (min-width: 768px) {
+  .tier-silver .typo-page-title { font-size: 1.5rem; line-height: 2rem; }
+  .tier-silver .typo-hero       { font-size: 1.875rem; line-height: 2.25rem; }
+}
+
+@media screen and (max-width: 1024px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
+.w-\(--anchor-width\)          { width: var(--anchor-width); }
+.max-h-\(--available-height\)  { max-height: var(--available-height); }
+.origin-\(--transform-origin\) { transform-origin: var(--transform-origin); }
+
+[data-slot="select-content"] {
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+}
