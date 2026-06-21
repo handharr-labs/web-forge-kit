@@ -5,6 +5,8 @@
     "paths": {
       "@handharr-labs/core": ["../packages/core/src/index.ts"],
       "@handharr-labs/core/*": ["../packages/core/src/*"],
+      "@handharr-labs/ui-xpnsio": ["../packages/ui-xpnsio/src/index.ts"],
+      "@handharr-labs/ui-xpnsio/*": ["../packages/ui-xpnsio/src/*"],
       "@handharr-labs/web-client": ["../packages/web-client/src/index.ts"],
       "@handharr-labs/web-client/*": ["../packages/web-client/src/*"],
       "@/*": ["./src/*"]
