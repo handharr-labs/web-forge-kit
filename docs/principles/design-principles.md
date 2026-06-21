@@ -14,6 +14,8 @@ The Data layer knows Domain models (via Mapper). The Presentation layer knows Do
 
 **Multi-app variant — Shared packages.** Networking and storage primitives that every app needs live in shared packages (`@handharr-labs/core`, `@handharr-labs/web-client`). These hold no domain knowledge and import no feature-specific types. Each feature's Data layer imports them; Domain never does.
 
+**Design system tiers.** UI components live in tier packages (`ui-base-bronze`, `ui-base-silver`, `ui-base-gold`). All tiers expose the same component API — same names, same props. The tier determines visual sophistication and interaction quality, not component scope. Client brand packages (`ui-{name}`) extend exactly one tier with brand tokens and domain organisms. Pre-deal showcase packages (`ui-{name}-showcase`) depend on all three tiers for playground demos and are never imported by production apps.
+
 ---
 
 ## Why These Choices
