@@ -48,5 +48,13 @@ export {
   CSV_CONSTRAINTS,
 } from "./file/FileValidator";
 
+// DI
+export type { DIProviderProps } from "./di/DIProvider";
+export { createDIProvider } from "./di/DIProvider";
+
+// Query
+export type { QueryProviderConfig } from "./query/QueryProvider";
+export { QueryProvider } from "./query/QueryProvider";
+
 // Hooks
 export { usePullToRefresh } from "./use-pull-to-refresh";
