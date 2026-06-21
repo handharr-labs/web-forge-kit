@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@handharr-labs/core": ["../packages/core/src/index.ts"],
+      "@handharr-labs/core/*": ["../packages/core/src/*"],
+      "@handharr-labs/web-client": ["../packages/web-client/src/index.ts"],
+      "@handharr-labs/web-client/*": ["../packages/web-client/src/*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

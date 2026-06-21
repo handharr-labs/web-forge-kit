@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {},
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/web-client" },
+    { "path": "playground" }
+  ],
+  "include": [],
+  "exclude": ["node_modules"]
+}
