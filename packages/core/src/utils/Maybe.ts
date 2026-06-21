@@ -62,6 +62,14 @@ export function orThrow<T>(value: Maybe<T>, message: string): T {
   return value;
 }
 
+/** Return the first non-null/undefined value, or null if all are nil. */
+export function firstPresent<T>(...values: Maybe<T>[]): T | null {
+  for (const v of values) {
+    if (isPresent(v)) return v;
+  }
+  return null;
+}
+
 /** Filter null/undefined from an array. Mirrors compactMap in Swift. */
 export function compact<T>(array: Maybe<T>[]): T[] {
   return array.filter(isPresent);

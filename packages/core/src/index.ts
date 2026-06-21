@@ -31,6 +31,7 @@ export {
   ForbiddenError,
   UnexpectedError,
 } from "./primitives/DomainError";
+export { humanizeError } from "./primitives/error-messages";
 
 // Logger
 export type { Logger, LogLevel, LogContext } from "./logger/Logger";
@@ -63,6 +64,7 @@ export {
   orZero,
   orFalse,
   orThrow,
+  firstPresent,
   compact,
   compactMap,
 } from "./utils/Maybe";
@@ -91,6 +93,7 @@ export {
 
 // Formatting
 export { getLocale, formatCurrency, formatCompactCurrency } from "./utils/format-currency";
+export { getOrdinalSuffix } from "./utils/format-ordinal";
 export { formatRelativeDate, formatFullDate } from "./utils/format-relative-date";
 export { formatWeekRange } from "./utils/format-week-range";
 
