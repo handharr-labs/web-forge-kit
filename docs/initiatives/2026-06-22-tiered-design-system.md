@@ -1,7 +1,7 @@
 # Tiered Design System: Bronze, Silver, Gold
 
 **Date:** 2026-06-22
-**Status:** Draft
+**Status:** In Progress — steps 1–4, 8–9 done; steps 5–7 deferred to follow-up
 
 ## Context
 
@@ -161,15 +161,15 @@ A client package (`ui-{name}`) is always priced at the tier it's built on top of
 
 ## Steps
 
-1. [ ] **Finalize component design per tier** — document the exact visual/interaction spec for each component at each tier.
-2. [ ] **Scaffold `ui-base-bronze`** — full component set at Bronze design language, publish `0.1.0-beta`.
-3. [ ] **Scaffold `ui-base-silver`** — full component set at Silver design language, publish `0.1.0-beta`.
-4. [ ] **Scaffold `ui-base-gold`** — full component set at Gold design language, publish `0.1.0-beta`.
-5. [ ] **Rename `ui-cikal` → `ui-cikal-showcase`** — update package name, keep brand tokens and organisms as-is.
-6. [ ] **Playground tier switcher** — add `TierProvider` context + switcher UI at `/ds/cikal`; components render from the active tier package under `.brand-cikal`.
-7. [ ] **Annotate tier-invariant organisms** — add "Same across all tiers" label in the playground for components without a per-tier implementation.
-8. [ ] **Playground tier catalogs** — add `/ds/bronze`, `/ds/silver`, `/ds/gold` pages.
-9. [ ] **Update CLAUDE.md packages table** — add Bronze, Silver, Gold, and `ui-cikal-showcase` rows.
+1. [x] **Finalize component design per tier** — documented inline via tier differentiation table (Bronze: inline field/no motion; Silver: stacked/polished; Gold: floating label/animated/dark mode).
+2. [x] **Scaffold `ui-base-bronze`** — full component set at Bronze design language, version `0.1.0-beta`. Packages published to GitHub Packages registry.
+3. [x] **Scaffold `ui-base-silver`** — full component set at Silver design language, version `0.1.0-beta`.
+4. [x] **Scaffold `ui-base-gold`** — full component set at Gold design language, version `0.1.0-beta`. Includes Skeleton atom, floating label Field, gradient Button, dark mode tokens, `EventGrid` loading state.
+5. [ ] **Rename `ui-cikal` → `ui-cikal-showcase`** — deferred. Requires adding TierProvider switcher. _(Follow-up)_
+6. [ ] **Playground tier switcher** — add `TierProvider` context + switcher UI at `/ds/cikal`; components render from the active tier package under `.brand-cikal`. _(Follow-up)_
+7. [ ] **Annotate tier-invariant organisms** — add "Same across all tiers" label in the playground for components without a per-tier implementation. _(Follow-up)_
+8. [x] **Playground tier catalogs** — added `/ds/bronze`, `/ds/silver`, `/ds/gold` pages; each shows Color Tokens, Typography, all Atoms, all Molecules (with tier-specific Field layout), all Organisms, and a Composed Form.
+9. [x] **Update CLAUDE.md packages table** — Bronze, Silver, Gold rows already present from earlier doc update.
 
 ## Out of Scope
 

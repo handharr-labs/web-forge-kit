@@ -1,0 +1,363 @@
+"use client"
+
+import * as React from "react"
+import Link from "next/link"
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
+  Checkbox,
+  EventCard,
+  EventGrid,
+  Field,
+  Footer,
+  HeroSection,
+  Input,
+  Label,
+  NavBar,
+  Radio,
+  RadioGroup,
+  SearchBar,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Switch,
+  Textarea,
+} from "@handharr-labs/ui-base-bronze"
+import type { EventCardProps } from "@handharr-labs/ui-base-bronze"
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="flex flex-col gap-4">
+      <h2 className="typo-section-label text-[var(--muted-foreground)]">{title}</h2>
+      {children}
+    </section>
+  )
+}
+
+function PreviewCard({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="rounded-[var(--radius)] border border-[var(--border)] bg-[var(--card)] p-4">
+        {children}
+      </div>
+      <p className="typo-caption">{label}</p>
+    </div>
+  )
+}
+
+const COLOR_TOKENS = [
+  { name: "--background", label: "Background" },
+  { name: "--foreground", label: "Foreground" },
+  { name: "--primary", label: "Primary" },
+  { name: "--primary-foreground", label: "Primary FG" },
+  { name: "--secondary", label: "Secondary" },
+  { name: "--muted", label: "Muted" },
+  { name: "--muted-foreground", label: "Muted FG" },
+  { name: "--border", label: "Border" },
+  { name: "--destructive", label: "Destructive" },
+]
+
+const TYPO_CLASSES = [
+  { cls: "typo-hero", label: "Hero — 1.5rem / 700" },
+  { cls: "typo-page-title", label: "Page Title — 1.25rem / 700" },
+  { cls: "typo-section-title", label: "Section Title — 1.125rem / 600" },
+  { cls: "typo-card-title", label: "Card Title — 1rem / 600" },
+  { cls: "typo-body", label: "Body — 0.875rem / 400" },
+  { cls: "typo-label", label: "Label — 0.875rem / 500" },
+  { cls: "typo-section-label", label: "Section Label — 0.75rem / 600 CAPS" },
+  { cls: "typo-caption", label: "Caption — 0.75rem / 400" },
+  { cls: "typo-badge", label: "Badge — 0.75rem / 500" },
+]
+
+const MOCK_ITEMS: EventCardProps[] = [
+  { title: "Annual Report", description: "Finance department summary", meta: "Due Jan 15", badge: "Info", badgeVariant: "info", onAction: () => {}, actionLabel: "View" },
+  { title: "Team Offsite", description: "Q2 planning retreat", meta: "Mar 20–22", badge: "Upcoming", badgeVariant: "success", onAction: () => {}, actionLabel: "RSVP" },
+  { title: "Security Audit", description: "Infrastructure review", meta: "Completed", badge: "Done", badgeVariant: "muted" },
+]
+
+const NAV_LINKS = [
+  { label: "Home", href: "#" },
+  { label: "About", href: "#" },
+  { label: "Contact", href: "#" },
+]
+
+const FOOTER_LINKS = [
+  { label: "Privacy", href: "#" },
+  { label: "Terms", href: "#" },
+  { label: "Support", href: "#" },
+]
+
+export default function BronzePage() {
+  const [search, setSearch] = React.useState("")
+  const [checked, setChecked] = React.useState(false)
+  const [switched, setSwitched] = React.useState(false)
+  const [radio, setRadio] = React.useState("a")
+
+  return (
+    <div className="tier-bronze bg-[var(--background)] text-[var(--foreground)]">
+      <div className="mx-auto max-w-5xl px-4 py-8">
+        <div className="mb-8 flex items-center gap-3">
+          <Link href="/" className="typo-caption text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+            ← Catalog
+          </Link>
+          <span className="typo-caption text-[var(--muted-foreground)]">/</span>
+          <span className="typo-caption">ui-base-bronze</span>
+        </div>
+
+        <div className="mb-10">
+          <h1 className="typo-page-title">Bronze Tier — Functional</h1>
+          <p className="typo-body text-[var(--muted-foreground)] mt-1">
+            Minimal, no animation. Inline field layout. For MVPs and internal tools.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-12">
+
+          {/* Tokens — Colors */}
+          <Section title="Tokens — Colors">
+            <div className="flex flex-wrap gap-3">
+              {COLOR_TOKENS.map((t) => (
+                <div key={t.name} className="flex flex-col gap-1">
+                  <div
+                    className="h-10 w-20 rounded-[var(--radius)] border border-[var(--border)]"
+                    style={{ background: `var(${t.name})` }}
+                  />
+                  <p className="typo-caption">{t.label}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          {/* Tokens — Typography */}
+          <Section title="Tokens — Typography">
+            <div className="flex flex-col gap-3 p-4 border border-[var(--border)] rounded-[var(--radius)]">
+              {TYPO_CLASSES.map((t) => (
+                <div key={t.cls} className="flex items-baseline gap-3">
+                  <span className={t.cls}>The quick brown fox</span>
+                  <span className="typo-caption text-[var(--muted-foreground)]">{t.label}</span>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          {/* Atoms */}
+          <Section title="Atoms — Button">
+            <div className="flex flex-wrap gap-3">
+              <PreviewCard label="default"><Button>Default</Button></PreviewCard>
+              <PreviewCard label="outline"><Button variant="outline">Outline</Button></PreviewCard>
+              <PreviewCard label="secondary"><Button variant="secondary">Secondary</Button></PreviewCard>
+              <PreviewCard label="ghost"><Button variant="ghost">Ghost</Button></PreviewCard>
+              <PreviewCard label="danger"><Button variant="danger">Danger</Button></PreviewCard>
+              <PreviewCard label="link"><Button variant="link">Link</Button></PreviewCard>
+              <PreviewCard label="sm"><Button size="sm">Small</Button></PreviewCard>
+              <PreviewCard label="lg"><Button size="lg">Large</Button></PreviewCard>
+              <PreviewCard label="disabled"><Button disabled>Disabled</Button></PreviewCard>
+            </div>
+          </Section>
+
+          <Section title="Atoms — Badge">
+            <div className="flex flex-wrap gap-3">
+              {(["neutral", "info", "success", "muted", "danger"] as const).map((v) => (
+                <PreviewCard key={v} label={v}><Badge variant={v}>{v}</Badge></PreviewCard>
+              ))}
+            </div>
+          </Section>
+
+          <Section title="Atoms — Avatar">
+            <div className="flex flex-wrap gap-3">
+              <PreviewCard label="initials"><Avatar name="John Doe" /></PreviewCard>
+              <PreviewCard label="sm"><Avatar name="AB" size="sm" /></PreviewCard>
+              <PreviewCard label="lg"><Avatar name="CD" size="lg" /></PreviewCard>
+            </div>
+          </Section>
+
+          <Section title="Atoms — Card">
+            <PreviewCard label="card composition">
+              <Card className="max-w-xs">
+                <CardHeader>
+                  <CardTitle>Card Title</CardTitle>
+                  <CardDescription>Supporting description text</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="typo-body">Card body content goes here.</p>
+                </CardContent>
+                <CardFooter>
+                  <Button size="sm" className="ml-auto">Action</Button>
+                </CardFooter>
+              </Card>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Atoms — Form Controls">
+            <div className="flex flex-wrap gap-6">
+              <PreviewCard label="Input">
+                <Input placeholder="Type something..." className="max-w-xs" />
+              </PreviewCard>
+              <PreviewCard label="Textarea">
+                <Textarea placeholder="Multi-line input..." className="max-w-xs" />
+              </PreviewCard>
+              <PreviewCard label="Checkbox">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="cb-bronze"
+                    checked={checked}
+                    onCheckedChange={(v) => setChecked(Boolean(v))}
+                  />
+                  <Label htmlFor="cb-bronze">Accept terms</Label>
+                </div>
+              </PreviewCard>
+              <PreviewCard label="Switch">
+                <div className="flex items-center gap-2">
+                  <Switch
+                    id="sw-bronze"
+                    checked={switched}
+                    onCheckedChange={setSwitched}
+                  />
+                  <Label htmlFor="sw-bronze">Notifications</Label>
+                </div>
+              </PreviewCard>
+              <PreviewCard label="RadioGroup">
+                <RadioGroup value={radio} onValueChange={(v) => setRadio(v as string)} className="gap-2">
+                  {["Option A", "Option B", "Option C"].map((opt, i) => (
+                    <div key={opt} className="flex items-center gap-2">
+                      <Radio id={`r-b-${i}`} value={["a","b","c"][i]} />
+                      <Label htmlFor={`r-b-${i}`}>{opt}</Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              </PreviewCard>
+              <PreviewCard label="Select">
+                <Select>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="Choose..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">Option 1</SelectItem>
+                    <SelectItem value="2">Option 2</SelectItem>
+                    <SelectItem value="3">Option 3</SelectItem>
+                  </SelectContent>
+                </Select>
+              </PreviewCard>
+            </div>
+          </Section>
+
+          {/* Molecules */}
+          <Section title="Molecules — SearchBar">
+            <PreviewCard label="search bar">
+              <SearchBar value={search} onChange={setSearch} placeholder="Search items..." className="max-w-sm" />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — Field (Inline Layout)">
+            <div className="max-w-md p-4 border border-[var(--border)] rounded-[var(--radius)] flex flex-col gap-4">
+              <Field label="Name" htmlFor="f-name-b">
+                <Input id="f-name-b" placeholder="Enter your name" />
+              </Field>
+              <Field label="Email" htmlFor="f-email-b" description="We'll never share your email">
+                <Input id="f-email-b" type="email" placeholder="you@example.com" />
+              </Field>
+              <Field label="Notes" htmlFor="f-notes-b" error="This field is required">
+                <Textarea id="f-notes-b" placeholder="Additional notes..." />
+              </Field>
+            </div>
+          </Section>
+
+          <Section title="Molecules — EventCard">
+            <div className="flex flex-wrap gap-4">
+              {MOCK_ITEMS.map((item) => (
+                <div key={item.title} className="w-64">
+                  <EventCard {...item} />
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          {/* Organisms */}
+          <Section title="Organisms — NavBar">
+            <PreviewCard label="guest">
+              <NavBar
+                logo={<span className="typo-card-title font-bold">Brand</span>}
+                links={NAV_LINKS}
+                onLogin={() => {}}
+              />
+            </PreviewCard>
+            <PreviewCard label="logged in">
+              <NavBar
+                logo={<span className="typo-card-title font-bold">Brand</span>}
+                links={NAV_LINKS}
+                user={{ name: "Jane Doe", size: "sm" }}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Organisms — HeroSection">
+            <PreviewCard label="hero">
+              <HeroSection
+                headline="Build faster with Bronze"
+                subline="Functional components with zero animation overhead."
+                primaryCta={{ label: "Get Started" }}
+                secondaryCta={{ label: "Learn More" }}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Organisms — EventGrid">
+            <PreviewCard label="with items">
+              <EventGrid items={MOCK_ITEMS} />
+            </PreviewCard>
+            <PreviewCard label="empty state">
+              <EventGrid items={[]} emptyMessage="No items found." />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Organisms — Footer">
+            <PreviewCard label="footer">
+              <Footer
+                logo={<span className="typo-card-title font-bold">Brand</span>}
+                links={FOOTER_LINKS}
+                copyright="© 2026 Handharr Labs"
+              />
+            </PreviewCard>
+          </Section>
+
+          {/* Composed */}
+          <Section title="Composed — Registration Form">
+            <div className="max-w-md border border-[var(--border)] rounded-[var(--radius)] p-6">
+              <h3 className="typo-card-title mb-4">Create Account</h3>
+              <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
+                <Field label="Full Name" htmlFor="cf-name-b">
+                  <Input id="cf-name-b" placeholder="Jane Doe" />
+                </Field>
+                <Field label="Email" htmlFor="cf-email-b">
+                  <Input id="cf-email-b" type="email" placeholder="jane@example.com" />
+                </Field>
+                <Field label="Role" htmlFor="cf-role-b">
+                  <Select>
+                    <SelectTrigger id="cf-role-b" className="w-full">
+                      <SelectValue placeholder="Select role..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="editor">Editor</SelectItem>
+                      <SelectItem value="viewer">Viewer</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </Field>
+                <div className="flex items-center gap-2 pt-1">
+                  <Checkbox id="cf-tos-b" />
+                  <Label htmlFor="cf-tos-b">I agree to the Terms of Service</Label>
+                </div>
+                <Button type="submit" className="mt-2">Create Account</Button>
+              </form>
+            </div>
+          </Section>
+
+        </div>
+      </div>
+    </div>
+  )
+}

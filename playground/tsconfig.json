@@ -5,6 +5,12 @@
     "paths": {
       "@handharr-labs/core": ["../packages/core/src/index.ts"],
       "@handharr-labs/core/*": ["../packages/core/src/*"],
+      "@handharr-labs/ui-base-bronze": ["../packages/ui-base-bronze/src/index.ts"],
+      "@handharr-labs/ui-base-bronze/*": ["../packages/ui-base-bronze/src/*"],
+      "@handharr-labs/ui-base-silver": ["../packages/ui-base-silver/src/index.ts"],
+      "@handharr-labs/ui-base-silver/*": ["../packages/ui-base-silver/src/*"],
+      "@handharr-labs/ui-base-gold": ["../packages/ui-base-gold/src/index.ts"],
+      "@handharr-labs/ui-base-gold/*": ["../packages/ui-base-gold/src/*"],
       "@handharr-labs/ui-cikal": ["../packages/ui-cikal/src/index.ts"],
       "@handharr-labs/ui-cikal/*": ["../packages/ui-cikal/src/*"],
       "@handharr-labs/ui-xpnsio": ["../packages/ui-xpnsio/src/index.ts"],
