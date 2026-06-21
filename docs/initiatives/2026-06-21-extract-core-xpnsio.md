@@ -78,9 +78,10 @@ These exist in both codebases. xpnsio's copies get deleted; features switch to `
 
 | xpnsio file | Why it stays |
 |---|---|
-| `lib/supabase-browser.ts` | 3-line `createBrowserClient(url, key)` call. Extracting it forces `web-client` to depend on `@supabase/ssr` — a specific auth vendor. Not worth the coupling. Apps call `createBrowserClient` directly |
-| `lib/auth.ts` (`createSupabaseServerClient`) | Same reasoning — Supabase-specific. See [Auth design](#auth-client-design) for what we extract instead |
 | `lib/safe-action.ts` | `next-safe-action` is a specific library choice. See [Safe-action design](#safe-action-design) for what we extract instead |
+| `middleware.ts` | Tightly coupled to Next.js request/response shape — cannot be made generic |
+
+> `lib/auth.ts` and `lib/supabase-browser.ts` were initially rejected (Phase 1–4) but extracted in Phase 5. See [Auth client design](#auth-client-design).
 
 ---
 
@@ -608,9 +609,9 @@ shared/
 lib/
   schema.ts                 ← Drizzle tables (unchanged)
   db.ts                     ← createDrizzlePostgresClient(...) one-liner
-  auth.ts                   ← Supabase client factories (unchanged — not extracted)
+  auth.ts                   ← delegates to web-server/auth/supabase (Phase 5)
   safe-action.ts            ← next-safe-action + handleServerActionError
-  supabase-browser.ts       ← unchanged — not extracted
+  supabase-browser.ts       ← delegates to web-client/auth/supabase (Phase 5)
 ```
 
 ### forgekit package surfaces
@@ -622,17 +623,21 @@ lib/
   + firstPresent(...values)
   + humanizeError(error, overrides?)
 
-@handharr-labs/web-client (additions only)
+@handharr-labs/web-client (v0.4.0)
   + createDIProvider<T>(factory)  →  { DIProvider, useDI }
   + QueryProvider                 →  component with optional config
+  + createSupabaseBrowserClient   →  browser client factory (separate entrypoint)
 
-@handharr-labs/web-server (new package)
+@handharr-labs/web-server (new package, v0.2.0)
   + DatabaseClient<TDb>           →  interface
   + createDrizzlePostgresClient   →  factory (separate entrypoint)
   + DbErrorMapper                 →  interface
   + DefaultDbErrorMapper          →  base implementation
   + handleServerActionError       →  error → string utility
   + ServerActionResult<T>         →  type
+  + createSupabaseServerClient    →  server client factory (separate entrypoint)
+  + createSupabaseAdminClient     →  admin client factory (separate entrypoint)
+  + SupabaseCookieHandlers        →  type
 ```
 
 ---
@@ -641,7 +646,7 @@ lib/
 
 | Decision | Chosen | Rejected | Why |
 |---|---|---|---|
-| Supabase client factories | Stay in app | Extract to `web-server` | 5 lines saved, but forces auth vendor dependency on the package. Not generic |
+| Supabase client factories | Extracted (Phase 5) | Stay in app | Proactively standardised — cookie handlers accepted as a param to stay decoupled from Next.js. `@supabase/*` added as optional peer deps |
 | `next-safe-action` wrappers | Stay in app | Extract to `web-server` | Same — library-specific. Extract the error handler pattern instead |
 | DI provider | Factory returning `{ DIProvider, useDI }` | Single global context | Multiple apps need different container types; factory captures the generic |
 | Drizzle client | Separate entrypoint (`web-server/db/drizzle`) | Single `web-server` export | Apps not using Drizzle shouldn't import it. Keeps peer deps optional |
