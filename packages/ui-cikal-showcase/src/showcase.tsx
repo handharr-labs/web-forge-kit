@@ -207,7 +207,7 @@ export function CikalShowcase() {
   })
 
   return (
-    <div className="brand-cikal bg-[var(--background)] text-[var(--foreground)]">
+    <div className="brand-cikal bg-white text-[var(--foreground)]">
       <main className="min-h-screen p-10 max-w-4xl mx-auto">
 
         {/* Header */}
