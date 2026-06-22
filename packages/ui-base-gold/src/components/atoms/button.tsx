@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:   "bg-gradient-to-br from-[oklch(0.50_0.22_265)] to-[oklch(0.38_0.25_285)] text-white shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:brightness-110",
+        default:   "bg-gradient-to-br from-[var(--primary-gradient-from)] to-[var(--primary-gradient-to)] text-[var(--primary-foreground)] shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] hover:brightness-110",
         outline:   "border-[var(--border)] bg-[var(--background)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]",
         secondary: "bg-[var(--secondary)] text-[var(--secondary-foreground)] hover:opacity-80",
         ghost:     "hover:bg-[var(--muted)] hover:text-[var(--foreground)]",
