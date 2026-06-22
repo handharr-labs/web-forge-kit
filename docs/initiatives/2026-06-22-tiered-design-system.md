@@ -1,7 +1,7 @@
 # Tiered Design System: Bronze, Silver, Gold
 
 **Date:** 2026-06-22
-**Status:** Complete — `ui-base-gold@0.2.1` published 2026-06-22
+**Status:** Active — `v0.3.0` published 2026-06-22
 
 ## Context
 
@@ -205,6 +205,89 @@ Replaced the JS event-listener approach (`onChangeCapture` / `stateHasValue`) wi
 - Published to `https://npm.pkg.github.com`
 - Includes all post-launch refinements: floating label for Select, CSS peer-driven floating label for Input/Textarea
 - `ui-cikal-showcase@0.2.1` tagged (private, not published)
+
+---
+
+## v0.3.0 Refinements (2026-06-22)
+
+### Gold button gradient — brand color fix
+
+The Gold button `default` variant had hardcoded blue oklch values (`from-[oklch(0.50_0.22_265)] to-[oklch(0.38_0.25_285)]`) that ignored brand `--primary` overrides entirely. Also used `text-white`, which is wrong for light primaries like cikal's amber.
+
+Fix: introduced `--primary-gradient-from` and `--primary-gradient-to` CSS variables.
+
+- `.tier-gold` scope defines the default blue gradient stops (preserving existing appearance on standalone tier pages)
+- `.brand-cikal` overrides them with amber: `oklch(0.82 0.16 68)` → `oklch(0.68 0.18 64)`
+- Button now uses `from-[var(--primary-gradient-from)] to-[var(--primary-gradient-to)] text-[var(--primary-foreground)]`
+
+Any future brand layer sets its own gradient stops in `.brand-{name}` — no component changes needed.
+
+---
+
+### Spinner atom — tier-differentiated loading indicator
+
+Added a `Spinner` component to all three tiers. Each tier's spinner is visually distinct, reinforcing the tier hierarchy:
+
+| Tier | Implementation | Visual character |
+|---|---|---|
+| Bronze | CSS `border-t-[var(--primary)]` on a `div`, `animate-spin` | Faint ring + one colored edge — raw, minimal, zero-dependency |
+| Silver | SVG: static background track (`--border`) + 75% colored arc, `strokeLinecap="round"` | Visible gray track + smooth colored arc — polished |
+| Gold | SVG: single arc animated by two simultaneous CSS keyframes (`gold-spinner-rotate` + `gold-spinner-arc`) | Arc length breathes (short → long → short) while the ring rotates — Material Design indeterminate style |
+
+**API** (identical across all three tiers):
+```tsx
+<Spinner size="sm" | "default" | "lg" page={false} />
+```
+`page={true}` renders a `fixed inset-0` overlay — a full-page loading state. Inline (default) centers in the nearest flow container.
+
+**Philosophy per tier:**
+- Bronze + Silver: `Spinner` is the *primary* loading pattern — shown in `EventGrid` when `loading={true}` (no skeleton). A page-level spinner fits the "functional, no animation overhead" and "polished but direct" philosophy.
+- Gold: `Skeleton` remains the per-component loading pattern (already existed). `Spinner` is available for page/navigation-level loading contexts where skeleton layout would be excessive.
+
+**EventGrid `loading` prop** extended to Bronze and Silver. When `loading={true}`, they show a centered `Spinner size="lg"` instead of content — consistent with the tier philosophy.
+
+---
+
+### NavBar + Footer — `brandName` and `showBrandName` props
+
+Both organisms already accepted `logo?: ReactNode`, but callers were embedding text directly inside `logo` (e.g. `logo={<span>Brand</span>}`). This mixed layout responsibility into the call site and left no structured way to show text alongside an actual logo image.
+
+New props on `NavBar` and `Footer` in all three tiers:
+
+| Prop | Type | Behavior |
+|---|---|---|
+| `brandName` | `string` | Text brand identifier rendered next to the logo |
+| `showBrandName` | `boolean` | Controls text visibility. Default: `!logo` — text auto-hides when a logo image is provided |
+
+Combinations:
+
+- `logo` only → logo shown, text hidden (default)
+- `brandName` only → text shown, no logo
+- `logo` + `brandName` + `showBrandName` unset → logo shown, text hidden
+- `logo` + `brandName` + `showBrandName={true}` → logo and text shown side by side
+
+The component handles layout (`flex items-center gap-2`) so the call site stays clean:
+```tsx
+<NavBar logo={<LogoMark />} brandName="CIKAL" showBrandName links={...} />
+```
+
+---
+
+### Playground + showcase updates (v0.3.0)
+
+- **Tier catalog pages** (`/ds/bronze`, `/ds/silver`, `/ds/gold`): added "Atoms — Spinner" section with sm/default/lg previews; added "loading state" preview to all three EventGrid sections; NavBar and Footer sections now show all three combinations (logo only / logo+name / name only) using a shared `LogoMark` SVG.
+- **`ui-cikal-showcase`**: added "Atoms — Spinner" section with tier-contextual description; NavBar shows logo-only and logo+name variants using `CikalLogoMark`; Footer likewise; EventGrid loading state now visible for all tiers.
+
+### Release — `v0.3.0` (2026-06-22)
+
+All four changed packages bumped to `0.3.0` (minor). Published to `https://npm.pkg.github.com`.
+
+| Package | Version |
+|---|---|
+| `@handharr-labs/ui-base-bronze` | `0.2.0` → `0.3.0` |
+| `@handharr-labs/ui-base-silver` | `0.2.0` → `0.3.0` |
+| `@handharr-labs/ui-base-gold` | `0.2.1` → `0.3.0` |
+| `@handharr-labs/ui-cikal-showcase` | `0.2.1` → `0.3.0` (private, not published) |
 
 ---
 
