@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/ui-xpnsio",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Design system for xpnsio — components, tokens, utilities, and providers",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
