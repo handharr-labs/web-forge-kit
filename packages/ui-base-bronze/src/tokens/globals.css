@@ -44,6 +44,16 @@
   --status-danger-text: oklch(0.45 0.22 27);
   --status-danger-border: oklch(0.84 0.08 27);
 
+  /* Sidebar tokens */
+  --sidebar: oklch(0.97 calc(0.003 * var(--chroma-scale)) var(--hue));
+  --sidebar-foreground: oklch(0.15 calc(0.02 * var(--chroma-scale)) var(--hue));
+  --sidebar-primary: oklch(var(--primary-l) var(--primary-c) var(--hue));
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.94 calc(0.008 * var(--chroma-scale)) var(--hue));
+  --sidebar-accent-foreground: oklch(0.15 calc(0.02 * var(--chroma-scale)) var(--hue));
+  --sidebar-border: oklch(0.88 calc(0.008 * var(--chroma-scale)) var(--hue));
+  --sidebar-ring: oklch(var(--primary-l) var(--primary-c) var(--hue));
+
   /* Chart tokens */
   --chart-1: oklch(var(--primary-l) var(--primary-c) var(--hue));
   --chart-2: oklch(0.55 calc(0.14 * var(--chroma-scale)) 150);

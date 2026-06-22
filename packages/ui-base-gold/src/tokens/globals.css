@@ -71,7 +71,7 @@
   --chart-5: oklch(0.58 calc(0.18 * var(--chroma-scale)) 15);
 }
 
-/* Dark mode */
+/* Dark mode — .dark must be on the same element as .tier-gold */
 .tier-gold.dark {
   --background: oklch(0.12 calc(0.02 * var(--chroma-scale)) var(--hue));
   --foreground: oklch(0.97 0 0);
@@ -96,6 +96,16 @@
   --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.40), 0 4px 6px -2px oklch(0 0 0 / 0.25);
   --primary-gradient-from: oklch(calc(1.15 - var(--primary-l)) calc(var(--primary-c) - 0.02) var(--hue));
   --primary-gradient-to:   oklch(calc(1.00 - var(--primary-l)) calc(var(--primary-c) + 0.02) calc(var(--hue) + 20));
+
+  /* Sidebar dark tokens */
+  --sidebar: oklch(0.16 calc(0.02 * var(--chroma-scale)) var(--hue));
+  --sidebar-foreground: oklch(0.90 0 0);
+  --sidebar-primary: oklch(calc(1.10 - var(--primary-l)) calc(var(--primary-c) - 0.02) var(--hue));
+  --sidebar-primary-foreground: oklch(calc(var(--primary-l) - 0.30) calc(0.02 * var(--chroma-scale)) var(--hue));
+  --sidebar-accent: oklch(0.22 calc(0.02 * var(--chroma-scale)) var(--hue));
+  --sidebar-accent-foreground: oklch(0.90 0 0);
+  --sidebar-border: oklch(0.25 calc(0.02 * var(--chroma-scale)) var(--hue));
+  --sidebar-ring: oklch(calc(1.10 - var(--primary-l)) calc(var(--primary-c) - 0.02) var(--hue));
 
   /* Status dark mode */
   --status-info-bg: oklch(0.22 0.06 265);

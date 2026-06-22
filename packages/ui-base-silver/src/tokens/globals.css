@@ -66,6 +66,51 @@
   --chart-5: oklch(0.60 calc(0.16 * var(--chroma-scale)) 15);
 }
 
+/* Dark mode — .dark must be on the same element as .tier-silver */
+.tier-silver.dark {
+  --background: oklch(0.12 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --foreground: oklch(0.97 0 0);
+  --card: oklch(0.16 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --card-foreground: oklch(0.97 0 0);
+  --popover: oklch(0.16 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --popover-foreground: oklch(0.97 0 0);
+  --primary: oklch(calc(1.10 - var(--primary-l)) calc(var(--primary-c) - 0.02) var(--hue));
+  --primary-foreground: oklch(calc(var(--primary-l) - 0.30) calc(0.018 * var(--chroma-scale)) var(--hue));
+  --secondary: oklch(0.22 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --secondary-foreground: oklch(0.90 0 0);
+  --muted: oklch(0.20 calc(0.012 * var(--chroma-scale)) var(--hue));
+  --muted-foreground: oklch(0.60 0 0);
+  --accent: oklch(0.22 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --accent-foreground: oklch(0.90 0 0);
+  --destructive: oklch(0.65 0.22 27);
+  --border: oklch(0.25 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --input: oklch(0.22 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --ring: oklch(calc(1.10 - var(--primary-l)) calc(var(--primary-c) - 0.02) var(--hue));
+  --shadow-sm: 0 1px 3px oklch(0 0 0 / 0.28), 0 1px 2px oklch(0 0 0 / 0.20);
+  --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.32), 0 2px 4px -1px oklch(0 0 0 / 0.18);
+
+  /* Status dark mode */
+  --status-info-bg: oklch(0.22 0.06 265);
+  --status-info-text: oklch(0.72 0.16 265);
+  --status-info-border: oklch(0.32 0.08 265);
+  --status-success-bg: oklch(0.22 0.08 145);
+  --status-success-text: oklch(0.72 0.16 145);
+  --status-success-border: oklch(0.32 0.10 145);
+  --status-danger-bg: oklch(0.22 0.05 27);
+  --status-danger-text: oklch(0.72 0.22 27);
+  --status-danger-border: oklch(0.32 0.08 27);
+
+  /* Sidebar dark tokens */
+  --sidebar: oklch(0.16 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --sidebar-foreground: oklch(0.90 0 0);
+  --sidebar-primary: oklch(calc(1.10 - var(--primary-l)) calc(var(--primary-c) - 0.02) var(--hue));
+  --sidebar-primary-foreground: oklch(calc(var(--primary-l) - 0.30) calc(0.018 * var(--chroma-scale)) var(--hue));
+  --sidebar-accent: oklch(0.22 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --sidebar-accent-foreground: oklch(0.90 0 0);
+  --sidebar-border: oklch(0.25 calc(0.018 * var(--chroma-scale)) var(--hue));
+  --sidebar-ring: oklch(calc(1.10 - var(--primary-l)) calc(var(--primary-c) - 0.02) var(--hue));
+}
+
 /* Typography scale */
 .tier-silver .typo-page-title    { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.75rem; }
 .tier-silver .typo-section-title { font-size: 1.125rem; font-weight: 600; line-height: 1.75rem; }
