@@ -38,6 +38,8 @@
   --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.08);
   --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.10), 0 2px 4px -1px oklch(0 0 0 / 0.06);
   --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.12), 0 4px 6px -2px oklch(0 0 0 / 0.05);
+  --primary-gradient-from: oklch(0.50 0.22 265);
+  --primary-gradient-to: oklch(0.38 0.25 285);
 }
 
 /* Dark mode */
@@ -63,6 +65,18 @@
   --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.30);
   --shadow-md: 0 4px 6px -1px oklch(0 0 0 / 0.35), 0 2px 4px -1px oklch(0 0 0 / 0.20);
   --shadow-lg: 0 10px 15px -3px oklch(0 0 0 / 0.40), 0 4px 6px -2px oklch(0 0 0 / 0.25);
+  --primary-gradient-from: oklch(0.70 0.18 265);
+  --primary-gradient-to: oklch(0.55 0.22 285);
+}
+
+/* Gold spinner — two simultaneous animations create Material-style breathing arc */
+@keyframes gold-spinner-rotate {
+  to { transform: rotate(360deg); }
+}
+@keyframes gold-spinner-arc {
+  0%   { stroke-dasharray: 1 126;  stroke-dashoffset: 0; }
+  50%  { stroke-dasharray: 100 26; stroke-dashoffset: -33; }
+  100% { stroke-dasharray: 100 26; stroke-dashoffset: -126; }
 }
 
 /* Typography scale */

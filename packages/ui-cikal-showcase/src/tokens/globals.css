@@ -32,6 +32,8 @@
   --chart-4: oklch(0.63 0.17 44);
   --chart-5: oklch(0.55 0.14 155);
   --radius: 0.5rem;
+  --primary-gradient-from: oklch(0.82 0.16 68);
+  --primary-gradient-to: oklch(0.68 0.18 64);
   --sidebar: oklch(0.97 0 0);
   --sidebar-foreground: oklch(0.22 0.07 258);
   --sidebar-primary: oklch(0.77 0.16 68);
