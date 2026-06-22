@@ -63,7 +63,7 @@ const COLOR_TOKENS = [
 ]
 
 const TYPO_CLASSES = [
-  { cls: "typo-hero", label: "Hero — 1.5rem / 700" },
+  { cls: "typo-hero", label: "Hero — 1.5→2rem / 700" },
   { cls: "typo-page-title", label: "Page Title — 1.25rem / 700" },
   { cls: "typo-section-title", label: "Section Title — 1.125rem / 600" },
   { cls: "typo-card-title", label: "Card Title — 1rem / 600" },
