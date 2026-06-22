@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Moon, Sun } from "lucide-react"
 import {
   Avatar,
   Badge,
@@ -106,6 +107,7 @@ function LogoMark() {
 }
 
 export function GoldCatalog() {
+  const [dark, setDark] = React.useState(false)
   const [search, setSearch] = React.useState("")
   const [checked, setChecked] = React.useState(false)
   const [switched, setSwitched] = React.useState(false)
@@ -113,14 +115,21 @@ export function GoldCatalog() {
   const [role, setRole] = React.useState("")
 
   return (
-    <div className="tier-gold bg-[var(--background)] text-[var(--foreground)]">
+    <div className={`tier-gold bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300${dark ? " dark" : ""}`}>
       <div className="mx-auto max-w-5xl px-4 py-8">
-        <div className="mb-8 flex items-center gap-3">
-          <a href="/" className="typo-caption text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
-            ← Catalog
-          </a>
-          <span className="typo-caption text-[var(--muted-foreground)]">/</span>
-          <span className="typo-caption">ui-base-gold</span>
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <a href="/" className="typo-caption text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+              ← Catalog
+            </a>
+            <span className="typo-caption text-[var(--muted-foreground)]">/</span>
+            <span className="typo-caption">ui-base-gold</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Sun className="size-4 text-[var(--muted-foreground)]" />
+            <Switch id="theme-toggle" checked={dark} onCheckedChange={setDark} />
+            <Moon className="size-4 text-[var(--muted-foreground)]" />
+          </div>
         </div>
 
         <div className="mb-10">
@@ -293,7 +302,7 @@ export function GoldCatalog() {
           {/* Atoms — Table */}
           <Section title="Atoms — Table">
             <PreviewCard label="row hover — transition-all duration-150">
-              <div className="w-full overflow-hidden rounded-xl border border-[var(--border)]">
+              <div className="w-full overflow-x-auto rounded-xl border border-[var(--border)]">
                 <Table>
                   <TableHeader>
                     <TableRow>
