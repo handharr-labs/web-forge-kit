@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Moon, Sun } from "lucide-react"
 import {
   Avatar,
   Badge,
@@ -105,20 +106,28 @@ function LogoMark() {
 }
 
 export function SilverCatalog() {
+  const [dark, setDark] = React.useState(false)
   const [search, setSearch] = React.useState("")
   const [checked, setChecked] = React.useState(false)
   const [switched, setSwitched] = React.useState(false)
   const [radio, setRadio] = React.useState("a")
 
   return (
-    <div className="tier-silver bg-[var(--background)] text-[var(--foreground)]">
+    <div className={`tier-silver bg-[var(--background)] text-[var(--foreground)] transition-colors duration-200${dark ? " dark" : ""}`}>
       <div className="mx-auto max-w-5xl px-4 py-8">
-        <div className="mb-8 flex items-center gap-3">
-          <a href="/" className="typo-caption text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
-            ← Catalog
-          </a>
-          <span className="typo-caption text-[var(--muted-foreground)]">/</span>
-          <span className="typo-caption">ui-base-silver</span>
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <a href="/" className="typo-caption text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+              ← Catalog
+            </a>
+            <span className="typo-caption text-[var(--muted-foreground)]">/</span>
+            <span className="typo-caption">ui-base-silver</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Sun className="size-4 text-[var(--muted-foreground)]" />
+            <Switch id="theme-toggle" checked={dark} onCheckedChange={setDark} />
+            <Moon className="size-4 text-[var(--muted-foreground)]" />
+          </div>
         </div>
 
         <div className="mb-10">
@@ -269,7 +278,7 @@ export function SilverCatalog() {
           {/* Atoms — Table */}
           <Section title="Atoms — Table">
             <PreviewCard label="row hover + uppercase headers">
-              <div className="w-full overflow-hidden rounded-xl border border-[var(--border)]">
+              <div className="w-full overflow-x-auto rounded-xl border border-[var(--border)]">
                 <Table>
                   <TableHeader>
                     <TableRow>

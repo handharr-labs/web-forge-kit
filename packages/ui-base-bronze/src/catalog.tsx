@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Moon, Sun } from "lucide-react"
 import {
   Avatar,
   Badge,
@@ -113,12 +114,22 @@ export function BronzeCatalog() {
   return (
     <div className="tier-bronze bg-[var(--background)] text-[var(--foreground)]">
       <div className="mx-auto max-w-5xl px-4 py-8">
-        <div className="mb-8 flex items-center gap-3">
-          <a href="/" className="typo-caption text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
-            ← Catalog
-          </a>
-          <span className="typo-caption text-[var(--muted-foreground)]">/</span>
-          <span className="typo-caption">ui-base-bronze</span>
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <a href="/" className="typo-caption text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+              ← Catalog
+            </a>
+            <span className="typo-caption text-[var(--muted-foreground)]">/</span>
+            <span className="typo-caption">ui-base-bronze</span>
+          </div>
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-2 opacity-40">
+              <Sun className="size-4 text-[var(--muted-foreground)]" />
+              <Switch id="theme-toggle" disabled checked={false} onCheckedChange={() => {}} />
+              <Moon className="size-4 text-[var(--muted-foreground)]" />
+            </div>
+            <p className="typo-caption text-[var(--muted-foreground)]">Light only</p>
+          </div>
         </div>
 
         <div className="mb-10">
@@ -269,7 +280,7 @@ export function BronzeCatalog() {
           {/* Atoms — Table */}
           <Section title="Atoms — Table">
             <PreviewCard label="basic table — static borders, no hover">
-              <div className="w-full overflow-hidden rounded-[var(--radius)] border border-[var(--border)]">
+              <div className="w-full overflow-x-auto rounded-[var(--radius)] border border-[var(--border)]">
                 <Table>
                   <TableHeader>
                     <TableRow>
