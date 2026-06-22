@@ -26,6 +26,8 @@ export {
 export { Checkbox } from "./components/atoms/checkbox"
 export { Switch } from "./components/atoms/switch"
 export { RadioGroup, Radio } from "./components/atoms/radio-group"
+export { Spinner } from "./components/atoms/spinner"
+export type { SpinnerProps } from "./components/atoms/spinner"
 
 // Components — Molecules
 export { EventCard } from "./components/molecules/event-card"

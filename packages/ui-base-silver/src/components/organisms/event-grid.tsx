@@ -1,15 +1,24 @@
 import * as React from "react"
-
 import { EventCard, type EventCardProps } from "../molecules/event-card"
+import { Spinner } from "../atoms/spinner"
 import { cn } from "../../utils/cn"
 
 interface EventGridProps {
   items: EventCardProps[]
+  loading?: boolean
   emptyMessage?: string
   className?: string
 }
 
-function EventGrid({ items, emptyMessage = "No items yet.", className }: EventGridProps) {
+function EventGrid({ items, loading = false, emptyMessage = "No items yet.", className }: EventGridProps) {
+  if (loading) {
+    return (
+      <div className={cn("flex items-center justify-center py-16", className)}>
+        <Spinner size="lg" />
+      </div>
+    )
+  }
+
   if (items.length === 0) {
     return (
       <div
