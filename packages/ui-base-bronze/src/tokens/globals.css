@@ -1,31 +1,55 @@
 /* Bronze tier tokens — scoped to .tier-bronze */
-/* Neutral palette: professional blue primary, no animation, flat radius */
+/* Functional — flat, no animation, zero interaction overhead */
 
 .tier-bronze {
+  /* Color knobs — brands override only these to shift the entire palette */
+  --hue: 265;
+  --primary-l: 0.45;
+  --primary-c: 0.14;
+  --chroma-scale: 1;
+
+  /* Derived semantic tokens */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.15 0.01 265);
+  --foreground: oklch(0.15 calc(0.02 * var(--chroma-scale)) var(--hue));
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.01 265);
+  --card-foreground: oklch(0.15 calc(0.02 * var(--chroma-scale)) var(--hue));
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.01 265);
-  --primary: oklch(0.45 0.14 265);
+  --popover-foreground: oklch(0.15 calc(0.02 * var(--chroma-scale)) var(--hue));
+  --primary: oklch(var(--primary-l) var(--primary-c) var(--hue));
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.94 0 0);
-  --secondary-foreground: oklch(0.15 0.01 265);
-  --muted: oklch(0.96 0 0);
-  --muted-foreground: oklch(0.50 0 0);
-  --accent: oklch(0.94 0 0);
-  --accent-foreground: oklch(0.15 0.01 265);
+  --secondary: oklch(0.94 calc(0.008 * var(--chroma-scale)) var(--hue));
+  --secondary-foreground: oklch(0.15 calc(0.02 * var(--chroma-scale)) var(--hue));
+  --muted: oklch(0.96 calc(0.006 * var(--chroma-scale)) var(--hue));
+  --muted-foreground: oklch(0.50 calc(0.008 * var(--chroma-scale)) var(--hue));
+  --accent: oklch(0.94 calc(0.008 * var(--chroma-scale)) var(--hue));
+  --accent-foreground: oklch(0.15 calc(0.02 * var(--chroma-scale)) var(--hue));
   --destructive: oklch(0.58 0.22 27);
-  --border: oklch(0.88 0 0);
-  --input: oklch(0.90 0 0);
-  --ring: oklch(0.45 0.14 265);
+  --border: oklch(0.88 calc(0.008 * var(--chroma-scale)) var(--hue));
+  --input: oklch(0.90 calc(0.004 * var(--chroma-scale)) var(--hue));
+  --ring: oklch(var(--primary-l) var(--primary-c) var(--hue));
   --radius: 0.25rem;
-  --chart-1: oklch(0.45 0.14 265);
-  --chart-2: oklch(0.58 0.14 150);
-  --chart-3: oklch(0.65 0.12 40);
-  --chart-4: oklch(0.55 0.15 295);
-  --chart-5: oklch(0.60 0.16 15);
+
+  /* Font tokens */
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-display: ui-sans-serif, system-ui, sans-serif;
+
+  /* Status color tokens — semantic, independent of brand hue */
+  --status-info-bg: oklch(0.95 0.04 265);
+  --status-info-text: oklch(0.30 0.20 265);
+  --status-info-border: oklch(0.85 0.06 265);
+  --status-success-bg: oklch(0.94 0.08 145);
+  --status-success-text: oklch(0.33 0.18 145);
+  --status-success-border: oklch(0.80 0.10 145);
+  --status-danger-bg: oklch(0.95 0.05 27);
+  --status-danger-text: oklch(0.45 0.22 27);
+  --status-danger-border: oklch(0.84 0.08 27);
+
+  /* Chart tokens */
+  --chart-1: oklch(var(--primary-l) var(--primary-c) var(--hue));
+  --chart-2: oklch(0.55 calc(0.14 * var(--chroma-scale)) 150);
+  --chart-3: oklch(0.65 calc(0.12 * var(--chroma-scale)) 40);
+  --chart-4: oklch(0.52 calc(0.15 * var(--chroma-scale)) 295);
+  --chart-5: oklch(0.58 calc(0.16 * var(--chroma-scale)) 15);
 }
 
 /* Typography scale */
@@ -41,7 +65,7 @@
 
 @media screen and (min-width: 768px) {
   .tier-bronze .typo-page-title { font-size: 1.5rem; line-height: 2rem; }
-  .tier-bronze .typo-hero       { font-size: 1.875rem; line-height: 2.25rem; }
+  .tier-bronze .typo-hero       { font-size: 1.75rem; line-height: 2.25rem; }
 }
 
 @media screen and (max-width: 1024px) {
