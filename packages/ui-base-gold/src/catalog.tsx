@@ -461,7 +461,7 @@ export function GoldCatalog() {
                   <Input id="cf-email-g" type="email" placeholder=" " />
                 </Field>
                 <Field label="Role" htmlFor="cf-role-g">
-                  <Select value={role} onValueChange={setRole}>
+                  <Select value={role} onValueChange={(v) => { if (v !== null) setRole(v) }}>
                     <SelectTrigger id="cf-role-g" className="w-full">
                       <SelectValue />
                     </SelectTrigger>
