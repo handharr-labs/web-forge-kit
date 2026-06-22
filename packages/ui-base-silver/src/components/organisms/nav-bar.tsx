@@ -13,13 +13,17 @@ interface NavLink {
 
 interface NavBarProps {
   logo?: React.ReactNode
+  brandName?: string
+  showBrandName?: boolean
   links?: NavLink[]
   user?: AvatarProps
   onLogin?: () => void
   className?: string
 }
 
-function NavBar({ logo, links = [], user, onLogin, className }: NavBarProps) {
+function NavBar({ logo, brandName, showBrandName, links = [], user, onLogin, className }: NavBarProps) {
+  const shouldShowBrandName = showBrandName ?? !logo
+
   return (
     <nav
       data-slot="nav-bar"
@@ -29,7 +33,14 @@ function NavBar({ logo, links = [], user, onLogin, className }: NavBarProps) {
       )}
     >
       <div className="flex items-center gap-6">
-        {logo && <div data-slot="nav-logo">{logo}</div>}
+        {(logo || (shouldShowBrandName && brandName)) && (
+          <div data-slot="nav-brand" className="flex items-center gap-2">
+            {logo}
+            {shouldShowBrandName && brandName && (
+              <span className="typo-card-title font-bold">{brandName}</span>
+            )}
+          </div>
+        )}
         {links.length > 0 && (
           <ul className="hidden items-center gap-1 sm:flex">
             {links.map((link) => (
