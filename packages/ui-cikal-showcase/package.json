@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/ui-cikal-showcase",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "description": "Multi-tier CIKAL demo — shows Bronze/Silver/Gold with CIKAL brand tokens. Pre-deal sales tool; never imported by a production app.",
   "main": "./src/index.ts",

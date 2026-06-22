@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/ui-base-gold",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Gold tier design system — premium, animated, elevated interactions",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -9,7 +9,9 @@
     "./*": "./src/*.ts",
     "./tokens/globals.css": "./src/tokens/globals.css"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "dependencies": {
     "@base-ui/react": "^1.2.0",
     "class-variance-authority": "^0.7.1",
@@ -23,7 +25,9 @@
     "react": ">=18",
     "react-dom": ">=18"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/handharr-labs/web-forge-kit.git",
