@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Label } from "../atoms/label"
+import { Input } from "../atoms/input"
+import { Textarea } from "../atoms/textarea"
+import { Select } from "../atoms/select"
+
 import { cn } from "../../utils/cn"
 
 interface FieldProps {
@@ -15,51 +18,105 @@ interface FieldProps {
 }
 
 function Field({ label, htmlFor, description, error, required, children, className }: FieldProps) {
-  const [isFocused, setIsFocused] = React.useState(false)
-  const [hasValue, setHasValue] = React.useState(false)
-  const isFloating = isFocused || hasValue
+  const isSelectChild = React.isValidElement(children) && children.type === Select
 
-  const handleFocusCapture = () => setIsFocused(true)
-  const handleBlurCapture = (e: React.FocusEvent) => {
-    setIsFocused(false)
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement
-    if ("value" in target) setHasValue(Boolean(target.value))
-  }
-  const handleChangeCapture = (e: React.ChangeEvent) => {
-    const target = e.target as HTMLInputElement | HTMLTextAreaElement
-    if ("value" in target) setHasValue(Boolean(target.value))
-  }
+  // Floating label applies to Input, Textarea, and Select (controlled dropdown).
+  const supportsFloating =
+    React.isValidElement(children) &&
+    (children.type === Input || children.type === Textarea || isSelectChild)
+
+  // Select: track open state via onOpenChange; value derived from props.
+  const [isSelectOpen, setIsSelectOpen] = React.useState(false)
+  const selectPropValue = isSelectChild
+    ? (children as React.ReactElement<{ value?: string }>).props.value
+    : undefined
+  const selectIsFloating = isSelectOpen || Boolean(selectPropValue)
 
   return (
     <div data-slot="field" className={cn("flex flex-col gap-1.5", className)}>
       {label ? (
-        <div
-          className="relative"
-          onFocusCapture={handleFocusCapture}
-          onBlurCapture={handleBlurCapture}
-          onChangeCapture={handleChangeCapture}
-        >
-          {React.isValidElement(children)
-            ? React.cloneElement(children as React.ReactElement<{ className?: string }>, {
-                className: cn(
-                  "pt-5",
-                  (children as React.ReactElement<{ className?: string }>).props.className
-                ),
-              })
-            : children}
-          <Label
-            htmlFor={htmlFor}
-            required={required}
-            className={cn(
-              "pointer-events-none absolute left-3 select-none transition-all duration-150",
-              isFloating
-                ? "top-1.5 text-[0.625rem] font-semibold text-[var(--ring)]"
-                : "top-1/2 -translate-y-1/2 text-sm font-normal text-[var(--muted-foreground)]"
-            )}
+        supportsFloating ? (
+          // ── Floating label (Input / Textarea / Select) ────────────────────
+          <div
+            className="relative"
+            {...(isSelectChild ? { "data-floating-select": "" } : {})}
           >
-            {label}
-          </Label>
-        </div>
+            {isSelectChild
+              ? // Select: inject onOpenChange to track open state
+                React.cloneElement(
+                  children as React.ReactElement<{ onOpenChange?: (open: boolean) => void }>,
+                  {
+                    onOpenChange: (open: boolean) => {
+                      setIsSelectOpen(open)
+                      ;(children as React.ReactElement<{ onOpenChange?: (open: boolean) => void }>)
+                        .props.onOpenChange?.(open)
+                    },
+                  }
+                )
+              : // Input / Textarea: add `peer` + `pt-5`; CSS drives floating via :placeholder-shown
+                React.cloneElement(
+                  children as React.ReactElement<{ className?: string; placeholder?: string }>,
+                  {
+                    className: cn(
+                      "peer pt-5",
+                      (children as React.ReactElement<{ className?: string }>).props.className
+                    ),
+                    // Ensure a placeholder exists so :placeholder-shown pseudo-class works.
+                    // A space is invisible but keeps the mechanism active.
+                    placeholder:
+                      (children as React.ReactElement<{ placeholder?: string }>).props.placeholder
+                      ?? " ",
+                  }
+                )
+            }
+            {/* Plain <label> avoids typo-label whose scoped selector beats Tailwind utilities */}
+            <label
+              htmlFor={htmlFor}
+              className={cn(
+                "pointer-events-none absolute left-3 select-none cursor-default transition-all duration-150",
+                isSelectChild
+                  ? // Select: JS-controlled positioning
+                    selectIsFloating
+                      ? "top-1.5 font-semibold text-[var(--ring)]"
+                      : "top-1/2 -translate-y-1/2 font-normal text-[var(--muted-foreground)]"
+                  : // Input / Textarea: CSS peer-driven via :placeholder-shown + :focus
+                    cn(
+                      // Default: label centered (acts as placeholder)
+                      "top-1/2 -translate-y-1/2 font-normal text-[var(--muted-foreground)] text-sm",
+                      // Floated via focus
+                      "peer-focus:top-1.5 peer-focus:translate-y-0 peer-focus:font-semibold peer-focus:text-[0.625rem] peer-focus:text-[var(--ring)]",
+                      // Floated when input has value (placeholder not visible)
+                      "peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-[0.625rem] peer-[:not(:placeholder-shown)]:text-[var(--ring)]",
+                    )
+              )}
+              style={isSelectChild
+                ? { fontSize: selectIsFloating ? "0.625rem" : "0.875rem" }
+                : undefined
+              }
+            >
+              {label}
+              {required && (
+                <span aria-hidden className="ml-0.5 text-[var(--destructive)]">*</span>
+              )}
+            </label>
+          </div>
+        ) : (
+          // ── Mini label (RadioGroup, Checkbox, etc.) ───────────────────────
+          // Visually matches the permanently-floated state so all Gold labels align.
+          <>
+            <label
+              htmlFor={htmlFor}
+              className="cursor-default select-none font-semibold text-[var(--muted-foreground)]"
+              style={{ fontSize: "0.625rem" }}
+            >
+              {label}
+              {required && (
+                <span aria-hidden className="ml-0.5 text-[var(--destructive)]">*</span>
+              )}
+            </label>
+            {children}
+          </>
+        )
       ) : (
         children
       )}
