@@ -24,6 +24,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Spinner,
   Switch,
   Textarea,
 } from "@handharr-labs/ui-base-silver"
@@ -90,6 +91,16 @@ const FOOTER_LINKS = [
   { label: "Terms", href: "#" },
   { label: "Support", href: "#" },
 ]
+
+function LogoMark() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="6" fill="var(--primary)" />
+      <path d="M9 19L14 9l5 10" stroke="var(--primary-foreground)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="11" y1="15" x2="17" y2="15" stroke="var(--primary-foreground)" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
 
 export default function SilverPage() {
   const [search, setSearch] = React.useState("")
@@ -172,6 +183,14 @@ export default function SilverPage() {
               <PreviewCard label="initials"><Avatar name="John Doe" /></PreviewCard>
               <PreviewCard label="sm"><Avatar name="AB" size="sm" /></PreviewCard>
               <PreviewCard label="lg"><Avatar name="CD" size="lg" /></PreviewCard>
+            </div>
+          </Section>
+
+          <Section title="Atoms — Spinner">
+            <div className="flex flex-wrap gap-3">
+              <PreviewCard label="sm"><Spinner size="sm" /></PreviewCard>
+              <PreviewCard label="default"><Spinner size="default" /></PreviewCard>
+              <PreviewCard label="lg"><Spinner size="lg" /></PreviewCard>
             </div>
           </Section>
 
@@ -278,19 +297,17 @@ export default function SilverPage() {
 
           {/* Organisms */}
           <Section title="Organisms — NavBar">
-            <PreviewCard label="guest">
-              <NavBar
-                logo={<span className="typo-card-title font-bold">Brand</span>}
-                links={NAV_LINKS}
-                onLogin={() => {}}
-              />
+            <PreviewCard label="logo only">
+              <NavBar logo={<LogoMark />} links={NAV_LINKS} onLogin={() => {}} />
             </PreviewCard>
-            <PreviewCard label="logged in">
-              <NavBar
-                logo={<span className="typo-card-title font-bold">Brand</span>}
-                links={NAV_LINKS}
-                user={{ name: "Jane Doe", size: "sm" }}
-              />
+            <PreviewCard label="logo + name (showBrandName)">
+              <NavBar logo={<LogoMark />} brandName="Brand" showBrandName links={NAV_LINKS} onLogin={() => {}} />
+            </PreviewCard>
+            <PreviewCard label="name only">
+              <NavBar brandName="Brand" links={NAV_LINKS} onLogin={() => {}} />
+            </PreviewCard>
+            <PreviewCard label="logo only — logged in">
+              <NavBar logo={<LogoMark />} links={NAV_LINKS} user={{ name: "Jane Doe", size: "sm" }} />
             </PreviewCard>
           </Section>
 
@@ -309,18 +326,23 @@ export default function SilverPage() {
             <PreviewCard label="with items">
               <EventGrid items={MOCK_ITEMS} />
             </PreviewCard>
+            <PreviewCard label="loading state">
+              <EventGrid items={[]} loading={true} />
+            </PreviewCard>
             <PreviewCard label="empty state">
               <EventGrid items={[]} emptyMessage="No items found." />
             </PreviewCard>
           </Section>
 
           <Section title="Organisms — Footer">
-            <PreviewCard label="footer">
-              <Footer
-                logo={<span className="typo-card-title font-bold">Brand</span>}
-                links={FOOTER_LINKS}
-                copyright="© 2026 Handharr Labs"
-              />
+            <PreviewCard label="logo only">
+              <Footer logo={<LogoMark />} links={FOOTER_LINKS} copyright="© 2026 Handharr Labs" />
+            </PreviewCard>
+            <PreviewCard label="logo + name">
+              <Footer logo={<LogoMark />} brandName="Brand" showBrandName links={FOOTER_LINKS} copyright="© 2026 Handharr Labs" />
+            </PreviewCard>
+            <PreviewCard label="name only">
+              <Footer brandName="Brand" links={FOOTER_LINKS} copyright="© 2026 Handharr Labs" />
             </PreviewCard>
           </Section>
 
