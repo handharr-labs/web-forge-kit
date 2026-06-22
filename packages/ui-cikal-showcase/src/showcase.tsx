@@ -541,6 +541,11 @@ export function CikalShowcase() {
                     <T.Select
                       value={regData.competition}
                       onValueChange={(v) => setRegData((d) => ({ ...d, competition: v ?? "" }))}
+                      items={[
+                        { value: "math", label: "Math Olympiad 2026" },
+                        { value: "debate", label: "Inter-School Debate Championship" },
+                        { value: "science", label: "National Science Fair Qualifier" },
+                      ]}
                     >
                       <T.SelectTrigger className="w-full">
                         <T.SelectValue placeholder="Choose a competition" />
