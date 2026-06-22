@@ -107,3 +107,9 @@
   background-color: var(--popover);
   color: var(--popover-foreground);
 }
+
+/* When the floating label is in placeholder position, hide the SelectValue's own placeholder text
+   so the label alone acts as the visual placeholder without conflicts. */
+[data-floating-select][data-select-floating="false"] [data-slot="select-trigger"][data-placeholder] [data-slot="select-value"] {
+  opacity: 0;
+}

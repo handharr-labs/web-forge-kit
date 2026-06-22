@@ -39,7 +39,7 @@ function Field({ label, htmlFor, description, error, required, children, classNa
           // ── Floating label (Input / Textarea / Select) ────────────────────
           <div
             className="relative"
-            {...(isSelectChild ? { "data-floating-select": "" } : {})}
+            {...(isSelectChild ? { "data-floating-select": "", "data-select-floating": selectIsFloating ? "true" : "false" } : {})}
           >
             {isSelectChild
               ? // Select: inject onOpenChange to track open state
