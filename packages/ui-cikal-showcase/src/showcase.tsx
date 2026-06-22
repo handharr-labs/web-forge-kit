@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useTierComponents } from "./tier/tier-context"
+import { useTierComponents, useTier } from "./tier/tier-context"
 import { TierSwitcher } from "./tier/tier-switcher"
 import { cn } from "./utils/cn"
 import type { EventCardProps } from "@handharr-labs/ui-base-bronze"
@@ -144,7 +144,12 @@ const MOCK_ITEMS: EventCardProps[] = [
 // ── Showcase ──────────────────────────────────────────────────────────────────
 
 export function CikalShowcase() {
+  const { tier } = useTier()
   const T = useTierComponents()
+  const isGold = tier === "gold"
+
+  // Gold floating-label fields require placeholder=" " so the label floats correctly
+  const fp = isGold ? " " : undefined
 
   const [search, setSearch] = React.useState("")
   const [radioSize, setRadioSize] = React.useState("m")
@@ -163,18 +168,26 @@ export function CikalShowcase() {
       <main className="min-h-screen p-10 max-w-4xl mx-auto">
 
         {/* Header */}
-        <header className="mb-10 flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h1 className="typo-hero">ui-cikal-showcase</h1>
-            <p className="typo-body text-[var(--muted-foreground)] mt-1">
-              CIKAL brand · multi-tier demo
-            </p>
-          </div>
-          <div className="flex flex-col items-end gap-3">
-            <TierSwitcher />
-            <p className="typo-caption text-[var(--muted-foreground)]">
-              Toggle to preview CIKAL at each tier level
-            </p>
+        <header className="mb-10">
+          <a
+            href="/"
+            className="typo-caption text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors mb-4 block"
+          >
+            ← Catalog
+          </a>
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h1 className="typo-hero">ui-cikal-showcase</h1>
+              <p className="typo-body text-[var(--muted-foreground)] mt-1">
+                CIKAL brand · multi-tier demo
+              </p>
+            </div>
+            <div className="flex flex-col items-end gap-3">
+              <TierSwitcher />
+              <p className="typo-caption text-[var(--muted-foreground)]">
+                Toggle to preview CIKAL at each tier level
+              </p>
+            </div>
           </div>
         </header>
 
@@ -307,6 +320,31 @@ export function CikalShowcase() {
           </div>
         </Section>
 
+        {/* Atoms — Skeleton (Gold only) */}
+        {isGold && T.Skeleton && (
+          <Section title="Atoms — Skeleton">
+            <div className="flex flex-wrap gap-6">
+              <PreviewCard label="text lines">
+                <div className="flex flex-col gap-2 w-48">
+                  <T.Skeleton className="h-4 w-full" />
+                  <T.Skeleton className="h-4 w-3/4" />
+                  <T.Skeleton className="h-4 w-1/2" />
+                </div>
+              </PreviewCard>
+              <PreviewCard label="avatar placeholder">
+                <T.Skeleton className="h-10 w-10 rounded-full" />
+              </PreviewCard>
+              <PreviewCard label="card placeholder">
+                <div className="flex flex-col gap-3 w-48">
+                  <T.Skeleton className="h-24 w-full rounded-xl" />
+                  <T.Skeleton className="h-4 w-full" />
+                  <T.Skeleton className="h-4 w-2/3" />
+                </div>
+              </PreviewCard>
+            </div>
+          </Section>
+        )}
+
         {/* Molecules — SearchBar */}
         <Section title="Molecules — SearchBar" tierInvariant>
           <div className="max-w-sm">
@@ -323,28 +361,33 @@ export function CikalShowcase() {
 
         {/* Molecules — Field (tier-variant: Bronze inline, Silver stacked, Gold floating) */}
         <Section title="Molecules — Field">
+          {isGold && (
+            <p className="typo-caption text-[var(--muted-foreground)] mb-4">
+              Click into each field — the label floats up on focus and when filled.
+            </p>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl">
             <T.Field
               label="Full name"
               htmlFor="demo-name"
               required
-              description="As it appears on your student card."
+              description={isGold ? undefined : "As it appears on your student card."}
             >
-              <T.Input id="demo-name" placeholder="Budi Santoso" />
+              <T.Input id="demo-name" placeholder={fp} />
             </T.Field>
             <T.Field
               label="Email"
               htmlFor="demo-email"
               error="Enter a valid email address."
             >
-              <T.Input id="demo-email" type="email" defaultValue="wrong@" aria-invalid />
+              <T.Input id="demo-email" type="email" defaultValue="wrong@" aria-invalid placeholder={fp} />
             </T.Field>
             <T.Field
               label="Notes"
               htmlFor="demo-notes"
-              description="Optional — max 200 characters."
+              description={isGold ? undefined : "Optional — max 200 characters."}
             >
-              <T.Textarea id="demo-notes" placeholder="Anything we should know..." />
+              <T.Textarea id="demo-notes" placeholder={fp} />
             </T.Field>
           </div>
         </Section>
@@ -361,6 +404,12 @@ export function CikalShowcase() {
         {/* Organisms — EventGrid */}
         <Section title="Organisms — EventGrid" tierInvariant>
           <T.EventGrid items={MOCK_ITEMS} className="mb-8" />
+          {isGold && (
+            <>
+              <p className="typo-section-label text-[var(--muted-foreground)] mb-3">Loading state</p>
+              <T.EventGrid items={[]} loading={true} className="mb-8" />
+            </>
+          )}
           <p className="typo-section-label text-[var(--muted-foreground)] mb-3">Empty state</p>
           <T.EventGrid items={[]} />
         </Section>
@@ -435,7 +484,7 @@ export function CikalShowcase() {
                       id="reg-name"
                       value={regData.name}
                       onChange={(e) => setRegData((d) => ({ ...d, name: e.target.value }))}
-                      placeholder="As it appears on your student card"
+                      placeholder={fp ?? "As it appears on your student card"}
                     />
                   </T.Field>
 
@@ -444,7 +493,7 @@ export function CikalShowcase() {
                       id="reg-school"
                       value={regData.school}
                       onChange={(e) => setRegData((d) => ({ ...d, school: e.target.value }))}
-                      placeholder="e.g. Sekolah Cikal Surabaya"
+                      placeholder={fp ?? "e.g. Sekolah Cikal Surabaya"}
                     />
                   </T.Field>
 
@@ -452,21 +501,21 @@ export function CikalShowcase() {
                     label="Email"
                     htmlFor="reg-email"
                     required
-                    description="We'll send your confirmation here."
+                    description={isGold ? undefined : "We'll send your confirmation here."}
                   >
                     <T.Input
                       id="reg-email"
                       type="email"
                       value={regData.email}
                       onChange={(e) => setRegData((d) => ({ ...d, email: e.target.value }))}
-                      placeholder="you@example.com"
+                      placeholder={fp ?? "you@example.com"}
                     />
                   </T.Field>
 
                   <T.Field
                     label="Competition"
                     required
-                    description="You can enter one competition per registration."
+                    description={isGold ? undefined : "You can enter one competition per registration."}
                   >
                     <T.Select
                       value={regData.competition}

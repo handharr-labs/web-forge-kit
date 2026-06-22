@@ -97,6 +97,7 @@ export default function GoldPage() {
   const [checked, setChecked] = React.useState(false)
   const [switched, setSwitched] = React.useState(false)
   const [radio, setRadio] = React.useState("a")
+  const [role, setRole] = React.useState("")
 
   return (
     <div className="tier-gold bg-[var(--background)] text-[var(--foreground)]">
@@ -365,9 +366,9 @@ export default function GoldPage() {
                   <Input id="cf-email-g" type="email" placeholder=" " />
                 </Field>
                 <Field label="Role" htmlFor="cf-role-g">
-                  <Select>
+                  <Select value={role} onValueChange={setRole}>
                     <SelectTrigger id="cf-role-g" className="w-full">
-                      <SelectValue placeholder="Select role..." />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
