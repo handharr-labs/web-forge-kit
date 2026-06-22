@@ -1,7 +1,7 @@
 # Tiered Design System: Bronze, Silver, Gold
 
 **Date:** 2026-06-22
-**Status:** Complete — all steps done; post-launch refinements applied 2026-06-22
+**Status:** Complete — `ui-base-gold@0.2.1` published 2026-06-22
 
 ## Context
 
@@ -154,7 +154,7 @@ A client package (`ui-{name}`) is always priced at the tier it's built on top of
 ## Open Questions
 
 - Should all 3 tier packages use the same neutral color palette, with only the interaction/layout differing? Or does Gold also get a richer default color story?
-- ~~How do we handle component variants that only make sense in Gold (e.g. a floating label field)?~~ **Resolved:** `Field` detects the child type at runtime. `Input`/`Textarea` get the animated floating label; `Select`, `RadioGroup`, `Checkbox`, and any other non-input child get a **mini label** (`0.625rem`, `font-semibold`, muted color) — visually identical to the permanently-floated state, so all labels in a Gold form sit at the same size and position.
+- ~~How do we handle component variants that only make sense in Gold (e.g. a floating label field)?~~ **Resolved:** `Field` detects the child type at runtime. `Input`/`Textarea` get the animated floating label driven by CSS `:placeholder-shown` peer variants. `Select` gets a JS-driven floating label (open/value state via `onOpenChange`). `RadioGroup`, `Checkbox`, and other compound children get a permanent **mini label** (`0.625rem`, `font-semibold`, muted) — same visual as the floated state, no animation needed.
 - Versioning: should Bronze, Silver, Gold be versioned in lockstep, or independently?
 
 ---
@@ -178,16 +178,33 @@ Issues found during playground review and fixed in follow-up:
 ### Gold Field — floating label not shrinking
 `Label` atom carries the `typo-label` CSS class, scoped as `.tier-gold .typo-label` / `.brand-cikal .typo-label` (specificity 0,2,0). In Tailwind v4 all utilities live in `@layer utilities`, so unlayered CSS wins over any Tailwind utility — including `!important` variants from inside the layer. Fix: replaced the `Label` component in the floating position with a raw `<label>` element and `style={{ fontSize: isFloating ? "0.625rem" : "0.875rem" }}`. Inline styles are always authoritative regardless of CSS layers or specificity. CSS `transition-all` still animates the change.
 
-### Gold Field — Select + floating label conflict
-`Field` originally applied the floating label pattern (absolute-positioned label, `pt-5` clone) to **all** children, including `<Select>`. Select triggers manage their own display content, so the floating label overlapped the placeholder. Two-part fix:
-1. `supportsFloating` guard: only `Input` and `Textarea` children get the floating label path. Select and other compound children fall back to a label-above layout.
-2. **Label consistency (option 3):** the fallback label is a **mini label** (`0.625rem`, `font-semibold`, muted) — visually matching the permanently-floated state — rather than a full `typo-label`. This makes all Gold form labels uniform: text inputs animate into the mini position, Select/RadioGroup/etc. start there.
+### Gold Field — Select floating label (v0.2.1)
+Extended `supportsFloating` to include `Select`. Three changes:
+
+1. **`SelectTrigger` height:** when inside a `[data-floating-select]` wrapper, the trigger grows to `3.5rem` with `pt-5 pb-2 items-end` via Tailwind v4 ancestor-selector utilities (`[[data-floating-select]_&]:!h-[3.5rem]` etc.). This gives the label room to float above the selected value.
+2. **Open-state tracking:** `Field` injects `onOpenChange` into the Select clone. `isFocused` is driven entirely by `onOpenChange(open)` — DOM focus/blur events are disabled for Select because Base UI returns focus to the trigger on close, which would re-raise `onFocusCapture` and lock the label up.
+3. **Value-state tracking:** `hasValue` for Select is derived directly from `children.props.value` (the controlled prop), so any programmatic update is reflected immediately.
+
+`RadioGroup`, `Checkbox`, and other compound children fall back to a permanent **mini label** (`0.625rem`, `font-semibold`, muted) — same visual as the floated state.
+
+### Gold Field — CSS peer-driven floating label for Input/Textarea (v0.2.1)
+Replaced the JS event-listener approach (`onChangeCapture` / `stateHasValue`) with CSS-only peer variants. The input receives a `peer` class (via `cloneElement`); the label uses:
+- `peer-focus:` — floats when the input is focused
+- `peer-[:not(:placeholder-shown)]:` — floats whenever the input has a value, regardless of focus state, React version, or whether the input is controlled vs uncontrolled
+
+`Field` also ensures a `placeholder=" "` (space) default via `cloneElement` so `:placeholder-shown` works even when the caller doesn't set one. This eliminates the whole class of bugs where the label would fail to stay floated after blur for controlled inputs, pre-filled values, or autofill.
 
 ### `ui-cikal-showcase` improvements
 - **Back button:** `← Catalog` link added to the showcase header (`<a href="/">`) so users can return to the playground home.
 - **Skeleton section (Gold only):** when the tier switcher is on Gold, an "Atoms — Skeleton" section appears with text-line, avatar, and card placeholder previews — mirroring the Gold catalog page.
 - **EventGrid loading state (Gold only):** the EventGrid section gains a "Loading state" row on Gold, showing the skeleton-grid the Gold `EventGrid` ships with.
 - **Floating label placeholder fix:** Field-wrapped inputs in the showcase use `placeholder=" "` (single space) on Gold so the placeholder text doesn't overlap with the label in its unfloated center position.
+- **Controlled Select in Registration Form:** the Role field is now a controlled `<Select value={role} onValueChange={setRole}>` so `Field` can derive `hasValue` from props and correctly float/unfloat the label.
+
+### Release — `ui-base-gold@0.2.1` (2026-06-22)
+- Published to `https://npm.pkg.github.com`
+- Includes all post-launch refinements: floating label for Select, CSS peer-driven floating label for Input/Textarea
+- `ui-cikal-showcase@0.2.1` tagged (private, not published)
 
 ---
 
