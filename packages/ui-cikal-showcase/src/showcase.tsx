@@ -6,6 +6,18 @@ import { TierSwitcher } from "./tier/tier-switcher"
 import { cn } from "./utils/cn"
 import type { EventCardProps } from "@handharr-labs/ui-base-bronze"
 
+// ── Brand assets ──────────────────────────────────────────────────────────────
+
+function CikalLogoMark() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="6" fill="var(--primary)" />
+      <path d="M9 19L14 9l5 10" stroke="var(--primary-foreground)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <line x1="11" y1="15" x2="17" y2="15" stroke="var(--primary-foreground)" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function Section({
@@ -320,6 +332,22 @@ export function CikalShowcase() {
           </div>
         </Section>
 
+        {/* Atoms — Spinner (Bronze + Silver: primary loading pattern; Gold: available for nav/page-level use) */}
+        <Section title="Atoms — Spinner">
+          <div className="grid grid-cols-3 gap-4 max-w-xs mb-4">
+            <PreviewCard label="size: sm"><T.Spinner size="sm" /></PreviewCard>
+            <PreviewCard label="size: default"><T.Spinner size="default" /></PreviewCard>
+            <PreviewCard label="size: lg"><T.Spinner size="lg" /></PreviewCard>
+          </div>
+          <p className="typo-caption text-[var(--muted-foreground)]">
+            {isGold
+              ? "Gold uses Skeleton for component-level loading; Spinner is available for page/navigation contexts."
+              : tier === "silver"
+                ? "Silver: SVG arc with rounded linecap — clean track + colored arc."
+                : "Bronze: CSS border-trick spinner — simple, zero-dependency circular loader."}
+          </p>
+        </Section>
+
         {/* Atoms — Skeleton (Gold only) */}
         {isGold && T.Skeleton && (
           <Section title="Atoms — Skeleton">
@@ -404,12 +432,8 @@ export function CikalShowcase() {
         {/* Organisms — EventGrid */}
         <Section title="Organisms — EventGrid" tierInvariant>
           <T.EventGrid items={MOCK_ITEMS} className="mb-8" />
-          {isGold && (
-            <>
-              <p className="typo-section-label text-[var(--muted-foreground)] mb-3">Loading state</p>
-              <T.EventGrid items={[]} loading={true} className="mb-8" />
-            </>
-          )}
+          <p className="typo-section-label text-[var(--muted-foreground)] mb-3">Loading state</p>
+          <T.EventGrid items={[]} loading={true} className="mb-8" />
           <p className="typo-section-label text-[var(--muted-foreground)] mb-3">Empty state</p>
           <T.EventGrid items={[]} />
         </Section>
@@ -436,31 +460,28 @@ export function CikalShowcase() {
         {/* Organisms — NavBar */}
         <Section title="Organisms — NavBar" tierInvariant>
           <div className="rounded-xl border border-[var(--border)] overflow-hidden">
-            <p className="typo-section-label text-[var(--muted-foreground)] px-4 pt-3 pb-1">Guest</p>
-            <T.NavBar
-              logo={<span className="typo-card-title text-[var(--primary)] font-bold">CIKAL</span>}
-              links={NAV_LINKS}
-              onLogin={() => {}}
-            />
+            <p className="typo-section-label text-[var(--muted-foreground)] px-4 pt-3 pb-1">Logo only</p>
+            <T.NavBar logo={<CikalLogoMark />} links={NAV_LINKS} onLogin={() => {}} />
+          </div>
+          <div className="rounded-xl border border-[var(--border)] overflow-hidden mt-4">
+            <p className="typo-section-label text-[var(--muted-foreground)] px-4 pt-3 pb-1">Logo + name</p>
+            <T.NavBar logo={<CikalLogoMark />} brandName="CIKAL" showBrandName links={NAV_LINKS} onLogin={() => {}} />
           </div>
           <div className="rounded-xl border border-[var(--border)] overflow-hidden mt-4">
             <p className="typo-section-label text-[var(--muted-foreground)] px-4 pt-3 pb-1">Logged in</p>
-            <T.NavBar
-              logo={<span className="typo-card-title text-[var(--primary)] font-bold">CIKAL</span>}
-              links={NAV_LINKS}
-              user={{ name: "Budi Santoso", size: "sm" }}
-            />
+            <T.NavBar logo={<CikalLogoMark />} links={NAV_LINKS} user={{ name: "Budi Santoso", size: "sm" }} />
           </div>
         </Section>
 
         {/* Organisms — Footer */}
         <Section title="Organisms — Footer" tierInvariant>
           <div className="rounded-xl border border-[var(--border)] overflow-hidden">
-            <T.Footer
-              logo={<span className="typo-card-title text-[var(--primary)] font-bold">CIKAL</span>}
-              links={FOOTER_LINKS}
-              copyright="© 2026 Cikal — Sekolah Cikal"
-            />
+            <p className="typo-section-label text-[var(--muted-foreground)] px-4 pt-3 pb-1">Logo only</p>
+            <T.Footer logo={<CikalLogoMark />} links={FOOTER_LINKS} copyright="© 2026 Cikal — Sekolah Cikal" />
+          </div>
+          <div className="rounded-xl border border-[var(--border)] overflow-hidden mt-4">
+            <p className="typo-section-label text-[var(--muted-foreground)] px-4 pt-3 pb-1">Logo + name</p>
+            <T.Footer logo={<CikalLogoMark />} brandName="CIKAL" showBrandName links={FOOTER_LINKS} copyright="© 2026 Cikal — Sekolah Cikal" />
           </div>
         </Section>
 
