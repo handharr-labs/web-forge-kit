@@ -4,9 +4,11 @@ Handharr Labs · Web Forge Kit — shared packages for Next.js apps
 
 ## Architecture
 
+- **Glossary (All Terms):** `docs/principles/glossary.md`
 - **Design Principles (What & Why):** `docs/principles/design-principles.md`
 - **Conventions (What, How, When):** `docs/principles/conventions.md`
 - **Directory Structure (What & Where):** `docs/principles/directory-structure.md`
+- **Tiered Design System (Tiers, Brand Packages, Rules):** `docs/principles/tiered-design-system.md`
 
 ## Principles
 
