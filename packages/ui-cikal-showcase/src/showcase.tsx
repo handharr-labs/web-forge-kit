@@ -125,6 +125,37 @@ const FOOTER_LINKS = [
   { label: "Contact",  href: "#" },
 ]
 
+const TABLE_ROWS = [
+  { name: "Rina Setiawan", role: "Captain", status: "Active",  score: "92" },
+  { name: "Budi Hartono",  role: "Student", status: "Active",  score: "88" },
+  { name: "Sari Dewi",     role: "Student", status: "Pending", score: "74" },
+]
+
+const STAT_CARDS = [
+  { label: "Registered Participants", value: "1,248", delta: "+18% vs last month",  deltaDirection: "up"      as const },
+  { label: "Active Competitions",     value: "12",    delta: "−2 vs last quarter",  deltaDirection: "down"    as const },
+  { label: "Pass Rate",               value: "87%",   delta: "Stable",              deltaDirection: "neutral" as const },
+]
+
+const SIDEBAR_GROUPS = [
+  {
+    label: "Main",
+    items: [
+      { label: "Dashboard", href: "#", active: true },
+      { label: "Events",    href: "#" },
+      { label: "Results",   href: "#" },
+    ],
+  },
+  {
+    label: "Settings",
+    collapsible: true,
+    items: [
+      { label: "Account",       href: "#" },
+      { label: "Notifications", href: "#" },
+    ],
+  },
+]
+
 const MOCK_ITEMS: EventCardProps[] = [
   {
     title: "Cikal Math Olympiad 2026",
@@ -373,6 +404,33 @@ export function CikalShowcase() {
           </Section>
         )}
 
+        {/* Atoms — Table */}
+        <Section title="Atoms — Table">
+          <div className="overflow-hidden rounded-xl border border-[var(--border)]">
+            <T.Table>
+              <T.TableHeader>
+                <T.TableRow>
+                  <T.TableHead>Name</T.TableHead>
+                  <T.TableHead>Role</T.TableHead>
+                  <T.TableHead>Status</T.TableHead>
+                  <T.TableHead>Score</T.TableHead>
+                </T.TableRow>
+              </T.TableHeader>
+              <T.TableBody>
+                {TABLE_ROWS.map((row) => (
+                  <T.TableRow key={row.name}>
+                    <T.TableCell className="font-medium">{row.name}</T.TableCell>
+                    <T.TableCell>{row.role}</T.TableCell>
+                    <T.TableCell>{row.status}</T.TableCell>
+                    <T.TableCell>{row.score}</T.TableCell>
+                  </T.TableRow>
+                ))}
+              </T.TableBody>
+              <T.TableCaption>Registered participants — demonstration data</T.TableCaption>
+            </T.Table>
+          </div>
+        </Section>
+
         {/* Molecules — SearchBar */}
         <Section title="Molecules — SearchBar" tierInvariant>
           <div className="max-w-sm">
@@ -425,6 +483,21 @@ export function CikalShowcase() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {MOCK_ITEMS.map((item) => (
               <T.EventCard key={item.title} {...item} />
+            ))}
+          </div>
+        </Section>
+
+        {/* Molecules — StatCard */}
+        <Section title="Molecules — StatCard">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {STAT_CARDS.map((card) => (
+              <T.StatCard
+                key={card.label}
+                label={card.label}
+                value={card.value}
+                delta={card.delta}
+                deltaDirection={card.deltaDirection}
+              />
             ))}
           </div>
         </Section>
@@ -483,6 +556,29 @@ export function CikalShowcase() {
             <p className="typo-section-label text-[var(--muted-foreground)] px-4 pt-3 pb-1">Logo + name</p>
             <T.Footer logo={<CikalLogoMark />} brandName="CIKAL" showBrandName links={FOOTER_LINKS} copyright="© 2026 Cikal — Sekolah Cikal" />
           </div>
+        </Section>
+
+        {/* Organisms — Sidebar */}
+        <Section title="Organisms — Sidebar">
+          <div className="overflow-hidden rounded-xl border border-[var(--border)] flex h-56">
+            <T.Sidebar
+              logo={<CikalLogoMark />}
+              brandName="CIKAL"
+              showBrandName
+              groups={SIDEBAR_GROUPS}
+              user={{ name: "Budi Santoso" }}
+            />
+            <div className="flex-1 p-6 bg-[var(--background)]">
+              <p className="typo-body text-[var(--muted-foreground)]">App content area</p>
+            </div>
+          </div>
+          <p className="typo-caption text-[var(--muted-foreground)] mt-1">
+            {tier === "bronze"
+              ? "Bronze: static navigation, collapsible prop has no effect."
+              : tier === "silver"
+                ? "Silver: native <details> collapse — try the Settings group."
+                : "Gold: animated collapse with ChevronDown rotation."}
+          </p>
         </Section>
 
         {/* Composed — Registration Form */}
