@@ -109,6 +109,7 @@ export function XpnsioCatalog() {
   const [month, setMonth] = useState("June 2026");
 
   return (
+    <div className="tier-xpnsio">
     <main className="min-h-screen p-10 max-w-4xl mx-auto">
       <header className="mb-10 flex items-start justify-between gap-4">
         <div>
@@ -275,5 +276,6 @@ export function XpnsioCatalog() {
         </div>
       </Section>
     </main>
+    </div>
   );
 }
