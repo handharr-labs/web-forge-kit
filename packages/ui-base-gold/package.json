@@ -7,7 +7,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./*": "./src/*.ts",
-    "./tokens/globals.css": "./src/tokens/globals.css"
+    "./tokens/globals.css": "./src/tokens/globals.css",
+    "./catalog": "./src/catalog.tsx"
   },
   "files": [
     "src"
