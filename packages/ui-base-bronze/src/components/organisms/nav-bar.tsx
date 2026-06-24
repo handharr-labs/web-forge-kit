@@ -15,11 +15,13 @@ interface NavBarProps {
   links?: NavLink[]
   user?: AvatarProps
   onLogin?: () => void
+  /** Custom right-side action content. Overrides the default avatar/login button when provided. */
+  actions?: React.ReactNode
   onMenuClick?: () => void
   className?: string
 }
 
-function NavBar({ logo, brandName, showBrandName, links = [], user, onLogin, onMenuClick, className }: NavBarProps) {
+function NavBar({ logo, brandName, showBrandName, links = [], user, onLogin, actions, onMenuClick, className }: NavBarProps) {
   const shouldShowBrandName = showBrandName ?? !logo
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
@@ -67,11 +69,13 @@ function NavBar({ logo, brandName, showBrandName, links = [], user, onLogin, onM
           )}
         </div>
         <div className="flex items-center gap-2">
-          {user ? (
-            <Avatar {...user} />
-          ) : (
-            onLogin && (
-              <Button size="sm" onClick={onLogin}>Login</Button>
+          {actions ?? (
+            user ? (
+              <Avatar {...user} />
+            ) : (
+              onLogin && (
+                <Button size="sm" onClick={onLogin}>Login</Button>
+              )
             )
           )}
           {showHamburger && (
