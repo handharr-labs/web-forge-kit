@@ -3,6 +3,8 @@ export type { ApiClient, ApiClientConfig, RequestOptions } from "./network/ApiCl
 export { FetchApiClient } from "./network/ApiClient";
 export { ApiError, isApiError } from "./network/ApiError";
 export type { ApiErrorCode } from "./network/ApiError";
+export { mapApiError } from "./network/mapApiError";
+export type { MapApiErrorOptions } from "./network/mapApiError";
 export type { TokenService } from "./network/TokenService";
 export { AuthenticatedApiClient } from "./network/AuthenticatedApiClient";
 export type {
