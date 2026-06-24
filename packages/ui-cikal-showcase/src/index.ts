@@ -1,10 +1,14 @@
 // Utils
 export { cn } from "./utils/cn"
 
-// Tier machinery
-export { TierProvider, useTier, useTierComponents } from "./tier/tier-context"
-export type { Tier } from "./tier/tier-context"
-export { TierSwitcher } from "./tier/tier-switcher"
+// Tier machinery — re-exported from the brand-free runtime engine
+export {
+  TierProvider,
+  useTier,
+  useTierComponents,
+  TierSwitcher,
+} from "@handharr-labs/ui-tier-runtime"
+export type { Tier } from "@handharr-labs/ui-tier-runtime"
 
 // Catalog
 export { CikalCatalog } from "./catalog"

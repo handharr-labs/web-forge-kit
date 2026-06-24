@@ -1,8 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useTierComponents, useTier } from "./tier/tier-context"
-import { TierSwitcher } from "./tier/tier-switcher"
+import { useTierComponents, useTier, TierSwitcher } from "@handharr-labs/ui-tier-runtime"
 import { cn } from "./utils/cn"
 import type { EventCardProps } from "@handharr-labs/ui-base-bronze"
 
