@@ -28,19 +28,21 @@ function EventCard({
         <img src={imageUrl} alt={title} className="w-full h-40 object-cover" />
       )}
       <CardHeader>
-        <div className="flex items-start justify-between gap-2">
-          <CardTitle>{title}</CardTitle>
-          {badge && <Badge variant={badgeVariant}>{badge}</Badge>}
-        </div>
+        <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
+        {badge && (
+          <div className="mt-1">
+            <Badge variant={badgeVariant}>{badge}</Badge>
+          </div>
+        )}
       </CardHeader>
       {meta && (
-        <CardContent>
+        <CardContent className="mt-auto">
           <span className="typo-caption text-[var(--muted-foreground)]">{meta}</span>
         </CardContent>
       )}
       {onAction && (
-        <CardFooter>
+        <CardFooter className={cn(!meta && "mt-auto")}>
           <Button size="sm" onClick={onAction} className="ml-auto">
             {actionLabel}
           </Button>
