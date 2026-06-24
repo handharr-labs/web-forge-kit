@@ -12,7 +12,8 @@
     ]
   },
   "files": [
-    "src"
+    "src",
+    "!src/**/*.test.ts"
   ],
   "dependencies": {
     "@handharr-labs/core": "*"
@@ -41,5 +42,8 @@
   "devDependencies": {
     "@supabase/ssr": "0.9.0",
     "@tanstack/react-query": "^5.101.0"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
   }
 }

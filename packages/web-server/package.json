@@ -12,7 +12,8 @@
     ]
   },
   "files": [
-    "src"
+    "src",
+    "!src/**/*.test.ts"
   ],
   "dependencies": {
     "@handharr-labs/core": "*"
@@ -51,5 +52,8 @@
     "@types/node": "25.9.3",
     "drizzle-orm": "0.45.1",
     "postgres": "3.4.8"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
   }
 }
