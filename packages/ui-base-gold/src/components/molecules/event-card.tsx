@@ -42,14 +42,16 @@ function EventCard({
         <img src={imageUrl} alt={title} className="w-full h-40 object-cover" />
       )}
       <CardHeader>
-        <div className="flex items-start justify-between gap-2">
-          <CardTitle>{title}</CardTitle>
-          {badge && <Badge variant={badgeVariant}>{badge}</Badge>}
-        </div>
+        <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
+        {badge && (
+          <div className="mt-1">
+            <Badge variant={badgeVariant}>{badge}</Badge>
+          </div>
+        )}
       </CardHeader>
       {meta && (
-        <CardContent>
+        <CardContent className="mt-auto">
           <div className="flex items-center gap-1.5 text-[var(--muted-foreground)]">
             <Calendar className="size-3.5 shrink-0" />
             <span className="typo-caption">{meta}</span>
@@ -57,7 +59,7 @@ function EventCard({
         </CardContent>
       )}
       {onAction && (
-        <CardFooter>
+        <CardFooter className={cn(!meta && "mt-auto")}>
           <Button size="sm" onClick={onAction} className="ml-auto">
             {actionLabel}
           </Button>

@@ -79,8 +79,8 @@ const TYPO_CLASSES = [
 ]
 
 const MOCK_ITEMS: EventCardProps[] = [
-  { title: "Annual Report", description: "Finance department summary", meta: "Due Jan 15", badge: "Info", badgeVariant: "info", onAction: () => {}, actionLabel: "View" },
-  { title: "Team Offsite", description: "Q2 planning retreat", meta: "Mar 20–22", badge: "Upcoming", badgeVariant: "success", onAction: () => {}, actionLabel: "RSVP" },
+  { title: "Standup", description: "Finance department summary", meta: "Due Jan 15", badge: "Info", badgeVariant: "info", onAction: () => {}, actionLabel: "View" },
+  { title: "Quarterly Business Review & Planning Offsite", description: "Q2 planning retreat", meta: "Mar 20–22", badge: "Upcoming", badgeVariant: "success", onAction: () => {}, actionLabel: "RSVP" },
   { title: "Security Audit", description: "Infrastructure review", meta: "Completed", badge: "Done", badgeVariant: "muted" },
 ]
 
@@ -378,12 +378,23 @@ export function GoldCatalog() {
           </Section>
 
           <Section title="Molecules — EventCard">
-            <div className="flex flex-wrap gap-4">
-              {MOCK_ITEMS.map((item) => (
-                <div key={item.title} className="w-64">
-                  <EventCard {...item} />
-                </div>
-              ))}
+            <div className="flex flex-col gap-2">
+              <p className="typo-caption text-[var(--muted-foreground)]">Natural height — flex wrap</p>
+              <div className="flex flex-wrap gap-4">
+                {MOCK_ITEMS.map((item) => (
+                  <div key={item.title} className="w-64">
+                    <EventCard {...item} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="typo-caption text-[var(--muted-foreground)]">Equal height — grid, items stretch</p>
+              <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-3">
+                {MOCK_ITEMS.map((item) => (
+                  <EventCard key={item.title} {...item} className="h-full" />
+                ))}
+              </div>
             </div>
           </Section>
 
@@ -400,6 +411,18 @@ export function GoldCatalog() {
             </PreviewCard>
             <PreviewCard label="logo only — logged in">
               <NavBar logo={<LogoMark />} links={NAV_LINKS} user={{ name: "Jane Doe", size: "sm" }} />
+            </PreviewCard>
+            <PreviewCard label="custom actions slot (overrides login)">
+              <NavBar
+                logo={<LogoMark />}
+                links={NAV_LINKS}
+                actions={
+                  <>
+                    <Button size="sm" variant="ghost">Sign in</Button>
+                    <Button size="sm">Sign up</Button>
+                  </>
+                }
+              />
             </PreviewCard>
           </Section>
 
