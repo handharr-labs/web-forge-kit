@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useTier, type Tier } from "./tier-context"
-import { cn } from "../utils/cn"
+import { cn } from "./utils/cn"
 
 const TIER_OPTIONS: { value: Tier; label: string }[] = [
   { value: "bronze", label: "Bronze" },

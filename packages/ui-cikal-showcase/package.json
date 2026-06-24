@@ -14,9 +14,8 @@
     "src"
   ],
   "dependencies": {
+    "@handharr-labs/ui-tier-runtime": "*",
     "@handharr-labs/ui-base-bronze": "*",
-    "@handharr-labs/ui-base-silver": "*",
-    "@handharr-labs/ui-base-gold": "*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "tailwind-merge": "^3.5.0"

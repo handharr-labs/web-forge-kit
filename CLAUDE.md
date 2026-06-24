@@ -27,6 +27,7 @@ Clean Architecture · DRY · SOLID — apply to all new code.
 | `@handharr-labs/ui-base-bronze` | Frontend | Tier 1 design system — functional, minimal, no animation |
 | `@handharr-labs/ui-base-silver` | Frontend | Tier 2 design system — polished, production-ready |
 | `@handharr-labs/ui-base-gold` | Frontend | Tier 3 design system — premium, animated interactions |
+| `@handharr-labs/ui-tier-runtime` | Frontend | Brand-free runtime tier-switching engine — swaps Bronze/Silver/Gold at runtime (demo-class) |
 | `@handharr-labs/ui-{name}` | Frontend | Client brand layer — extends exactly one base tier |
 | `@handharr-labs/ui-{name}-showcase` | Frontend | Pre-deal multi-tier demo — playground only, never production |
 
