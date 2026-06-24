@@ -85,7 +85,7 @@ Backend-specific primitives — DB adapters, server action utilities.
 ```
 packages/web-server/src/
   db/             DatabaseClient interface, createDrizzlePostgresClient (subpath: db/drizzle)
-  actions/        handleServerActionError, ServerActionResult
+  actions/        handleServerActionError, toServerActionResult, ServerActionResult
 ```
 
 ---
@@ -143,66 +143,8 @@ packages/ui-cikal-showcase/src/
 
 ## Downstream App Structure
 
-Each app repo focuses on features. Shared primitives come from `@handharr-labs/*`.
+This file documents the **kit packages**. The downstream app's own layout — feature folder structure, file naming, and which package each layer may import — lives in the feature guide:
 
-```
-my-next-app/
-  src/
-    app/                    Next.js App Router — layouts, pages, route handlers, server actions
-    features/               Feature modules — one folder per domain feature
-      {feature}/
-        domain/
-          interfaces/       Repository + Gateway interfaces
-          models/           Pure TypeScript types
-          params/           UseCase input types + Request typealiases
-          use-cases/        Stateless orchestrators
-          services/         Stateful long-lived domain logic
-        data/
-          dtos/             API/DB schema mirrors
-          datasources/      Remote + Local datasource classes
-          mappers/          DTO → Domain mappers (pure functions)
-          repositories/     Repository implementations
-        presentation/
-          components/       React components (Server and Client)
-          hooks/            useViewModel hooks — domain ↔ React bridge
-          types/            ViewModel types (display-ready, flat)
-        infrastructure/     Gateway implementations (third-party SDKs)
-```
+→ **[web-architecture/directory-structure.md](../web-architecture/directory-structure.md)**
 
----
-
-## Layer Map
-
-```
-Layer              What                          Where (in downstream app)
-──────────────────────────────────────────────────────────────────────────
-Presentation       Page / Component / Hook        src/features/{f}/presentation/
-Domain             UseCase / Service / Interface  src/features/{f}/domain/
-Data               Repository / DataSource / DTO  src/features/{f}/data/
-Application        Layout / DI / Provider         src/app/
-Infrastructure     Gateway                        src/features/{f}/infrastructure/
-External           SDKs / browser APIs            node_modules / built-in
-Shared packages    Core / WebClient / UI          node_modules/@handharr-labs/
-```
-
----
-
-## Dependency Flow
-
-```
-Presentation → Domain ← Data
-                 ↑
-            Application (wires everything)
-                 ↑
-          Infrastructure (conforms to Domain interfaces)
-                 ↑
-             External (SDKs, browser APIs)
-
-@handharr-labs/core ← @handharr-labs/web-client
-                    ← @handharr-labs/web-server
-
-@handharr-labs/ui-base-bronze  (standalone)
-@handharr-labs/ui-base-silver  (standalone)
-@handharr-labs/ui-base-gold    (standalone)
-@handharr-labs/ui-{name}  ← ui-base-bronze | ui-base-silver | ui-base-gold (one tier)
-```
+The package dependency graph the app builds on is the [Package dependency graph](#package-dependency-graph) above.

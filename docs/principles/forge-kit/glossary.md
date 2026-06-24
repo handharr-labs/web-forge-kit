@@ -47,6 +47,7 @@ A single, alphabetical index of every term coined — or given a project-specifi
 | Layer Dependency Rule | [Architecture](design-principles.md#core-philosophy) | Structural constraint: Presentation → Domain ← Data; Domain depends on nothing. |
 | LocalStorageCacheClient | [web-client](directory-structure.md#handharr-labsweb-client) | `CacheClient` backend backed by `localStorage` — survives reload; used for preferences and recent searches. |
 | Logger | [core](directory-structure.md#handharr-labscore) | Injected logging interface with `debug/info/warn/error` levels; `child(context)` creates scoped loggers. |
+| mapApiError | [web-client](directory-structure.md#handharr-labsweb-client) | The transport→domain error boundary — maps a thrown `ApiError` (or any error) to a `DomainError`; called in every repository `catch`. Shipped by the kit, never re-implemented per app. |
 | Mapper | [Conventions](conventions.md#naming-conventions) | Pure function that converts a DTO to a Domain model; lives in `data/mappers/`. |
 | Molecules | [Design System](tiered-design-system.md#component-scope) | Mid-level design system components built from atoms: Field, SearchBar, Card. |
 | Organisms | [Design System](tiered-design-system.md#component-scope) | Full-section design system components: NavBar, HeroSection, Footer, EventGrid. |
