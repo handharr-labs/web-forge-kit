@@ -22,9 +22,18 @@ type EnvOutput<T extends EnvSchema> = {
  *     STRIPE_KEY:   { required: true, secret: true },
  *   });
  */
+/**
+ * Default env source. Read via `globalThis` rather than the Node-only `process`
+ * global so `core` stays platform-agnostic — it compiles and runs unchanged in
+ * the browser and Edge runtimes (where `process` is absent) without requiring
+ * `@types/node`. Node callers get `process.env` automatically.
+ */
+const defaultEnvSource: Record<string, string | undefined> =
+  (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env ?? {};
+
 export function createEnv<T extends EnvSchema>(
   schema: T,
-  source: Record<string, string | undefined> = process.env
+  source: Record<string, string | undefined> = defaultEnvSource
 ): EnvOutput<T> {
   const result: Record<string, string> = {};
   const missing: string[] = [];

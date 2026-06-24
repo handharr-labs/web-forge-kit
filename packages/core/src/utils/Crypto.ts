@@ -28,19 +28,31 @@ export function randomBytes(length: number): Uint8Array {
   return crypto.getRandomValues(new Uint8Array(length));
 }
 
-/** Constant-time string comparison — prevents timing attacks on token/secret comparison. */
+/**
+ * Constant-time string comparison — prevents timing attacks on token/secret
+ * comparison.
+ *
+ * Uses the double-HMAC technique: both inputs are HMAC'd under a single
+ * per-call random key, producing two fixed-length (32-byte) digests that are
+ * then compared without early return. Because the digests are always the same
+ * length regardless of input, neither the length nor the content of `a`/`b`
+ * leaks through timing.
+ */
 export async function safeCompare(a: string, b: string): Promise<boolean> {
+  const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
     "raw",
-    new TextEncoder().encode(a),
+    crypto.getRandomValues(new Uint8Array(32)),
     { name: "HMAC", hash: "SHA-256" },
     false,
     ["sign"]
   );
-  const sig1 = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(a));
-  const sig2 = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(b));
-  const arr1 = new Uint8Array(sig1);
-  const arr2 = new Uint8Array(sig2);
-  if (arr1.length !== arr2.length) return false;
-  return arr1.every((val, i) => val === arr2[i]);
+  const sigA = new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(a)));
+  const sigB = new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(b)));
+
+  let diff = 0;
+  for (let i = 0; i < sigA.length; i++) {
+    diff |= sigA[i] ^ sigB[i];
+  }
+  return diff === 0;
 }
