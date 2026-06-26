@@ -115,3 +115,24 @@ Repo scaffolded at `../cikal-prototype` (sibling of forgekit). **PRD-driven** �
 **Not yet built:** form validation/submission, auth, backoffice management (participants/sports/events/reconciliation), checkout, history, charts. Nav uses tier `NavBar` anchors (full reload) rather than `next/link`.
 
 **Run:** `export NODE_AUTH_TOKEN=ghp_… && npm run dev` in `../cikal-prototype`.
+
+---
+
+## Component promotion (2026-06-26): generic prototype molecules → base tiers
+
+Audited the prototype's custom components in `../cikal-prototype/src/components`. Four were generic and domain-free; promoted into **all three** `ui-base-*` tiers as tier-invariant molecules (they defer visual polish to the atoms they wrap — `Card`/`Modal`/`SearchBar`/`FilterSelect` — exactly like the existing byte-identical `PageHeader`):
+
+| Component | What it is |
+|---|---|
+| `SectionIntro` | Eyebrow + title + lead paragraph — public-page counterpart to `PageHeader` |
+| `SummaryRow` | Presentational card list-row: title + meta + status slot + action slot |
+| `FilterBar` | Search + filter-select row with conditional Reset; composes `SearchBar` + `FilterSelect` |
+| `PreviewModal` | `Modal` wrapping a dashed placeholder tile (stand-in media) |
+
+Rewritten to import sibling tier components directly (not `useTierComponents()`, which would invert the dependency — the runtime depends on the tiers). Exported from each tier `index.ts`. `tsc --noEmit -p` clean on bronze/silver/gold; repo `type-check` + playground green.
+
+**Left in the prototype (correctly business/brand-coupled, not DS primitives):**
+- `status-badges`, `competition-form-modal` — bound to domain types in `@/lib/data` (`EventStatus`, `CompetitionEvent`, …).
+- `site-chrome` / `app-chrome` / `admin-chrome` / `app-frame` — app shells with hardcoded CIKAL nav, brand strings, `brand-cikal` scope, and the demo `TierSwitcher`. The shell *mechanics* are generic but the content is app composition; they belong in the app.
+
+**Next:** consume the promoted molecules from the tier namespace in the prototype (replace the local copies), then bump + republish the base tiers.
