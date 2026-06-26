@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/ui-base-gold",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Gold tier design system — premium, animated, elevated interactions",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

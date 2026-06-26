@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/ui-base-bronze",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Bronze tier design system — functional, minimal, no animation",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
