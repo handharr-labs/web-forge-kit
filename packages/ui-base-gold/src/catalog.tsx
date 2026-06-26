@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+import { Inbox, Moon, Sun } from "lucide-react"
 import {
   Avatar,
   Badge,
@@ -31,6 +31,18 @@ import {
   StatCard,
   Sidebar,
   Textarea,
+  ConfirmDialog,
+  CtaBand,
+  DetailRow,
+  EmptyState,
+  FileDropzone,
+  FilterSelect,
+  InfoCard,
+  Modal,
+  NativeSelect,
+  Notice,
+  PageHeader,
+  Pagination,
 } from "./index"
 import type { EventCardProps } from "./index"
 
@@ -112,6 +124,11 @@ export function GoldCatalog() {
   const [checked, setChecked] = React.useState(false)
   const [switched, setSwitched] = React.useState(false)
   const [radio, setRadio] = React.useState("a")
+  const [filter, setFilter] = React.useState("")
+  const [fileName, setFileName] = React.useState<string | null>(null)
+  const [page, setPage] = React.useState(1)
+  const [modalOpen, setModalOpen] = React.useState(false)
+  const [confirmOpen, setConfirmOpen] = React.useState(false)
   const [role, setRole] = React.useState("")
 
   return (
@@ -511,6 +528,144 @@ export function GoldCatalog() {
                 <Button type="submit" className="mt-2">Create Account</Button>
               </form>
             </div>
+          </Section>
+
+          {/* Promoted from prototype — Atoms */}
+          <Section title="Atoms — DetailRow">
+            <PreviewCard label="label / value rows">
+              <div className="flex w-full max-w-sm flex-col gap-2">
+                <DetailRow label="Competition" value="Futsal U-12" />
+                <DetailRow label="Fee" value="Rp150.000" />
+                <DetailRow label="Closing date" value="15 Jan 2026" />
+              </div>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Atoms — NativeSelect">
+            <PreviewCard label="native select — lightweight alternative to Select">
+              <NativeSelect defaultValue="">
+                <option value="" disabled>Choose a sport…</option>
+                <option value="futsal">Futsal</option>
+                <option value="basket">Basketball</option>
+                <option value="renang">Swimming</option>
+              </NativeSelect>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Atoms — Notice">
+            <PreviewCard label="inline banner">
+              <Notice>Registration closes in 3 days. Complete payment to secure your slot.</Notice>
+            </PreviewCard>
+          </Section>
+
+          {/* Promoted from prototype — Molecules */}
+          <Section title="Molecules — PageHeader">
+            <PreviewCard label="eyebrow + title + description + action">
+              <PageHeader
+                eyebrow="Backoffice"
+                title="Competitions"
+                description="Manage every competition number for the event."
+                action={<Button size="sm">Add competition</Button>}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — InfoCard">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <InfoCard eyebrow="Step 1" eyebrowTone="primary" title="Create an account" description="Register with your email to get started." />
+              <InfoCard eyebrow="Step 2" title="Enroll in a competition" description="Pick a number that matches your age group." />
+            </div>
+          </Section>
+
+          <Section title="Molecules — CtaBand">
+            <PreviewCard label="primary + secondary">
+              <CtaBand
+                title="Ready to compete?"
+                description="Create an account and enroll in minutes."
+                primary={{ label: "Get started", onClick: () => {} }}
+                secondary={{ label: "Learn more", onClick: () => {} }}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — EmptyState">
+            <PreviewCard label="icon + title + description + action">
+              <EmptyState
+                icon={<Inbox className="size-6" />}
+                title="No registrations yet"
+                description="Once participants enroll, they'll show up here."
+                action={<Button size="sm" variant="outline">Refresh</Button>}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — FilterSelect">
+            <PreviewCard label="all-seeded filter">
+              <FilterSelect
+                value={filter}
+                onChange={setFilter}
+                allLabel="All sports"
+                options={[
+                  { value: "futsal", label: "Futsal" },
+                  { value: "basket", label: "Basketball" },
+                  { value: "renang", label: "Swimming" },
+                ]}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — FileDropzone">
+            <PreviewCard label="visual file picker">
+              <div className="max-w-sm">
+                <FileDropzone
+                  label="Upload payment proof"
+                  hint="PNG or JPG, up to 5MB"
+                  accept="image/*"
+                  fileName={fileName}
+                  onFileChange={setFileName}
+                />
+              </div>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — Pagination">
+            <PreviewCard label="numbered pager">
+              <Pagination page={page} pageCount={5} onPageChange={setPage} />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — Modal & ConfirmDialog">
+            <div className="flex flex-wrap gap-3">
+              <PreviewCard label="modal (dialog)">
+                <Button onClick={() => setModalOpen(true)}>Open modal</Button>
+              </PreviewCard>
+              <PreviewCard label="confirm (alertdialog)">
+                <Button variant="danger" onClick={() => setConfirmOpen(true)}>Delete…</Button>
+              </PreviewCard>
+            </div>
+            <Modal
+              open={modalOpen}
+              title="Edit competition"
+              onClose={() => setModalOpen(false)}
+              footer={
+                <>
+                  <Button variant="outline" onClick={() => setModalOpen(false)}>Cancel</Button>
+                  <Button onClick={() => setModalOpen(false)}>Save changes</Button>
+                </>
+              }
+            >
+              <p className="text-sm text-[var(--muted-foreground)]">
+                A reusable overlay shell — scrim click and Escape both close it.
+              </p>
+            </Modal>
+            <ConfirmDialog
+              open={confirmOpen}
+              title="Delete competition?"
+              message="This action cannot be undone."
+              confirmLabel="Delete"
+              onConfirm={() => setConfirmOpen(false)}
+              onClose={() => setConfirmOpen(false)}
+            />
           </Section>
 
         </div>
