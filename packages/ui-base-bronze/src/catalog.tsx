@@ -42,6 +42,10 @@ import {
   Notice,
   PageHeader,
   Pagination,
+  SectionIntro,
+  SummaryRow,
+  FilterBar,
+  PreviewModal,
 } from "./index"
 import type { EventCardProps } from "./index"
 
@@ -127,6 +131,7 @@ export function BronzeCatalog() {
   const [page, setPage] = React.useState(1)
   const [modalOpen, setModalOpen] = React.useState(false)
   const [confirmOpen, setConfirmOpen] = React.useState(false)
+  const [previewOpen, setPreviewOpen] = React.useState(false)
 
   return (
     <div className="tier-bronze bg-[var(--background)] text-[var(--foreground)]">
@@ -635,6 +640,67 @@ export function BronzeCatalog() {
               onConfirm={() => setConfirmOpen(false)}
               onClose={() => setConfirmOpen(false)}
             />
+          </Section>
+
+          <Section title="Molecules — SectionIntro">
+            <PreviewCard label="eyebrow + title + lead — public-page header">
+              <SectionIntro
+                eyebrow="About the program"
+                title="Compete, learn, represent your school"
+                description="Open inter-school competitions across sports and academics, hosted every term."
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — SummaryRow">
+            <div className="flex w-full max-w-xl flex-col gap-3">
+              <SummaryRow
+                title="Futsal Putra U-12"
+                meta="Closes 15 Jan 2026 · Rp150.000"
+                status={<Badge variant="success">Active</Badge>}
+                action={<Button size="sm" variant="outline">View</Button>}
+              />
+              <SummaryRow
+                title="Renang 50m Gaya Bebas"
+                meta="Closes 20 Jan 2026 · Rp100.000"
+                status={<Badge variant="muted">Closed</Badge>}
+              />
+            </div>
+          </Section>
+
+          <Section title="Molecules — FilterBar">
+            <FilterBar
+              search={{ value: search, onChange: setSearch, placeholder: "Search competitions..." }}
+              filters={[
+                {
+                  value: filter,
+                  onChange: setFilter,
+                  allLabel: "All sports",
+                  options: [
+                    { value: "futsal", label: "Futsal" },
+                    { value: "basket", label: "Basketball" },
+                    { value: "renang", label: "Swimming" },
+                  ],
+                },
+              ]}
+              onReset={() => { setSearch(""); setFilter("") }}
+              trailing={<Button size="sm">Add</Button>}
+            />
+          </Section>
+
+          <Section title="Molecules — PreviewModal">
+            <PreviewCard label="modal wrapping a placeholder media tile">
+              <Button onClick={() => setPreviewOpen(true)}>Open preview</Button>
+            </PreviewCard>
+            {previewOpen && (
+              <PreviewModal
+                title="Payment proof"
+                caption="Image preview unavailable in prototype"
+                onClose={() => setPreviewOpen(false)}
+              >
+                <span className="typo-caption text-[var(--muted-foreground)]">proof-152.jpg</span>
+              </PreviewModal>
+            )}
           </Section>
 
         </div>
