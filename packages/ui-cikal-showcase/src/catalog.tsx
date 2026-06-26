@@ -228,6 +228,8 @@ export function CikalCatalog() {
   const fp = isGold ? " " : undefined
 
   const [search, setSearch] = React.useState("")
+  const [filter, setFilter] = React.useState("")
+  const [previewOpen, setPreviewOpen] = React.useState(false)
   const [radioSize, setRadioSize] = React.useState("m")
   const [regData, setRegData] = React.useState({
     name: "",
@@ -752,6 +754,69 @@ export function CikalCatalog() {
               </T.CardContent>
             </T.Card>
           </div>
+        </Section>
+
+        {/* Molecules — SectionIntro */}
+        <Section title="Molecules — SectionIntro" tierInvariant>
+          <T.SectionIntro
+            eyebrow="About CIKAL"
+            title="Compete, learn, and represent your school"
+            description="CIKAL hosts inter-school olympiads, debates, and science fairs open to every student."
+          />
+        </Section>
+
+        {/* Molecules — SummaryRow */}
+        <Section title="Molecules — SummaryRow" tierInvariant>
+          <div className="flex flex-col gap-3">
+            <T.SummaryRow
+              title="Cikal Math Olympiad 2026"
+              meta="Closes Jul 10 · Open to all students"
+              status={<T.Badge variant="info">Upcoming</T.Badge>}
+              action={<T.Button size="sm" variant="outline">View</T.Button>}
+            />
+            <T.SummaryRow
+              title="National Science Fair Qualifier"
+              meta="Closed May 11 · Hosted by Cikal Surabaya"
+              status={<T.Badge variant="muted">Closed</T.Badge>}
+            />
+          </div>
+        </Section>
+
+        {/* Molecules — FilterBar */}
+        <Section title="Molecules — FilterBar" tierInvariant>
+          <T.FilterBar
+            search={{ value: search, onChange: setSearch, placeholder: "Search competitions..." }}
+            filters={[
+              {
+                value: filter,
+                onChange: setFilter,
+                allLabel: "All categories",
+                options: [
+                  { value: "olympiad", label: "Olympiad" },
+                  { value: "debate", label: "Debate" },
+                  { value: "science", label: "Science Fair" },
+                ],
+              },
+            ]}
+            onReset={() => { setSearch(""); setFilter("") }}
+            trailing={<T.Button size="sm">Add</T.Button>}
+          />
+        </Section>
+
+        {/* Molecules — PreviewModal */}
+        <Section title="Molecules — PreviewModal">
+          <PreviewCard label="modal wrapping a placeholder media tile">
+            <T.Button onClick={() => setPreviewOpen(true)}>Open preview</T.Button>
+          </PreviewCard>
+          {previewOpen && (
+            <T.PreviewModal
+              title="Payment proof"
+              caption="Image preview unavailable in prototype"
+              onClose={() => setPreviewOpen(false)}
+            >
+              <span className="typo-caption text-[var(--muted-foreground)]">proof-152.jpg</span>
+            </T.PreviewModal>
+          )}
         </Section>
 
       </main>
