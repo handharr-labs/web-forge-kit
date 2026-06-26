@@ -12,6 +12,15 @@ interface SidebarItem {
   active?: boolean
 }
 
+// Bottom-pinned account action (e.g. Logout) — not a navigation destination,
+// so it lives beside the user identity rather than in the nav groups.
+interface SidebarAction {
+  label: string
+  onClick?: () => void
+  href?: string
+  icon?: React.ReactNode
+}
+
 interface SidebarGroup {
   label?: string
   items: SidebarItem[]
@@ -24,14 +33,16 @@ interface SidebarProps {
   showBrandName?: boolean
   groups?: SidebarGroup[]
   user?: AvatarProps
+  actions?: SidebarAction[]
   onLogin?: () => void
   open?: boolean
   onOpenChange?: (open: boolean) => void
   className?: string
 }
 
-function Sidebar({ logo, brandName, showBrandName, groups = [], user, onLogin, open = false, onOpenChange, className }: SidebarProps) {
+function Sidebar({ logo, brandName, showBrandName, groups = [], user, actions = [], onLogin, open = false, onOpenChange, className }: SidebarProps) {
   const shouldShowBrandName = showBrandName ?? !logo
+  const actionItemClass = "flex w-full items-center gap-2 rounded-[var(--radius)] px-2 py-1.5 text-left text-sm text-[var(--muted-foreground)] hover:bg-[var(--muted)] hover:text-[var(--foreground)]"
 
   React.useEffect(() => {
     if (!open) return
@@ -52,7 +63,7 @@ function Sidebar({ logo, brandName, showBrandName, groups = [], user, onLogin, o
       <aside
         data-slot="sidebar"
         className={cn(
-          "flex-col w-56 border-r border-[var(--sidebar-border)] bg-[var(--sidebar)] fixed inset-y-0 left-0 z-40 md:static md:inset-auto md:z-auto md:h-full",
+          "flex-col w-56 border-r border-[var(--sidebar-border)] bg-[var(--sidebar)] fixed inset-y-0 left-0 z-40 md:static md:inset-auto md:z-auto md:self-stretch",
           open ? "flex" : "hidden md:flex",
           className
         )}
@@ -102,22 +113,54 @@ function Sidebar({ logo, brandName, showBrandName, groups = [], user, onLogin, o
           ))}
         </nav>
 
-        {user ? (
-          <div data-slot="sidebar-user" className="flex items-center gap-2 border-t border-[var(--sidebar-border)] px-4 py-3">
-            <Avatar {...user} size="sm" />
-            {user.name && (
-              <span className="typo-label truncate">{user.name}</span>
+        {(user || onLogin || actions.length > 0) && (
+          <div data-slot="sidebar-footer" className="border-t border-[var(--sidebar-border)]">
+            {actions.length > 0 && (
+              <ul data-slot="sidebar-actions" className="p-2">
+                {actions.map((action, ai) => (
+                  <li key={ai}>
+                    {action.href ? (
+                      <a href={action.href} onClick={action.onClick} className={actionItemClass}>
+                        {action.icon && <span className="shrink-0 [&_svg]:size-4">{action.icon}</span>}
+                        {action.label}
+                      </a>
+                    ) : (
+                      <button type="button" onClick={action.onClick} className={actionItemClass}>
+                        {action.icon && <span className="shrink-0 [&_svg]:size-4">{action.icon}</span>}
+                        {action.label}
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {user && (
+              <div
+                data-slot="sidebar-user"
+                className={cn(
+                  "flex items-center gap-2 px-4 py-3",
+                  actions.length > 0 && "border-t border-[var(--sidebar-border)]"
+                )}
+              >
+                <Avatar {...user} size="sm" />
+                {user.name && (
+                  <span className="typo-label truncate">{user.name}</span>
+                )}
+              </div>
+            )}
+
+            {!user && onLogin && (
+              <div data-slot="sidebar-login" className="px-4 py-3">
+                <Button size="sm" onClick={onLogin} className="w-full">Login</Button>
+              </div>
             )}
           </div>
-        ) : onLogin ? (
-          <div data-slot="sidebar-user" className="border-t border-[var(--sidebar-border)] px-4 py-3">
-            <Button size="sm" onClick={onLogin} className="w-full">Login</Button>
-          </div>
-        ) : null}
+        )}
       </aside>
     </>
   )
 }
 
 export { Sidebar }
-export type { SidebarProps, SidebarGroup, SidebarItem }
+export type { SidebarProps, SidebarGroup, SidebarItem, SidebarAction }
