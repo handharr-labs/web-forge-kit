@@ -1,6 +1,7 @@
 import type { AuthProviderId, OAuthProfile } from "@handharr-labs/core";
 import { createServerClient } from "@supabase/ssr";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import type {
   AuthBundle,
   DefineAuthConfig,
@@ -120,7 +121,11 @@ export function createSupabaseAdapter(config: DefineAuthConfig): AuthBundle {
         }
         // `next` is user-controlled — constrain to a same-origin relative path.
         const next = sanitizeRelativePath(url.searchParams.get("next"), "/");
-        return Response.redirect(new URL(next, url.origin));
+        // MUST be NextResponse.redirect (not the native Response.redirect): the
+        // session cookies written by exchangeCodeForSession via the cookie store
+        // are only merged onto a NextResponse, so a plain Response drops them and
+        // the session never persists.
+        return NextResponse.redirect(new URL(next, url.origin));
       },
       POST: async () => new Response(null, { status: 405 }),
     },
