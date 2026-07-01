@@ -17,6 +17,7 @@
     "@handharr-labs/ui-cikal-showcase": "*",
     "@handharr-labs/ui-xpnsio": "*",
     "@handharr-labs/web-client": "*",
+    "@handharr-labs/web-auth": "*",
     "next": "16.2.9",
     "react": "19.2.7",
     "react-dom": "19.2.7"

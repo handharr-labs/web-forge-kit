@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     "@handharr-labs/ui-cikal-showcase",
     "@handharr-labs/ui-xpnsio",
     "@handharr-labs/web-client",
+    "@handharr-labs/web-auth",
   ],
 };
 

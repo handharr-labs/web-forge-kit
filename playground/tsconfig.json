@@ -17,6 +17,9 @@
       "@handharr-labs/ui-xpnsio/*": ["../packages/ui-xpnsio/src/*"],
       "@handharr-labs/web-client": ["../packages/web-client/src/index.ts"],
       "@handharr-labs/web-client/*": ["../packages/web-client/src/*"],
+      "@handharr-labs/web-auth/server": ["../packages/web-auth/src/server/index.ts"],
+      "@handharr-labs/web-auth/client": ["../packages/web-auth/src/client/index.tsx"],
+      "@handharr-labs/web-auth/middleware": ["../packages/web-auth/src/middleware/index.ts"],
       "@/*": ["./src/*"]
     }
   },
