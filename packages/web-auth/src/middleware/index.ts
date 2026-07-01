@@ -18,6 +18,11 @@ export interface AuthMiddlewareConfig {
   adapter: AdapterId;
   secret?: string;
   loginPath?: string;
+  /**
+   * Paths refreshed but never redirected when unauthenticated (supabase adapter).
+   * `'/'` matches the exact root; other entries match by prefix.
+   */
+  publicPaths?: string[];
   supabase?: { url: string; anonKey: string };
 }
 
@@ -28,7 +33,11 @@ export function createAuthMiddleware(
     if (!config.supabase) {
       throw new Error("[web-auth/middleware] supabase adapter requires `supabase` config.");
     }
-    return createSupabaseMiddleware({ ...config.supabase, loginPath: config.loginPath });
+    return createSupabaseMiddleware({
+      ...config.supabase,
+      loginPath: config.loginPath,
+      publicPaths: config.publicPaths,
+    });
   }
 
   if (!config.secret) {

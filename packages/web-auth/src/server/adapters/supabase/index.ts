@@ -1,9 +1,10 @@
-import type { AuthProviderId } from "@handharr-labs/core";
+import type { AuthProviderId, OAuthProfile } from "@handharr-labs/core";
 import { createServerClient } from "@supabase/ssr";
 import { redirect } from "next/navigation";
 import type {
   AuthBundle,
   DefineAuthConfig,
+  SignInOptions,
   SupabaseServerConfig,
 } from "../../../shared/config";
 import { createSupabaseMiddleware } from "../../../middleware/supabase";
@@ -12,14 +13,14 @@ import { createSupabaseGateway, type AdminSignOut } from "./gateway";
 import type { RawSupabaseSession } from "./mapSession";
 
 /** Build a request-scoped Supabase server client from the app's cookie handlers. */
-function createClientForRequest(cfg: SupabaseServerConfig) {
+async function createClientForRequest(cfg: SupabaseServerConfig) {
   if (!cfg.cookies) {
     throw new Error(
       "[web-auth] supabase adapter: `supabase.cookies` is required for server-side " +
         "session access (bind it to next/headers `cookies()` in the app).",
     );
   }
-  const handlers = cfg.cookies();
+  const handlers = await cfg.cookies();
   return createServerClient(cfg.url, cfg.anonKey, {
     cookies: { getAll: handlers.getAll, setAll: handlers.setAll },
   });
@@ -28,7 +29,7 @@ function createClientForRequest(cfg: SupabaseServerConfig) {
 /** Reader that validates via getUser() and reads token/expiry via getSession(). */
 function buildReader(cfg: SupabaseServerConfig): () => Promise<RawSupabaseSession | null> {
   return async () => {
-    const client = createClientForRequest(cfg);
+    const client = await createClientForRequest(cfg);
     const {
       data: { user },
     } = await client.auth.getUser();
@@ -89,8 +90,33 @@ export function createSupabaseAdapter(config: DefineAuthConfig): AuthBundle {
         const url = new URL(request.url);
         const code = url.searchParams.get("code");
         if (code) {
-          const client = createClientForRequest(cfg);
+          const client = await createClientForRequest(cfg);
           await client.auth.exchangeCodeForSession(code);
+
+          // Provisioning (optional): first sign-in upserts the app's `users`
+          // row. Omit `provisioner` for JWT-only. Mirrors the nextauth adapter —
+          // `providerAccountId` carries the Supabase auth user id, which is what
+          // the port's `Session.user.id` resolves to.
+          if (config.provisioner) {
+            const {
+              data: { user },
+            } = await client.auth.getUser();
+            if (user?.email) {
+              const meta = (user.user_metadata ?? {}) as {
+                full_name?: string | null;
+                name?: string | null;
+                avatar_url?: string | null;
+              };
+              const profile: OAuthProfile = {
+                provider: "google",
+                providerAccountId: user.id,
+                email: user.email,
+                name: meta.full_name ?? meta.name ?? undefined,
+                imageUrl: meta.avatar_url ?? undefined,
+              };
+              await config.provisioner.onSignIn(profile);
+            }
+          }
         }
         // `next` is user-controlled — constrain to a same-origin relative path.
         const next = sanitizeRelativePath(url.searchParams.get("next"), "/");
@@ -102,18 +128,22 @@ export function createSupabaseAdapter(config: DefineAuthConfig): AuthBundle {
       url: cfg.url,
       anonKey: cfg.anonKey,
       loginPath: config.loginPath,
+      publicPaths: config.publicPaths,
     }),
     requireSession: () => gateway.requireSession(),
-    async signIn(provider: AuthProviderId, opts?: { redirectTo?: string }) {
-      const client = createClientForRequest(cfg);
+    async signIn(provider: AuthProviderId, opts?: SignInOptions) {
+      const client = await createClientForRequest(cfg);
       const { data } = await client.auth.signInWithOAuth({
         provider,
-        options: opts?.redirectTo ? { redirectTo: opts.redirectTo } : undefined,
+        options:
+          opts?.redirectTo || opts?.queryParams
+            ? { redirectTo: opts.redirectTo, queryParams: opts.queryParams }
+            : undefined,
       });
       if (data?.url) redirect(data.url);
     },
     async signOut(opts?: { redirectTo?: string }) {
-      const client = createClientForRequest(cfg);
+      const client = await createClientForRequest(cfg);
       await client.auth.signOut({ scope: "global" });
       redirect(sanitizeRelativePath(opts?.redirectTo, config.loginPath ?? "/login"));
     },

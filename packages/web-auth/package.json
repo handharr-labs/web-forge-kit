@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/web-auth",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Auth port adapters for Handharr Labs Next.js apps — NextAuth + Supabase behind one seam",
   "exports": {
     "./server": "./src/server/index.ts",

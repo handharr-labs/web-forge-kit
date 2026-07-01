@@ -8,6 +8,18 @@ import type {
 /** Which adapter backs `defineAuth` / `defineAuthClient`. Swaps everything. */
 export type AdapterId = "nextauth" | "supabase";
 
+/** Options for `signIn` — shared by the server bundle and the client. */
+export interface SignInOptions {
+  /** Where to return the user after authentication (relative or absolute). */
+  redirectTo?: string;
+  /**
+   * Extra provider query params forwarded to the OAuth authorize URL, e.g.
+   * `{ prompt: 'select_account' }`. Honored by the `supabase` adapter; the
+   * `nextauth` adapter forwards them as authorization params.
+   */
+  queryParams?: Record<string, string>;
+}
+
 /** Per-provider config. Keys of the `providers` map declare enabled providers;
  *  values carry adapter-specific config. */
 export interface GoogleProviderConfig {
@@ -33,6 +45,13 @@ export interface DefineAuthConfig {
   sessionMaxAgeSec?: number;
   /** Branded sign-in page path. Default '/login'. */
   loginPath?: string;
+  /**
+   * Paths the built-in `middleware` refreshes the session for but never
+   * redirects away from when unauthenticated (e.g. `['/', '/login', '/auth']`).
+   * A `'/'` entry matches only the exact root; any other entry matches by
+   * prefix. Everything else is treated as protected.
+   */
+  publicPaths?: string[];
   /** Supabase adapter only — project URL, anon key, and cookie access. */
   supabase?: SupabaseServerConfig;
 }
@@ -51,8 +70,12 @@ export interface CookieHandlers {
 export interface SupabaseServerConfig {
   url: string;
   anonKey: string;
-  /** Returns request-scoped cookie handlers (app binds `next/headers` here). */
-  cookies?: () => CookieHandlers;
+  /**
+   * Returns request-scoped cookie handlers (app binds `next/headers` here).
+   * May be async — Next.js 15's `cookies()` returns a promise, so the app can
+   * `async () => { const store = await cookies(); return {...}; }`.
+   */
+  cookies?: () => CookieHandlers | Promise<CookieHandlers>;
   /** Service-role key — enables admin capabilities (RevocableSessions). Server-only. */
   serviceRoleKey?: string;
 }
@@ -79,7 +102,7 @@ export interface AuthBundle {
    * NOTE: for a true one-click flow prefer the client `authClient.signIn` — the
    * NextAuth adapter's server helper may route through NextAuth's own page.
    */
-  signIn: (provider: AuthProviderId, opts?: { redirectTo?: string }) => Promise<void>;
+  signIn: (provider: AuthProviderId, opts?: SignInOptions) => Promise<void>;
   /** Clear the session and redirect. Request-scope only (see `signIn`). */
   signOut: (opts?: { redirectTo?: string }) => Promise<void>;
 }

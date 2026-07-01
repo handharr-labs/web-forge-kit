@@ -1,7 +1,7 @@
 import type { AuthProviderId } from "@handharr-labs/core";
 import NextAuth, { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import type { AuthBundle, DefineAuthConfig } from "../../../shared/config";
+import type { AuthBundle, DefineAuthConfig, SignInOptions } from "../../../shared/config";
 import { buildAuthOptions } from "./authOptions";
 import { createNextAuthGateway } from "./gateway";
 import { createNextAuthMiddleware } from "../../../middleware/nextauth";
@@ -29,7 +29,9 @@ export function createNextAuthAdapter(config: DefineAuthConfig): AuthBundle {
     // NextAuth's own pages (which may show an interstitial) for redirect-flow
     // convenience. Both call `redirect()`, so they only work inside a request
     // scope (server action / route handler / RSC) and throw NEXT_REDIRECT there.
-    async signIn(provider: AuthProviderId, opts?: { redirectTo?: string }) {
+    async signIn(provider: AuthProviderId, opts?: SignInOptions) {
+      // queryParams (e.g. `prompt`) aren't forwarded through the GET-redirect
+      // server helper — use the client `authClient.signIn` for those.
       const params = opts?.redirectTo
         ? `?callbackUrl=${encodeURIComponent(opts.redirectTo)}`
         : "";

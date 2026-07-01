@@ -10,7 +10,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { AuthClient, SessionStatus, UseSessionResult } from "../config";
+import type { AuthClient, SessionStatus, SignInOptions, UseSessionResult } from "../config";
 
 /** Map a Supabase user → the port's `AuthUser`. */
 function toAuthUser(user: User | null): AuthUser | null {
@@ -81,10 +81,13 @@ export function createSupabaseClient(config: { url: string; anonKey: string }): 
     useSession(): UseSessionResult {
       return useContext(SessionContext);
     },
-    async signIn(provider: AuthProviderId, opts?: { redirectTo?: string }) {
+    async signIn(provider: AuthProviderId, opts?: SignInOptions) {
       await client.auth.signInWithOAuth({
         provider,
-        options: opts?.redirectTo ? { redirectTo: opts.redirectTo } : undefined,
+        options:
+          opts?.redirectTo || opts?.queryParams
+            ? { redirectTo: opts.redirectTo, queryParams: opts.queryParams }
+            : undefined,
       });
     },
     async signOut(opts?: { redirectTo?: string }) {
