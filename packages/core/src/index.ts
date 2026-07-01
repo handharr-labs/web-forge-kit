@@ -33,6 +33,18 @@ export {
 } from "./primitives/DomainError";
 export { humanizeError } from "./primitives/error-messages";
 
+// Auth
+export type {
+  AuthProviderId,
+  AuthUser,
+  Session,
+  AuthGateway,
+  RevocableSessions,
+  ProviderTokenAccess,
+  OAuthProfile,
+  AuthProvisioner,
+} from "./auth/AuthPort";
+
 // Logger
 export type { Logger, LogLevel, LogContext } from "./logger/Logger";
 export { ConsoleLogger } from "./logger/ConsoleLogger";
