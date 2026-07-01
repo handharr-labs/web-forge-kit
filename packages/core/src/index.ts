@@ -108,6 +108,7 @@ export { getLocale, formatCurrency, formatCompactCurrency } from "./utils/format
 export { getOrdinalSuffix } from "./utils/format-ordinal";
 export { formatRelativeDate, formatFullDate } from "./utils/format-relative-date";
 export { formatWeekRange } from "./utils/format-week-range";
+export { formatLocalDate, todayLocal } from "./utils/date";
 
 // Query State
 export type { QueryState } from "./utils/query-state";

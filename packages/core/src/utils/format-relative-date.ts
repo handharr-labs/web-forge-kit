@@ -1,10 +1,14 @@
+import { formatLocalDate } from './date';
+
 export function formatRelativeDate(dateStr: string, format: 'short' | 'long' = 'short'): string {
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  if (dateStr === today.toISOString().split('T')[0]) return 'Today';
-  if (dateStr === yesterday.toISOString().split('T')[0]) return 'Yesterday';
+  // Compare against the *local* calendar date — toISOString() is UTC, which
+  // mislabels "Today"/"Yesterday" near midnight for non-UTC users.
+  if (dateStr === formatLocalDate(today)) return 'Today';
+  if (dateStr === formatLocalDate(yesterday)) return 'Yesterday';
 
   const date = new Date(dateStr);
   if (format === 'long') {
