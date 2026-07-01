@@ -24,6 +24,7 @@ Clean Architecture · DRY · SOLID — apply to all new code.
 | `@handharr-labs/core` | Platform-agnostic | UseCase, Result, FetchPolicy, EventBus, Logger, DomainError |
 | `@handharr-labs/web-client` | Frontend | ApiClient, CacheClient, FileDownloader, WebSocketClient |
 | `@handharr-labs/web-server` | Backend | DB adapters, middleware, server utilities |
+| `@handharr-labs/web-auth` | Frontend + Backend | Auth port adapters (NextAuth + Supabase) behind `defineAuth`; `/server` + `/client` + `/middleware` entrypoints |
 | `@handharr-labs/ui-base-bronze` | Frontend | Tier 1 design system — functional, minimal, no animation |
 | `@handharr-labs/ui-base-silver` | Frontend | Tier 2 design system — polished, production-ready |
 | `@handharr-labs/ui-base-gold` | Frontend | Tier 3 design system — premium, animated interactions |
@@ -36,6 +37,7 @@ Clean Architecture · DRY · SOLID — apply to all new code.
 - Domain never imports from Data, Infrastructure, or External.
 - `core` has zero runtime dependencies — pure TypeScript only.
 - `web-client` and `web-server` depend on `core`, not on each other.
+- `web-auth` spans client + server via entrypoints (`server-only` guard + `exports` map), not via package split; its `AuthGateway` contract stays in `core`, and every vendor dep is an optional peer dep.
 - `ui-base-*` packages are standalone — no shared base layer between them.
 - `ui-{name}` extends exactly one `ui-base-*` tier — never more than one.
 - `ui-{name}-showcase` is a demo tool — never a dependency of a production app.
