@@ -1,3 +1,7 @@
+// Supabase as a DATABASE / STORAGE client (server-side) — not auth.
+// Authentication lives in `@handharr-labs/web-auth`; these factories give the app
+// a Supabase client for data/storage access (the "dumb database" role: anon+cookies
+// for RLS reads, service-role for privileged server-only queries).
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 

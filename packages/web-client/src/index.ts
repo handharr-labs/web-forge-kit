@@ -61,5 +61,5 @@ export { QueryProvider } from "./query/QueryProvider";
 // Hooks
 export { usePullToRefresh } from "./use-pull-to-refresh";
 
-// Auth
-export { createSupabaseBrowserClient } from "./auth/supabase";
+// Supabase data client (auth lives in @handharr-labs/web-auth)
+export { createSupabaseBrowserClient } from "./data/supabase";

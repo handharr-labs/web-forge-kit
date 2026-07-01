@@ -5,6 +5,6 @@ export type { DatabaseClient } from "./db/DatabaseClient";
 export type { ServerActionResult } from "./actions/ServerActionError";
 export { handleServerActionError, toServerActionResult } from "./actions/ServerActionError";
 
-// Auth
-export type { SupabaseCookieHandlers } from "./auth/supabase";
-export { createSupabaseServerClient, createSupabaseAdminClient } from "./auth/supabase";
+// Supabase data/storage client (auth lives in @handharr-labs/web-auth)
+export type { SupabaseCookieHandlers } from "./db/supabase";
+export { createSupabaseServerClient, createSupabaseAdminClient } from "./db/supabase";
