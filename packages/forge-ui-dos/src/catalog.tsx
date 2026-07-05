@@ -11,8 +11,14 @@ import {
   CornerFlourish,
   BotanicalBackdrop,
   Monogram,
+  PhotoFrame,
   MusicToggle,
   LanguageToggle,
+  SectionNav,
+  ScrollCue,
+  HashtagBanner,
+  AddToCalendar,
+  WelcomeNote,
   InvitationColumn,
   CoverScreen,
   Countdown,
@@ -31,7 +37,21 @@ import {
   TriviaQuiz,
   SongRequestWall,
   BingoCard,
+  ScratchCard,
+  GuessDetail,
+  PhotoChallengeWall,
+  BestDressedVote,
+  QRCheckIn,
+  Invitation,
+  sampleInvitationConfig,
+  ToastProvider,
+  useToast,
+  Skeleton,
+  EmptyState,
+  MEKAR_PALETTES,
+  MEKAR_TYPESETS,
 } from "./index"
+import type { MekarPalette, MekarTypeset } from "./index"
 
 /* ----------------------------------------------------------------------------
    Catalog chrome — a component gallery, NOT an assembled invitation. Each
@@ -68,6 +88,48 @@ function Frame({
   )
 }
 
+/** Scoped demo of the SectionNav dot rail (fixed-to-viewport in real pages). */
+function SectionNavDemo() {
+  const ref = React.useRef<HTMLDivElement>(null)
+  const blocks = [
+    { id: "nav-demo-cover", label: "Cover" },
+    { id: "nav-demo-couple", label: "Couple" },
+    { id: "nav-demo-event", label: "Event" },
+    { id: "nav-demo-rsvp", label: "RSVP" },
+  ]
+  return (
+    <div ref={ref} className="relative h-[340px] overflow-y-auto bg-[var(--surface-2)]">
+      <SectionNav position="absolute" rootRef={ref} items={blocks} />
+      {blocks.map((b) => (
+        <div key={b.id} id={b.id} className="flex h-[280px] items-center justify-center">
+          <p className="typo-display text-3xl text-[var(--foreground)]">{b.label}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** Toast primitive demo — a button inside a ToastProvider. */
+function ToastDemo() {
+  return (
+    <ToastProvider>
+      <ToastTrigger />
+    </ToastProvider>
+  )
+}
+function ToastTrigger() {
+  const { toast } = useToast()
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={() => toast("Nomor BCA disalin", { tone: "success" })}
+    >
+      Fire toast
+    </Button>
+  )
+}
+
 const COLOR_TOKENS = [
   { name: "--background", label: "Canvas" },
   { name: "--surface", label: "Surface" },
@@ -90,8 +152,13 @@ const TYPO = [
   { cls: "typo-caption", label: "Caption", sample: "Small supporting caption text." },
 ]
 
+const selectCls =
+  "rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 font-[var(--font-body)] text-xs text-[var(--foreground)] outline-none focus:border-[var(--primary)]"
+
 export function MekarCatalog() {
   const [night, setNight] = React.useState(false)
+  const [palette, setPalette] = React.useState<MekarPalette>("sage")
+  const [typeface, setTypeface] = React.useState<MekarTypeset>("classic")
   const target = React.useMemo(() => {
     const d = new Date()
     d.setDate(d.getDate() + 96)
@@ -99,23 +166,49 @@ export function MekarCatalog() {
   }, [])
 
   return (
-    <MekarRoot night={night} className="min-h-screen">
+    <MekarRoot night={night} palette={palette} typeface={typeface} className="min-h-screen overflow-x-clip">
       <div className="mx-auto max-w-4xl px-5 py-8">
-        {/* Breadcrumb + theme toggle */}
-        <div className="mb-8 flex items-center justify-between">
+        {/* Breadcrumb + theme controls */}
+        <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <a href="/" className="typo-caption hover:text-[var(--foreground)]">← Catalog</a>
             <span className="typo-caption">/</span>
             <span className="typo-caption text-[var(--foreground)]">forge-ui-dos</span>
           </div>
-          <div className="flex items-center gap-1 rounded-[var(--radius-pill)] border border-[var(--border)] p-1">
-            <Button variant={night ? "ghost" : "solid"} size="sm" onClick={() => setNight(false)}>Day</Button>
-            <Button variant={night ? "solid" : "ghost"} size="sm" onClick={() => setNight(true)}>Night</Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <label className="typo-caption flex items-center gap-1.5">
+              Palette
+              <select
+                className={selectCls}
+                value={palette}
+                onChange={(e) => setPalette(e.target.value as MekarPalette)}
+              >
+                {MEKAR_PALETTES.map((p) => (
+                  <option key={p.id} value={p.id}>{p.label}</option>
+                ))}
+              </select>
+            </label>
+            <label className="typo-caption flex items-center gap-1.5">
+              Type
+              <select
+                className={selectCls}
+                value={typeface}
+                onChange={(e) => setTypeface(e.target.value as MekarTypeset)}
+              >
+                {MEKAR_TYPESETS.map((t) => (
+                  <option key={t.id} value={t.id}>{t.label}</option>
+                ))}
+              </select>
+            </label>
+            <div className="flex items-center gap-1 rounded-[var(--radius-pill)] border border-[var(--border)] p-1">
+              <Button variant={night ? "ghost" : "solid"} size="sm" onClick={() => setNight(false)}>Day</Button>
+              <Button variant={night ? "solid" : "ghost"} size="sm" onClick={() => setNight(true)}>Night</Button>
+            </div>
           </div>
         </div>
 
         <div className="mb-10">
-          <h1 className="typo-title text-[var(--foreground)]">forge-ui-dos — Mekar</h1>
+          <h1 className="typo-title text-[var(--foreground)]">forge-ui-dos</h1>
           <p className="typo-body mt-1">
             Standalone romantic-elegant design system for digital wedding invitations.
             Sage · rose · gold, botanical ornaments, soft ambient motion.
@@ -196,9 +289,75 @@ export function MekarCatalog() {
           <Group title="Atoms — Chrome (monogram · music · language)">
             <div className="flex flex-wrap items-center gap-3">
               <Frame label="Monogram (foil initials)"><Monogram left="Vania" right="Arbi" /></Frame>
-              <Frame label="MusicToggle (inline, playing)"><MusicToggle src="" floating={false} defaultPlaying /></Frame>
+              <Frame label="MusicToggle (inline, playing)"><MusicToggle floating={false} defaultPlaying /></Frame>
               <Frame label="LanguageToggle (ID/EN)"><LanguageToggle /></Frame>
             </div>
+          </Group>
+
+          {/* PhotoFrame */}
+          <Group title="Atoms — PhotoFrame (portrait framing)">
+            <div className="flex flex-wrap items-end gap-4">
+              <Frame label="circle + flourish">
+                <PhotoFrame
+                  shape="circle"
+                  flourish
+                  src="https://picsum.photos/seed/mekar-pf1/300/300"
+                  className="w-32"
+                />
+              </Frame>
+              <Frame label="oval">
+                <PhotoFrame shape="oval" src="https://picsum.photos/seed/mekar-pf2/300/380" className="w-32" />
+              </Frame>
+              <Frame label="arch">
+                <PhotoFrame shape="arch" src="https://picsum.photos/seed/mekar-pf3/300/400" className="w-32" />
+              </Frame>
+              <Frame label="rounded">
+                <PhotoFrame shape="rounded" src="https://picsum.photos/seed/mekar-pf4/300/400" className="w-32" />
+              </Frame>
+              <Frame label="fallback (no src)">
+                <PhotoFrame shape="circle" fallback="V" className="w-32" />
+              </Frame>
+            </div>
+          </Group>
+
+          {/* SectionNav */}
+          <Group title="Atoms — SectionNav (scroll dots)">
+            <Frame
+              label="Vertical dot rail — highlights the section nearest centre, tap to jump. Pins to the viewport edge in real pages; scoped to this box for the demo. The <Invitation> renderer derives these dots from its section list."
+              className="!p-0 overflow-hidden"
+            >
+              <SectionNavDemo />
+            </Frame>
+          </Group>
+
+          {/* ScrollCue · Hashtag · AddToCalendar */}
+          <Group title="Atoms — ScrollCue · Hashtag · Add to Calendar">
+            <div className="flex flex-wrap items-center gap-3">
+              <Frame label="ScrollCue (bobbing hint)"><ScrollCue /></Frame>
+              <Frame label="HashtagBanner"><HashtagBanner tag="VaniaArbi2026" /></Frame>
+              <Frame label="AddToCalendar (Google + .ics menu)">
+                <AddToCalendar
+                  event={{
+                    title: "Akad Nikah Vania & Arbi",
+                    start: "2026-12-12T08:00:00",
+                    end: "2026-12-12T10:00:00",
+                    location: "Masjid Agung, Bandung",
+                  }}
+                />
+              </Frame>
+            </div>
+          </Group>
+
+          {/* WelcomeNote */}
+          <Group title="Organisms — WelcomeNote (preface card)">
+            <Frame label="Personal greeting after the cover — eyebrow · title · message · script sign-off">
+              <WelcomeNote
+                eyebrow="Welcome to our day"
+                title="With joy & gratitude"
+                message="This little website was personally made to celebrate this beautiful chapter with the people who have walked with us along the way."
+                signature="Vania & Arbi"
+              />
+            </Frame>
           </Group>
 
           {/* Layout */}
@@ -318,6 +477,12 @@ export function MekarCatalog() {
                 images={Array.from({ length: 6 }, (_, i) => `https://picsum.photos/seed/mekar${i}/400/400`)}
               />
             </Frame>
+            <Frame label="Carousel variant — framed main image + thumbnail strip + prev/next">
+              <Gallery
+                variant="carousel"
+                images={Array.from({ length: 5 }, (_, i) => `https://picsum.photos/seed/mekarc${i}/600/450`)}
+              />
+            </Frame>
           </Group>
 
           <Group title="Organisms — Wishlist">
@@ -333,11 +498,11 @@ export function MekarCatalog() {
           </Group>
 
           <Group title="Organisms — Guestbook (Doa & Ucapan)">
-            <Frame label="Submit form over a scrolling feed of wishes">
+            <Frame label="Submit form over a scrolling feed — with attendance badge + relative time">
               <Guestbook
                 messages={[
-                  { name: "Rani", message: "Selamat menempuh hidup baru! 🤍" },
-                  { name: "Dimas", message: "Bahagia selalu untuk kalian berdua." },
+                  { name: "Rani", message: "Selamat menempuh hidup baru! 🤍", attending: true, createdAt: new Date(Date.now() - 5 * 60 * 1000) },
+                  { name: "Dimas", message: "Bahagia selalu untuk kalian berdua.", attending: false, createdAt: new Date(Date.now() - 3 * 3600 * 1000) },
                 ]}
                 onSubmit={() => {}}
               />
@@ -428,6 +593,116 @@ export function MekarCatalog() {
                 ]}
                 onBingo={() => {}}
               />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — ScratchCard (lucky draw)">
+            <Frame label="Scratch the gold cover (drag / touch) to reveal a reward">
+              <ScratchCard
+                prize={
+                  <div>
+                    <p className="typo-eyebrow text-[var(--rose-deep)]">You won</p>
+                    <p className="typo-script text-3xl text-[var(--primary-deep)]">Door Prize #12</p>
+                    <p className="typo-caption mt-1">Tunjukkan ini di meja registrasi</p>
+                  </div>
+                }
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — GuessDetail (guess-the-detail)">
+            <div className="flex flex-col gap-4">
+              <Frame label="Multiple-choice guess with reveal">
+                <GuessDetail
+                  title="How many guests are coming?"
+                  question="Take your best guess before the big reveal."
+                  options={["± 150", "± 300", "± 500", "± 800"]}
+                  answerIndex={2}
+                  answer="± 500 guests 🎉"
+                />
+              </Frame>
+              <Frame label="Free-text guess">
+                <GuessDetail
+                  title="Guess the cake flavour"
+                  question="What flavour is the wedding cake?"
+                  hint="Hint: it's a classic."
+                  answer="Red velvet 🍰"
+                />
+              </Frame>
+            </div>
+          </Group>
+
+          <Group title="Organisms — PhotoChallengeWall">
+            <Frame label="Guest photo uploads over challenge prompts (optimistic object-URL preview)">
+              <PhotoChallengeWall
+                prompts={["Selfie with the couple", "Best table shot", "#VaniaArbi2026"]}
+                photos={Array.from({ length: 3 }, (_, i) => ({
+                  url: `https://picsum.photos/seed/mekarpc${i}/300/300`,
+                  from: ["Rani", "Dimas", "Sari"][i],
+                }))}
+                onUpload={() => {}}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — BestDressedVote">
+            <Frame label="Vote a nominee → live ranked standings with a leader crown">
+              <BestDressedVote
+                eyebrow="Reception is on — cast your vote!"
+                description="Who wore it best tonight?"
+                nominees={[
+                  { id: "a", name: "Rani", note: "Table 2", photoUrl: "https://picsum.photos/seed/bd1/120/120" },
+                  { id: "b", name: "Dimas", note: "Table 5", photoUrl: "https://picsum.photos/seed/bd2/120/120" },
+                  { id: "c", name: "Sari", note: "Table 1", photoUrl: "https://picsum.photos/seed/bd3/120/120" },
+                ]}
+                results={{ a: 34, b: 51, c: 28 }}
+                onVote={() => {}}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — QRCheckIn">
+            <Frame label="Guest QR + check-in status (host supplies qrSrc; placeholder shown here)">
+              <QRCheckIn
+                title="Your entry pass"
+                guestName="Keluarga Handharmahua"
+                code="INV-4821"
+                onCheckIn={() => {}}
+              />
+            </Frame>
+          </Group>
+
+          {/* Polish — skeleton · empty state · toast */}
+          <Group title="Polish — Skeleton · EmptyState · Toast">
+            <div className="flex flex-wrap items-start gap-3">
+              <Frame label="Skeleton (pulsing placeholder)" className="min-w-[12rem]">
+                <div className="space-y-2">
+                  <Skeleton className="h-24 w-full" />
+                  <Skeleton className="h-3 w-2/3" />
+                  <Skeleton className="h-3 w-1/2" />
+                </div>
+              </Frame>
+              <Frame label="EmptyState">
+                <EmptyState icon="🤍">Jadilah yang pertama mengirim ucapan.</EmptyState>
+              </Frame>
+              <Frame label="Toast (transient confirmation)"><ToastDemo /></Frame>
+            </div>
+            <Frame label="Gallery loading — skeleton tiles" className="mt-3">
+              <Gallery images={[]} loading />
+            </Frame>
+          </Group>
+
+          {/* Composition — the config-driven assembled page */}
+          <Group title="Composition — <Invitation config /> (the order slip)">
+            <Frame
+              label="A whole invitation assembled from sampleInvitationConfig — one renderer walks an ordered list of section blocks. Scroll within the frame."
+              className="!p-0 overflow-hidden"
+            >
+              <div className="max-h-[640px] overflow-y-auto">
+                <Invitation
+                  config={{ ...sampleInvitationConfig, theme: { night, palette, typeface } }}
+                />
+              </div>
             </Frame>
           </Group>
         </div>
