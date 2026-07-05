@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/ui-tier-runtime",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Brand-free runtime tier-switching engine — swaps Bronze/Silver/Gold component namespaces at runtime via React context",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
