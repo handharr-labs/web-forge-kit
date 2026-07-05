@@ -15,7 +15,7 @@ type RevealProps = React.HTMLAttributes<HTMLDivElement> & {
 
 /**
  * Scroll-triggered reveal. Elements start hidden (see globals.css
- * `[data-mekar-reveal]`) and animate up + fade in when they enter the
+ * `[data-dos-reveal]`) and animate up + fade in when they enter the
  * viewport. Honors prefers-reduced-motion via the token layer.
  */
 export function Reveal({
@@ -52,7 +52,7 @@ export function Reveal({
   return (
     <Tag
       ref={ref}
-      data-mekar-reveal
+      data-dos-reveal
       data-revealed={revealed ? "true" : "false"}
       className={cn(className)}
       style={{ animationDelay: delay ? `${delay}ms` : undefined, ...style }}

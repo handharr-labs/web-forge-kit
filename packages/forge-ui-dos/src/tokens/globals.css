@@ -1,6 +1,6 @@
 /* ============================================================================
-   Mekar — romantic-elegant design system for digital wedding invitations
-   Standalone. Non-tiered. Everything is scoped to the `.ds-mekar` root class
+   forge-ui-dos — romantic-elegant design system for digital wedding invitations
+   Standalone. Non-tiered. Everything is scoped to the `.ds-dos` root class
    so it can never leak into or collide with other design systems.
 
    Derived from the reference invitations (byaisyahluthfi.com, viding.co):
@@ -14,7 +14,7 @@
      Body    : Jost                 (humanist geometric sans)
    ========================================================================== */
 
-.ds-mekar {
+.ds-dos {
   /* ---- Palette knobs — a brand can retint the whole system from these ---- */
   --sage-hue: 150;
   --rose-hue: 22;
@@ -94,9 +94,9 @@
 
 /* ---------------------------------------------------------------------------
    Optional evening / "night garden" variant — deep forest, candle-gold.
-   Add class `night` on the same element as `.ds-mekar`.
+   Add class `night` on the same element as `.ds-dos`.
    --------------------------------------------------------------------------- */
-.ds-mekar.night {
+.ds-dos.night {
   --background: oklch(0.22 0.028 155);
   --surface:    oklch(0.26 0.030 155);
   --surface-2:  oklch(0.19 0.026 155);
@@ -125,10 +125,10 @@
 
 /* ============================================================================
    Color palettes — swap the whole system by adding `data-palette="…"` on the
-   `.ds-mekar` root (default = Sage, the base above). Mostly hue-knob shifts;
+   `.ds-dos` root (default = Sage, the base above). Mostly hue-knob shifts;
    the bolder looks also lift chroma / retint the canvas.
    ========================================================================== */
-.ds-mekar[data-palette="rose"] {
+.ds-dos[data-palette="rose"] {
   --sage-hue: 8;
   --primary:      oklch(0.60 0.068 10);
   --primary-deep: oklch(0.49 0.082 10);
@@ -138,7 +138,7 @@
   --gold-hue: 66;
   --warm-hue: 45;
 }
-.ds-mekar[data-palette="terracotta"] {
+.ds-dos[data-palette="terracotta"] {
   --sage-hue: 45;
   --primary:      oklch(0.58 0.088 45);
   --primary-deep: oklch(0.47 0.098 43);
@@ -150,7 +150,7 @@
   --background: oklch(0.968 0.016 66);
   --surface-2:  oklch(0.945 0.020 66);
 }
-.ds-mekar[data-palette="dusk"] {
+.ds-dos[data-palette="dusk"] {
   --sage-hue: 250;
   --primary:      oklch(0.56 0.055 252);
   --primary-deep: oklch(0.45 0.062 254);
@@ -161,7 +161,7 @@
   --warm-hue: 240;
   --background: oklch(0.972 0.010 240);
 }
-.ds-mekar[data-palette="crimson"] {
+.ds-dos[data-palette="crimson"] {
   --sage-hue: 24;
   --primary:            oklch(0.52 0.150 26);
   --primary-deep:       oklch(0.43 0.160 27);
@@ -183,20 +183,20 @@
 
 /* ============================================================================
    Typography sets — swap the three families with `data-type="…"` on the
-   `.ds-mekar` root (default = Classic, declared above). The consuming app must
-   load the corresponding Google Fonts (see MEKAR_TYPESETS in tokens/themes).
+   `.ds-dos` root (default = Classic, declared above). The consuming app must
+   load the corresponding Google Fonts (see DOS_TYPESETS in tokens/themes).
    ========================================================================== */
-.ds-mekar[data-type="modern"] {
+.ds-dos[data-type="modern"] {
   --font-display: 'Playfair Display', Georgia, serif;
   --font-script:  'Great Vibes', cursive;
   --font-body:    'Montserrat', ui-sans-serif, system-ui, sans-serif;
 }
-.ds-mekar[data-type="romantic"] {
+.ds-dos[data-type="romantic"] {
   --font-display: 'EB Garamond', Georgia, serif;
   --font-script:  'Tangerine', cursive;
   --font-body:    'Lato', ui-sans-serif, system-ui, sans-serif;
 }
-.ds-mekar[data-type="editorial"] {
+.ds-dos[data-type="editorial"] {
   --font-display: 'Fraunces', Georgia, serif;
   --font-script:  'Sacramento', cursive;
   --font-body:    'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -205,27 +205,27 @@
 /* ============================================================================
    Typography scale — fluid, romantic. Utility classes, all scoped.
    ========================================================================== */
-.ds-mekar .typo-script {
+.ds-dos .typo-script {
   font-family: var(--font-script);
   font-weight: 400;
   line-height: 1;
   color: var(--primary-deep);
   font-size: clamp(2.75rem, 12vw, 5.5rem);
 }
-.ds-mekar .typo-display {
+.ds-dos .typo-display {
   font-family: var(--font-display);
   font-weight: 500;
   letter-spacing: 0.01em;
   line-height: 1.1;
   font-size: clamp(2rem, 7vw, 3.5rem);
 }
-.ds-mekar .typo-title {
+.ds-dos .typo-title {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.2;
   font-size: clamp(1.5rem, 4.5vw, 2.25rem);
 }
-.ds-mekar .typo-eyebrow {
+.ds-dos .typo-eyebrow {
   font-family: var(--font-body);
   font-weight: 500;
   text-transform: uppercase;
@@ -233,21 +233,21 @@
   font-size: 0.72rem;
   color: var(--muted-foreground);
 }
-.ds-mekar .typo-lead {
+.ds-dos .typo-lead {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(1.125rem, 2.5vw, 1.375rem);
   line-height: 1.6;
   color: var(--foreground-soft);
 }
-.ds-mekar .typo-body {
+.ds-dos .typo-body {
   font-family: var(--font-body);
   font-weight: 300;
   font-size: 1rem;
   line-height: 1.75;
   color: var(--foreground-soft);
 }
-.ds-mekar .typo-caption {
+.ds-dos .typo-caption {
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 0.8rem;
@@ -258,56 +258,56 @@
 /* ============================================================================
    Motion primitives
    ========================================================================== */
-@keyframes mekar-reveal-up {
+@keyframes dos-reveal-up {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes mekar-fade-in {
+@keyframes dos-fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-@keyframes mekar-scale-in {
+@keyframes dos-scale-in {
   from { opacity: 0; transform: scale(0.94); }
   to   { opacity: 1; transform: scale(1); }
 }
-@keyframes mekar-float {
+@keyframes dos-float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50%      { transform: translateY(-12px) rotate(1.5deg); }
 }
-@keyframes mekar-sway {
+@keyframes dos-sway {
   0%, 100% { transform: rotate(-3deg); }
   50%      { transform: rotate(3deg); }
 }
-@keyframes mekar-shimmer {
+@keyframes dos-shimmer {
   0%   { background-position: -150% 0; }
   100% { background-position: 250% 0; }
 }
-@keyframes mekar-pulse-ring {
+@keyframes dos-pulse-ring {
   0%   { box-shadow: 0 0 0 0 oklch(0.56 0.045 150 / 0.35); }
   70%  { box-shadow: 0 0 0 16px oklch(0.56 0.045 150 / 0); }
   100% { box-shadow: 0 0 0 0 oklch(0.56 0.045 150 / 0); }
 }
-@keyframes mekar-bob {
+@keyframes dos-bob {
   0%, 100% { transform: translateY(0); opacity: 0.55; }
   50%      { transform: translateY(6px); opacity: 1; }
 }
 
 /* Scroll-reveal contract used by <Reveal>. Hidden until [data-revealed]. */
-.ds-mekar [data-mekar-reveal] {
+.ds-dos [data-dos-reveal] {
   opacity: 0;
   transform: translateY(28px);
 }
-.ds-mekar [data-mekar-reveal][data-revealed="true"] {
-  animation: mekar-reveal-up var(--dur-reveal) var(--ease-soft) forwards;
+.ds-dos [data-dos-reveal][data-revealed="true"] {
+  animation: dos-reveal-up var(--dur-reveal) var(--ease-soft) forwards;
 }
 
 /* Ambient botanical decoration drifts gently. */
-.ds-mekar [data-mekar-float] { animation: mekar-float var(--dur-ambient) var(--ease-inout) infinite; }
-.ds-mekar [data-mekar-sway]  { animation: mekar-sway calc(var(--dur-ambient) * 0.7) var(--ease-inout) infinite; transform-origin: top center; }
-.ds-mekar [data-mekar-bob]   { animation: mekar-bob 1.8s var(--ease-inout) infinite; }
+.ds-dos [data-dos-float] { animation: dos-float var(--dur-ambient) var(--ease-inout) infinite; }
+.ds-dos [data-dos-sway]  { animation: dos-sway calc(var(--dur-ambient) * 0.7) var(--ease-inout) infinite; transform-origin: top center; }
+.ds-dos [data-dos-bob]   { animation: dos-bob 1.8s var(--ease-inout) infinite; }
 
 /* Gold-foil shimmer sweep for ornaments / dividers. */
-.ds-mekar [data-mekar-foil] {
+.ds-dos [data-dos-foil] {
   background: linear-gradient(100deg,
     var(--gold-deep) 20%, var(--gold) 40%, oklch(0.96 0.04 82) 50%,
     var(--gold) 60%, var(--gold-deep) 80%);
@@ -315,13 +315,13 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: mekar-shimmer 6s linear infinite;
+  animation: dos-shimmer 6s linear infinite;
 }
 
 /* Respect reduced-motion — freeze every animation into its resting state. */
 @media (prefers-reduced-motion: reduce) {
-  .ds-mekar *,
-  .ds-mekar [data-mekar-reveal] {
+  .ds-dos *,
+  .ds-dos [data-dos-reveal] {
     animation: none !important;
     transition: none !important;
     opacity: 1 !important;
@@ -331,7 +331,7 @@
 
 /* iOS zoom guard on form fields. */
 @media screen and (max-width: 1024px) {
-  .ds-mekar input,
-  .ds-mekar select,
-  .ds-mekar textarea { font-size: 16px; }
+  .ds-dos input,
+  .ds-dos select,
+  .ds-dos textarea { font-size: 16px; }
 }

@@ -81,9 +81,9 @@ export function RsvpForm({
       )}
     >
       <div>
-        <label className={labelClass} htmlFor="mekar-rsvp-name">Nama</label>
+        <label className={labelClass} htmlFor="dos-rsvp-name">Nama</label>
         <input
-          id="mekar-rsvp-name"
+          id="dos-rsvp-name"
           className={fieldClass}
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -122,9 +122,9 @@ export function RsvpForm({
 
       {attendance === "attending" && (
         <div>
-          <label className={labelClass} htmlFor="mekar-rsvp-guests">Jumlah Tamu</label>
+          <label className={labelClass} htmlFor="dos-rsvp-guests">Jumlah Tamu</label>
           <input
-            id="mekar-rsvp-guests"
+            id="dos-rsvp-guests"
             type="number"
             min={1}
             max={10}
@@ -136,9 +136,9 @@ export function RsvpForm({
       )}
 
       <div>
-        <label className={labelClass} htmlFor="mekar-rsvp-message">Ucapan &amp; Doa</label>
+        <label className={labelClass} htmlFor="dos-rsvp-message">Ucapan &amp; Doa</label>
         <textarea
-          id="mekar-rsvp-message"
+          id="dos-rsvp-message"
           className={cn(fieldClass, "min-h-28 resize-y")}
           value={message}
           onChange={(e) => setMessage(e.target.value)}

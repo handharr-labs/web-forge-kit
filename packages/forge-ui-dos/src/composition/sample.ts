@@ -107,7 +107,7 @@ export const sampleInvitationConfig: InvitationConfig = {
       props: {
         images: Array.from(
           { length: 6 },
-          (_, i) => `https://picsum.photos/seed/mekar${i}/400/400`
+          (_, i) => `https://picsum.photos/seed/dos${i}/400/400`
         ),
       },
     },

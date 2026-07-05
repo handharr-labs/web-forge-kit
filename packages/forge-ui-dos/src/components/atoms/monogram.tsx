@@ -34,7 +34,7 @@ export function Monogram({
       style={{ width: size, height: size }}
     >
       <span
-        data-mekar-foil=""
+        data-dos-foil=""
         className="font-[var(--font-script)] leading-none"
         style={{ fontSize: size * 0.5 }}
       >

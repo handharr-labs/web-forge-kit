@@ -35,7 +35,7 @@ export function PhotoFrame({
   src?: string
   alt?: string
   shape?: PhotoFrameShape
-  /** Gold ring + inner padding + shadow — the Mekar frame. Default true. */
+  /** Gold ring + inner padding + shadow — the forge-ui-dos frame. Default true. */
   bordered?: boolean
   /** Botanical corner flourishes (best on circle / oval). */
   flourish?: boolean

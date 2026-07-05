@@ -1,4 +1,4 @@
-// forge-ui-dos (Mekar) declares its font families in tokens but the host app
+// forge-ui-dos declares its font families in tokens but the host app
 // loads them. Next hoists this stylesheet <link> into <head> for this route.
 // Covers all four typography sets (classic · modern · romantic · editorial).
 const FONTS =

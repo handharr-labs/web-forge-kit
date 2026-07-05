@@ -52,7 +52,7 @@ export function ToastProvider({
                 ? "border-[var(--primary)] bg-[var(--primary-soft)] text-[var(--primary-deep)]"
                 : "border-[var(--border)] bg-[var(--surface)]/95 text-[var(--foreground)]"
             )}
-            style={{ animation: "mekar-reveal-up var(--dur-reveal) var(--ease-soft) both" }}
+            style={{ animation: "dos-reveal-up var(--dur-reveal) var(--ease-soft) both" }}
           >
             {t.message}
           </div>

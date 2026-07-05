@@ -56,7 +56,7 @@ export function CoverScreen({
 
       <div
         className="relative flex flex-col items-center"
-        style={{ animation: "mekar-fade-in var(--dur-slow) var(--ease-soft) both" }}
+        style={{ animation: "dos-fade-in var(--dur-slow) var(--ease-soft) both" }}
       >
         <p className="typo-eyebrow mb-6">{eyebrow}</p>
 
@@ -70,7 +70,7 @@ export function CoverScreen({
         {guestName && (
           <div
             className="mt-12 flex flex-col items-center"
-            style={{ animation: "mekar-reveal-up var(--dur-reveal) var(--ease-soft) 400ms both" }}
+            style={{ animation: "dos-reveal-up var(--dur-reveal) var(--ease-soft) 400ms both" }}
           >
             <p className="typo-caption">Kepada Yth.</p>
             <p className="typo-display mt-1 text-2xl text-[var(--foreground)]">{guestName}</p>
@@ -82,7 +82,7 @@ export function CoverScreen({
           size="lg"
           onClick={onOpen}
           className="mt-10"
-          style={{ animation: "mekar-pulse-ring 2.6s var(--ease-inout) infinite" }}
+          style={{ animation: "dos-pulse-ring 2.6s var(--ease-inout) infinite" }}
         >
           {openLabel}
         </Button>

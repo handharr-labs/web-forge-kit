@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { MekarRoot } from "../providers/mekar-root"
+import { DosRoot } from "../providers/dos-root"
 import { ToastProvider } from "../providers/toast"
 import { Section } from "../components/atoms/section"
 import { BotanicalBackdrop } from "../components/atoms/ornament"
@@ -11,7 +11,7 @@ import type { LanguageOption } from "../components/atoms/language-toggle"
 import { SectionNav } from "../components/atoms/section-nav"
 import type { SectionNavItem } from "../components/atoms/section-nav"
 import { useInvitationOpen } from "../hooks/use-invitation-open"
-import type { MekarPalette, MekarTypeset } from "../tokens/themes"
+import type { DosPalette, DosTypeset } from "../tokens/themes"
 import {
   SingleInvitation,
   SplitInvitation,
@@ -92,7 +92,7 @@ export type SectionConfig = {
     enabled?: boolean
     /** Centered header shell; ignored for full-bleed sections. */
     heading?: SectionHeading
-    /** Stable anchor id for section-nav / deep links. Defaults to `mekar-<type>-<i>`. */
+    /** Stable anchor id for section-nav / deep links. Defaults to `dos-<type>-<i>`. */
     id?: string
     /** Label in the section-nav rail. Defaults to the heading title, then a per-type name. */
     navLabel?: string
@@ -184,9 +184,9 @@ export type InvitationTheme = {
   /** Evening "night garden" palette. */
   night?: boolean
   /** Named color palette (sage · rose · terracotta · dusk · crimson). */
-  palette?: MekarPalette
+  palette?: DosPalette
   /** Named typography set (classic · modern · romantic · editorial). */
-  typeface?: MekarTypeset
+  typeface?: DosTypeset
   /** Per-brand hue knobs — retint without touching code. */
   hue?: { sage?: number; rose?: number; gold?: number }
 }
@@ -227,7 +227,7 @@ function InvitationAside({ imageUrl }: { imageUrl?: string }) {
 
 /**
  * The "barista" — reads an {@link InvitationConfig} and assembles the whole page
- * from the registered sections. Scopes everything under `MekarRoot`, applies the
+ * from the registered sections. Scopes everything under `DosRoot`, applies the
  * chosen layout shell, and wraps non-full-bleed sections in the `Section`
  * header scaffold. Data-only configs (no `on*` handlers) still render a fully
  * working, optimistic preview — the app layers persistence on top.
@@ -254,7 +254,7 @@ export function Invitation({
     (hueStyle as Record<string, string | number>)["--gold-hue"] = theme.hue.gold
 
   const visible = sections.filter((s) => s.enabled !== false)
-  const idOf = (s: SectionConfig, i: number) => s.id ?? `mekar-${s.type}-${i}`
+  const idOf = (s: SectionConfig, i: number) => s.id ?? `dos-${s.type}-${i}`
 
   const body = visible.map((s, i) => {
     const id = idOf(s, i)
@@ -325,7 +325,7 @@ export function Invitation({
   const hasTopBar = Boolean(chrome?.language || chrome?.music)
 
   return (
-    <MekarRoot
+    <DosRoot
       night={theme.night}
       palette={theme.palette}
       typeface={theme.typeface}
@@ -359,6 +359,6 @@ export function Invitation({
           <SectionNav items={navItems} side={chrome?.navSide} />
         )}
       </ToastProvider>
-    </MekarRoot>
+    </DosRoot>
   )
 }

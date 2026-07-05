@@ -21,7 +21,7 @@ export const designSystems: DesignSystem[] = [
   {
     slug: "dos",
     name: "forge-ui-dos",
-    description: "Standalone DS #2 — Mekar: romantic-elegant wedding invitations. Sage/rose/gold, botanical ornaments, animated. Cover, countdown, love story, gift envelope, RSVP.",
+    description: "Standalone DS #2 — romantic-elegant wedding invitations. Sage/rose/gold, botanical ornaments, animated. Cover, countdown, love story, gift envelope, RSVP.",
     version: "0.1.0",
   },
   {

@@ -29,7 +29,7 @@ Clean Architecture · DRY · SOLID — apply to all new code.
 | `@handharr-labs/forge-ui-base-silver` | Frontend | Tier 2 design system — polished, production-ready |
 | `@handharr-labs/forge-ui-base-gold` | Frontend | Tier 3 design system — premium, animated interactions |
 | `@handharr-labs/ui-tier-runtime` | Frontend | Brand-free runtime tier-switching engine — swaps Bronze/Silver/Gold at runtime (demo-class) |
-| `@handharr-labs/forge-ui-{n}` (`-uno`, `-dos`, …) | Frontend | **Standalone** design system — self-contained, no tiering, no cross-DS deps. Numbered by creation order: `forge-ui-uno` (xpnsio DS), `forge-ui-dos` (Mekar / wedding) |
+| `@handharr-labs/forge-ui-{n}` (`-uno`, `-dos`, …) | Frontend | **Standalone** design system — self-contained, no tiering, no cross-DS deps. Numbered by creation order: `forge-ui-uno` (xpnsio DS), `forge-ui-dos` (wedding invitations) |
 | `@handharr-labs/ui-{name}-showcase` | Frontend | Pre-deal multi-tier demo — playground only, never production |
 
 ## Key Rules

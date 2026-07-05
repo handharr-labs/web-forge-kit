@@ -2,7 +2,7 @@
 // Standalone romantic-elegant design system for digital wedding invitations.
 // Non-tiered. No dependency on any other design system.
 //
-// Setup: import the token stylesheet once, then wrap your tree in <MekarRoot>.
+// Setup: import the token stylesheet once, then wrap your tree in <DosRoot>.
 //   import "@handharr-labs/forge-ui-dos/tokens/globals.css"
 // Load the three font families (Cormorant Garamond, Pinyon Script, Jost) in the
 // host app (next/font or <link>) — the tokens only declare the families.
@@ -13,12 +13,12 @@ export { googleCalendarUrl, icsDataUri } from "./utils/calendar"
 export type { CalendarEvent } from "./utils/calendar"
 
 // Root / scope provider
-export { MekarRoot } from "./providers/mekar-root"
+export { DosRoot } from "./providers/dos-root"
 export { ToastProvider, useToast } from "./providers/toast"
 
 // Theme catalog — palettes & typography sets
-export { MEKAR_PALETTES, MEKAR_TYPESETS } from "./tokens/themes"
-export type { MekarPalette, MekarTypeset } from "./tokens/themes"
+export { DOS_PALETTES, DOS_TYPESETS } from "./tokens/themes"
+export type { DosPalette, DosTypeset } from "./tokens/themes"
 
 // Layout
 export {

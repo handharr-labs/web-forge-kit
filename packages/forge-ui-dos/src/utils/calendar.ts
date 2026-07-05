@@ -47,7 +47,7 @@ export function icsDataUri(e: CalendarEvent): string {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//mekar//wedding//EN",
+    "PRODID:-//dos//wedding//EN",
     "BEGIN:VEVENT",
     `DTSTART:${fmt(start)}`,
     `DTEND:${fmt(end)}`,

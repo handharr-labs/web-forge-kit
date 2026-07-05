@@ -2,10 +2,10 @@
 
 import * as React from "react"
 import {
-  MekarRoot,
+  DosRoot,
   Button,
   Reveal,
-  Section as MekarSection,
+  Section as DosSection,
   Sprig,
   OrnamentDivider,
   CornerFlourish,
@@ -48,10 +48,10 @@ import {
   useToast,
   Skeleton,
   EmptyState,
-  MEKAR_PALETTES,
-  MEKAR_TYPESETS,
+  DOS_PALETTES,
+  DOS_TYPESETS,
 } from "./index"
-import type { MekarPalette, MekarTypeset } from "./index"
+import type { DosPalette, DosTypeset } from "./index"
 
 /* ----------------------------------------------------------------------------
    Catalog chrome — a component gallery, NOT an assembled invitation. Each
@@ -155,10 +155,10 @@ const TYPO = [
 const selectCls =
   "rounded-[var(--radius-pill)] border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 font-[var(--font-body)] text-xs text-[var(--foreground)] outline-none focus:border-[var(--primary)]"
 
-export function MekarCatalog() {
+export function DosCatalog() {
   const [night, setNight] = React.useState(false)
-  const [palette, setPalette] = React.useState<MekarPalette>("sage")
-  const [typeface, setTypeface] = React.useState<MekarTypeset>("classic")
+  const [palette, setPalette] = React.useState<DosPalette>("sage")
+  const [typeface, setTypeface] = React.useState<DosTypeset>("classic")
   const target = React.useMemo(() => {
     const d = new Date()
     d.setDate(d.getDate() + 96)
@@ -166,7 +166,7 @@ export function MekarCatalog() {
   }, [])
 
   return (
-    <MekarRoot night={night} palette={palette} typeface={typeface} className="min-h-screen overflow-x-clip">
+    <DosRoot night={night} palette={palette} typeface={typeface} className="min-h-screen overflow-x-clip">
       <div className="mx-auto max-w-4xl px-5 py-8">
         {/* Breadcrumb + theme controls */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
@@ -181,9 +181,9 @@ export function MekarCatalog() {
               <select
                 className={selectCls}
                 value={palette}
-                onChange={(e) => setPalette(e.target.value as MekarPalette)}
+                onChange={(e) => setPalette(e.target.value as DosPalette)}
               >
-                {MEKAR_PALETTES.map((p) => (
+                {DOS_PALETTES.map((p) => (
                   <option key={p.id} value={p.id}>{p.label}</option>
                 ))}
               </select>
@@ -193,9 +193,9 @@ export function MekarCatalog() {
               <select
                 className={selectCls}
                 value={typeface}
-                onChange={(e) => setTypeface(e.target.value as MekarTypeset)}
+                onChange={(e) => setTypeface(e.target.value as DosTypeset)}
               >
-                {MEKAR_TYPESETS.map((t) => (
+                {DOS_TYPESETS.map((t) => (
                   <option key={t.id} value={t.id}>{t.label}</option>
                 ))}
               </select>
@@ -279,9 +279,9 @@ export function MekarCatalog() {
               </Reveal>
             </Frame>
             <Frame label="Section — centered header scaffold (eyebrow · title · divider · rhythm)" className="!p-0 overflow-hidden">
-              <MekarSection eyebrow="Section Eyebrow" title="Section Title">
+              <DosSection eyebrow="Section Eyebrow" title="Section Title">
                 <p className="typo-body text-center">Section body content sits below the header.</p>
-              </MekarSection>
+              </DosSection>
             </Frame>
           </Group>
 
@@ -301,18 +301,18 @@ export function MekarCatalog() {
                 <PhotoFrame
                   shape="circle"
                   flourish
-                  src="https://picsum.photos/seed/mekar-pf1/300/300"
+                  src="https://picsum.photos/seed/dos-pf1/300/300"
                   className="w-32"
                 />
               </Frame>
               <Frame label="oval">
-                <PhotoFrame shape="oval" src="https://picsum.photos/seed/mekar-pf2/300/380" className="w-32" />
+                <PhotoFrame shape="oval" src="https://picsum.photos/seed/dos-pf2/300/380" className="w-32" />
               </Frame>
               <Frame label="arch">
-                <PhotoFrame shape="arch" src="https://picsum.photos/seed/mekar-pf3/300/400" className="w-32" />
+                <PhotoFrame shape="arch" src="https://picsum.photos/seed/dos-pf3/300/400" className="w-32" />
               </Frame>
               <Frame label="rounded">
-                <PhotoFrame shape="rounded" src="https://picsum.photos/seed/mekar-pf4/300/400" className="w-32" />
+                <PhotoFrame shape="rounded" src="https://picsum.photos/seed/dos-pf4/300/400" className="w-32" />
               </Frame>
               <Frame label="fallback (no src)">
                 <PhotoFrame shape="circle" fallback="V" className="w-32" />
@@ -474,13 +474,13 @@ export function MekarCatalog() {
           <Group title="Organisms — Gallery">
             <Frame label="Thumbnail grid → full-screen lightbox with position indicator">
               <Gallery
-                images={Array.from({ length: 6 }, (_, i) => `https://picsum.photos/seed/mekar${i}/400/400`)}
+                images={Array.from({ length: 6 }, (_, i) => `https://picsum.photos/seed/dos${i}/400/400`)}
               />
             </Frame>
             <Frame label="Carousel variant — framed main image + thumbnail strip + prev/next">
               <Gallery
                 variant="carousel"
-                images={Array.from({ length: 5 }, (_, i) => `https://picsum.photos/seed/mekarc${i}/600/450`)}
+                images={Array.from({ length: 5 }, (_, i) => `https://picsum.photos/seed/dosc${i}/600/450`)}
               />
             </Frame>
           </Group>
@@ -637,7 +637,7 @@ export function MekarCatalog() {
               <PhotoChallengeWall
                 prompts={["Selfie with the couple", "Best table shot", "#VaniaArbi2026"]}
                 photos={Array.from({ length: 3 }, (_, i) => ({
-                  url: `https://picsum.photos/seed/mekarpc${i}/300/300`,
+                  url: `https://picsum.photos/seed/dospc${i}/300/300`,
                   from: ["Rani", "Dimas", "Sari"][i],
                 }))}
                 onUpload={() => {}}
@@ -707,8 +707,8 @@ export function MekarCatalog() {
           </Group>
         </div>
       </div>
-    </MekarRoot>
+    </DosRoot>
   )
 }
 
-export default MekarCatalog
+export default DosCatalog

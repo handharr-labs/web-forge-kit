@@ -24,7 +24,7 @@ export function ScrollCue({
     >
       {label && <span className="typo-eyebrow !text-[0.6rem]">{label}</span>}
       <svg
-        data-mekar-bob
+        data-dos-bob
         viewBox="0 0 24 24"
         width="20"
         height="20"

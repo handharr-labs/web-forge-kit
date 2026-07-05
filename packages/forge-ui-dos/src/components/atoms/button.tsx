@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../../utils/cn"
 
 const buttonVariants = cva(
-  "ds-mekar-btn group relative inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap font-[var(--font-body)] font-medium tracking-wide transition-all duration-300 ease-[var(--ease-soft)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:pointer-events-none disabled:opacity-50",
+  "ds-dos-btn group relative inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap font-[var(--font-body)] font-medium tracking-wide transition-all duration-300 ease-[var(--ease-soft)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)] disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {

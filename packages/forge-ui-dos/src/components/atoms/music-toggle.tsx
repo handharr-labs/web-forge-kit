@@ -65,7 +65,7 @@ export function MusicToggle({
           height="18"
           fill="none"
           aria-hidden
-          data-mekar-sway={on ? "" : undefined}
+          data-dos-sway={on ? "" : undefined}
         >
           <path
             d="M9 18V6l10-2v10"

@@ -48,7 +48,7 @@ export function OrnamentDivider({
     <div className={cn("flex items-center justify-center gap-3 py-2", className)}>
       <Sprig flip className="h-7 w-24 opacity-70" />
       <span
-        data-mekar-foil={foil ? "" : undefined}
+        data-dos-foil={foil ? "" : undefined}
         className={cn(
           "text-xl leading-none",
           foil ? "" : "text-[var(--gold-deep)]"
@@ -92,7 +92,7 @@ export function CornerFlourish({ className, ...props }: SvgProps) {
 
 /**
  * Ambient floating botanicals for hero backdrops. Renders drifting sprigs
- * pinned to the corners; motion comes from the token layer (`data-mekar-*`),
+ * pinned to the corners; motion comes from the token layer (`data-dos-*`),
  * so it auto-disables under prefers-reduced-motion.
  */
 export function BotanicalBackdrop({ className }: { className?: string }) {
@@ -101,16 +101,16 @@ export function BotanicalBackdrop({ className }: { className?: string }) {
       aria-hidden
       className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
     >
-      <CornerFlourish data-mekar-sway className="absolute -left-2 -top-2 h-40 w-40 opacity-40" />
+      <CornerFlourish data-dos-sway className="absolute -left-2 -top-2 h-40 w-40 opacity-40" />
       <CornerFlourish
-        data-mekar-sway
+        data-dos-sway
         className="absolute -right-2 -top-2 h-40 w-40 opacity-40"
         style={{ transform: "scaleX(-1)", animationDelay: "1.2s" }}
       />
-      <Sprig data-mekar-float className="absolute bottom-8 left-6 h-16 w-32 opacity-30" />
+      <Sprig data-dos-float className="absolute bottom-8 left-6 h-16 w-32 opacity-30" />
       <Sprig
         flip
-        data-mekar-float
+        data-dos-float
         className="absolute bottom-10 right-6 h-16 w-32 opacity-30"
         style={{ animationDelay: "2.4s" }}
       />
