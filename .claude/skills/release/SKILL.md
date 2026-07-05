@@ -55,14 +55,14 @@ For each changed package, present a summary and ask individually:
 ```
 Detected changes in N package(s):
 
-  @handharr-labs/ui-base-gold   (0.2.1)
-  @handharr-labs/ui-base-bronze (0.1.0)
-  @handharr-labs/ui-base-silver (0.2.0)
+  @handharr-labs/forge-ui-base-gold   (0.2.1)
+  @handharr-labs/forge-ui-base-bronze (0.1.0)
+  @handharr-labs/forge-ui-base-silver (0.2.0)
 
 For each package, what bump level should be applied? [patch/minor/major]
-  @handharr-labs/ui-base-gold:   _
-  @handharr-labs/ui-base-bronze: _
-  @handharr-labs/ui-base-silver: _
+  @handharr-labs/forge-ui-base-gold:   _
+  @handharr-labs/forge-ui-base-bronze: _
+  @handharr-labs/forge-ui-base-silver: _
 ```
 
 Wait for the user's answers before proceeding.
@@ -125,11 +125,11 @@ Print a summary:
 Repo tag: v0.2.0 → v0.3.0
 
 Packages bumped:
-  @handharr-labs/ui-base-gold:   0.2.1 → 0.3.0  (minor)
-  @handharr-labs/ui-base-bronze: 0.1.0 → 0.1.1  (patch)
-  @handharr-labs/ui-base-silver: 0.2.0 → 0.3.0  (minor)
+  @handharr-labs/forge-ui-base-gold:   0.2.1 → 0.3.0  (minor)
+  @handharr-labs/forge-ui-base-bronze: 0.1.0 → 0.1.1  (patch)
+  @handharr-labs/forge-ui-base-silver: 0.2.0 → 0.3.0  (minor)
 
-Tags: v0.3.0, @handharr-labs/ui-base-gold@0.3.0, @handharr-labs/ui-base-bronze@0.1.1, @handharr-labs/ui-base-silver@0.3.0
+Tags: v0.3.0, @handharr-labs/forge-ui-base-gold@0.3.0, @handharr-labs/forge-ui-base-bronze@0.1.1, @handharr-labs/forge-ui-base-silver@0.3.0
 Published to https://npm.pkg.github.com
 Pushed to origin/main.
 ```

@@ -1,0 +1,32 @@
+{
+  "name": "@handharr-labs/forge-ui-dos",
+  "version": "0.1.0",
+  "description": "Mekar — standalone romantic-elegant design system for digital wedding invitations. Warm cream canvas, sage/rose/gold palette, botanical ornaments, ambient motion. No tiering, no dependency on other design systems.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens/globals.css": "./src/tokens/globals.css",
+    "./catalog": "./src/catalog.tsx"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.5.0"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/handharr-labs/web-forge-kit.git",
+    "directory": "packages/forge-ui-dos"
+  }
+}

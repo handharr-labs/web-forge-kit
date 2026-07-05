@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import * as Bronze from "@handharr-labs/ui-base-bronze"
-import * as Silver from "@handharr-labs/ui-base-silver"
-import * as Gold from "@handharr-labs/ui-base-gold"
+import * as Bronze from "@handharr-labs/forge-ui-base-bronze"
+import * as Silver from "@handharr-labs/forge-ui-base-silver"
+import * as Gold from "@handharr-labs/forge-ui-base-gold"
 
 const TIERS = {
   bronze: Bronze,

@@ -1,0 +1,71 @@
+{
+  "name": "@handharr-labs/forge-auth",
+  "version": "0.2.1",
+  "description": "Auth port adapters for Handharr Labs Next.js apps — NextAuth + Supabase behind one seam",
+  "exports": {
+    "./server": "./src/server/index.ts",
+    "./client": "./src/client/index.tsx",
+    "./middleware": "./src/middleware/index.ts",
+    "./conformance": "./src/conformance/index.ts"
+  },
+  "files": [
+    "src",
+    "!src/**/*.test.ts"
+  ],
+  "dependencies": {
+    "@handharr-labs/forge-core": "*"
+  },
+  "peerDependencies": {
+    "next": ">=14",
+    "next-auth": ">=4.24 <5",
+    "@supabase/ssr": ">=0.12",
+    "@supabase/supabase-js": ">=2.110",
+    "react": ">=18",
+    "server-only": ">=0.0.1",
+    "vitest": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    },
+    "next-auth": {
+      "optional": true
+    },
+    "@supabase/ssr": {
+      "optional": true
+    },
+    "@supabase/supabase-js": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "server-only": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/handharr-labs/web-forge-kit.git",
+    "directory": "packages/forge-auth"
+  },
+  "devDependencies": {
+    "@supabase/ssr": "0.12.0",
+    "@supabase/supabase-js": "2.110.0",
+    "@types/node": "25.9.3",
+    "@types/react": "19.2.17",
+    "next": "16.2.9",
+    "next-auth": "4.24.11",
+    "react": "19.2.7",
+    "server-only": "0.0.1"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
+}

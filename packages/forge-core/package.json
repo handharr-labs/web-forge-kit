@@ -1,0 +1,29 @@
+{
+  "name": "@handharr-labs/forge-core",
+  "version": "0.6.0",
+  "description": "Platform-agnostic architecture primitives for Handharr Labs apps",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "files": [
+    "src",
+    "!src/**/*.test.ts"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "devDependencies": {
+    "@types/node": "25.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/handharr-labs/web-forge-kit.git",
+    "directory": "packages/forge-core"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  }
+}

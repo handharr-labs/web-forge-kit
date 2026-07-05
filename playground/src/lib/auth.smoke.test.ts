@@ -1,4 +1,4 @@
-import { defineAuth } from "@handharr-labs/web-auth/server";
+import { defineAuth } from "@handharr-labs/forge-auth/server";
 import { describe, expect, it } from "vitest";
 
 /**
@@ -9,7 +9,7 @@ import { describe, expect, it } from "vitest";
  * Session-resolution and `requireSession`-throwing behavior go through NextAuth's
  * `getServerSession`, which requires a Next request scope, so they are asserted in
  * the adapter-agnostic conformance suite instead (both adapters pass it):
- * `packages/web-auth/src/server/adapters/**\/*.test.ts` via `runAuthGatewayConformance`.
+ * `packages/forge-auth/src/server/adapters/**\/*.test.ts` via `runAuthGatewayConformance`.
  * A live OAuth flow additionally needs real Google creds — an ops step, not code.
  */
 const config = {

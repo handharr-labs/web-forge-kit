@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "@handharr-labs/ui-xpnsio";
-import "@handharr-labs/ui-xpnsio/tokens/globals.css";
+import { ThemeProvider } from "@handharr-labs/forge-ui-uno";
+import "@handharr-labs/forge-ui-uno/tokens/globals.css";
 import "./globals.css";
 
 export const metadata: Metadata = {

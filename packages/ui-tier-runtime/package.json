@@ -12,11 +12,11 @@
     "src"
   ],
   "dependencies": {
-    "@handharr-labs/ui-base-bronze": "*",
-    "@handharr-labs/ui-base-silver": "*",
-    "@handharr-labs/ui-base-gold": "*",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "@handharr-labs/forge-ui-base-bronze": "*",
+    "@handharr-labs/forge-ui-base-silver": "*",
+    "@handharr-labs/forge-ui-base-gold": "*"
   },
   "peerDependencies": {
     "react": ">=18",

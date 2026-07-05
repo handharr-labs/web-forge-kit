@@ -1,4 +1,4 @@
-import { defineAuth } from "@handharr-labs/web-auth/server";
+import { defineAuth } from "@handharr-labs/forge-auth/server";
 
 /**
  * Reference wiring — the ONE server-side auth config an app writes.

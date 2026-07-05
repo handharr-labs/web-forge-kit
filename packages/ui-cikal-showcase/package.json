@@ -15,10 +15,10 @@
   ],
   "dependencies": {
     "@handharr-labs/ui-tier-runtime": "*",
-    "@handharr-labs/ui-base-bronze": "*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "@handharr-labs/forge-ui-base-bronze": "*"
   },
   "peerDependencies": {
     "react": ">=18",

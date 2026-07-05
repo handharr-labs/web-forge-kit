@@ -1,0 +1,253 @@
+/* ============================================================================
+   Mekar — romantic-elegant design system for digital wedding invitations
+   Standalone. Non-tiered. Everything is scoped to the `.ds-mekar` root class
+   so it can never leak into or collide with other design systems.
+
+   Derived from the reference invitations (byaisyahluthfi.com, viding.co):
+   warm cream canvas · sage-green primary · dusty-rose + muted-gold accents ·
+   serif/script display over a clean humanist sans · botanical ornamentation ·
+   generous unhurried whitespace · soft ambient motion.
+
+   Fonts are declared here but LOADED by the consuming app (next/font or <link>):
+     Display : Cormorant Garamond   (high-contrast elegant serif)
+     Script  : Pinyon Script        (couple-name flourish)
+     Body    : Jost                 (humanist geometric sans)
+   ========================================================================== */
+
+.ds-mekar {
+  /* ---- Palette knobs — a brand can retint the whole system from these ---- */
+  --sage-hue: 150;
+  --rose-hue: 22;
+  --gold-hue: 82;
+  --warm-hue: 84;
+
+  /* ---- Surfaces ---- */
+  --background: oklch(0.972 0.012 var(--warm-hue));   /* warm ivory cream   */
+  --surface:    oklch(0.986 0.008 var(--warm-hue));   /* raised card        */
+  --surface-2:  oklch(0.950 0.014 var(--warm-hue));   /* sunken / muted well */
+  --overlay:    oklch(0.28 0.02 55 / 0.55);           /* lightbox scrim     */
+
+  /* ---- Ink ---- */
+  --foreground:       oklch(0.30 0.020 55);           /* warm espresso      */
+  --foreground-soft:  oklch(0.42 0.018 60);
+  --muted-foreground: oklch(0.52 0.016 70);
+
+  /* ---- Primary · sage green ---- */
+  --primary:            oklch(0.56 0.045 var(--sage-hue));
+  --primary-deep:       oklch(0.44 0.050 var(--sage-hue));
+  --primary-soft:       oklch(0.93 0.020 var(--sage-hue));
+  --primary-foreground: oklch(0.99 0.005 var(--warm-hue));
+
+  /* ---- Accent · dusty rose ---- */
+  --rose:      oklch(0.74 0.065 var(--rose-hue));
+  --rose-deep: oklch(0.62 0.080 var(--rose-hue));
+  --rose-soft: oklch(0.94 0.022 var(--rose-hue));
+
+  /* ---- Accent · muted gold (dividers, foil, highlights) ---- */
+  --gold:      oklch(0.76 0.090 var(--gold-hue));
+  --gold-deep: oklch(0.66 0.100 var(--gold-hue));
+  --gold-soft: oklch(0.93 0.030 var(--gold-hue));
+
+  /* ---- Lines & focus ---- */
+  --border:       oklch(0.87 0.015 var(--warm-hue));
+  --border-strong:oklch(0.80 0.020 var(--warm-hue));
+  --ring:         oklch(0.56 0.045 var(--sage-hue));
+  --input:        oklch(0.90 0.012 var(--warm-hue));
+
+  /* ---- Feedback ---- */
+  --success: oklch(0.55 0.09 150);
+  --danger:  oklch(0.58 0.15 27);
+
+  /* ---- Radius scale (soft, never sharp) ---- */
+  --radius-sm: 0.5rem;
+  --radius:    0.875rem;
+  --radius-lg: 1.5rem;
+  --radius-pill: 999px;
+
+  /* ---- Elevation — warm-tinted, low & diffuse for a soft print feel ---- */
+  --shadow-sm: 0 1px 2px oklch(0.30 0.02 55 / 0.06);
+  --shadow-md: 0 6px 20px -8px oklch(0.30 0.02 55 / 0.14);
+  --shadow-lg: 0 24px 60px -20px oklch(0.30 0.02 55 / 0.22);
+  --shadow-foil: 0 1px 0 oklch(1 0 0 / 0.6), 0 8px 24px -12px oklch(0.66 0.10 78 / 0.5);
+
+  /* ---- Typography families ---- */
+  --font-script:  'Pinyon Script', 'Great Vibes', cursive;
+  --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-body:    'Jost', 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+
+  /* ---- Motion — slow, eased, unhurried ---- */
+  --ease-soft:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-inout:  cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-reveal:  900ms;
+  --dur-slow:    1400ms;
+  --dur-ambient: 9s;
+
+  /* Section rhythm — the unhurried vertical cadence */
+  --section-gap: clamp(4rem, 12vw, 7.5rem);
+
+  color: var(--foreground);
+  background-color: var(--background);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------------------------------------------------------------------------
+   Optional evening / "night garden" variant — deep forest, candle-gold.
+   Add class `night` on the same element as `.ds-mekar`.
+   --------------------------------------------------------------------------- */
+.ds-mekar.night {
+  --background: oklch(0.22 0.028 155);
+  --surface:    oklch(0.26 0.030 155);
+  --surface-2:  oklch(0.19 0.026 155);
+  --overlay:    oklch(0.10 0.02 155 / 0.7);
+
+  --foreground:       oklch(0.94 0.012 84);
+  --foreground-soft:  oklch(0.84 0.014 84);
+  --muted-foreground: oklch(0.70 0.014 84);
+
+  --primary:            oklch(0.72 0.055 var(--sage-hue));
+  --primary-deep:       oklch(0.60 0.060 var(--sage-hue));
+  --primary-soft:       oklch(0.32 0.030 var(--sage-hue));
+  --primary-foreground: oklch(0.18 0.02 155);
+
+  --rose-soft: oklch(0.34 0.035 var(--rose-hue));
+  --gold-soft: oklch(0.36 0.045 var(--gold-hue));
+
+  --border:        oklch(0.36 0.02 155);
+  --border-strong: oklch(0.46 0.025 155);
+  --input:         oklch(0.30 0.02 155);
+
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.4);
+  --shadow-md: 0 6px 20px -8px oklch(0 0 0 / 0.55);
+  --shadow-lg: 0 24px 60px -20px oklch(0 0 0 / 0.7);
+}
+
+/* ============================================================================
+   Typography scale — fluid, romantic. Utility classes, all scoped.
+   ========================================================================== */
+.ds-mekar .typo-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--primary-deep);
+  font-size: clamp(2.75rem, 12vw, 5.5rem);
+}
+.ds-mekar .typo-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  font-size: clamp(2rem, 7vw, 3.5rem);
+}
+.ds-mekar .typo-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  font-size: clamp(1.5rem, 4.5vw, 2.25rem);
+}
+.ds-mekar .typo-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+}
+.ds-mekar .typo-lead {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  line-height: 1.6;
+  color: var(--foreground-soft);
+}
+.ds-mekar .typo-body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--foreground-soft);
+}
+.ds-mekar .typo-caption {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--muted-foreground);
+}
+
+/* ============================================================================
+   Motion primitives
+   ========================================================================== */
+@keyframes mekar-reveal-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes mekar-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes mekar-scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes mekar-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-12px) rotate(1.5deg); }
+}
+@keyframes mekar-sway {
+  0%, 100% { transform: rotate(-3deg); }
+  50%      { transform: rotate(3deg); }
+}
+@keyframes mekar-shimmer {
+  0%   { background-position: -150% 0; }
+  100% { background-position: 250% 0; }
+}
+@keyframes mekar-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 oklch(0.56 0.045 150 / 0.35); }
+  70%  { box-shadow: 0 0 0 16px oklch(0.56 0.045 150 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.56 0.045 150 / 0); }
+}
+
+/* Scroll-reveal contract used by <Reveal>. Hidden until [data-revealed]. */
+.ds-mekar [data-mekar-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.ds-mekar [data-mekar-reveal][data-revealed="true"] {
+  animation: mekar-reveal-up var(--dur-reveal) var(--ease-soft) forwards;
+}
+
+/* Ambient botanical decoration drifts gently. */
+.ds-mekar [data-mekar-float] { animation: mekar-float var(--dur-ambient) var(--ease-inout) infinite; }
+.ds-mekar [data-mekar-sway]  { animation: mekar-sway calc(var(--dur-ambient) * 0.7) var(--ease-inout) infinite; transform-origin: top center; }
+
+/* Gold-foil shimmer sweep for ornaments / dividers. */
+.ds-mekar [data-mekar-foil] {
+  background: linear-gradient(100deg,
+    var(--gold-deep) 20%, var(--gold) 40%, oklch(0.96 0.04 82) 50%,
+    var(--gold) 60%, var(--gold-deep) 80%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: mekar-shimmer 6s linear infinite;
+}
+
+/* Respect reduced-motion — freeze every animation into its resting state. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-mekar *,
+  .ds-mekar [data-mekar-reveal] {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* iOS zoom guard on form fields. */
+@media screen and (max-width: 1024px) {
+  .ds-mekar input,
+  .ds-mekar select,
+  .ds-mekar textarea { font-size: 16px; }
+}

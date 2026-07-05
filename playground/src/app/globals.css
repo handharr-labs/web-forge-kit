@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @source "../../";
 @source "../../../packages/ui-cikal-showcase/src";
-@source "../../../packages/ui-xpnsio/src";
-@source "../../../packages/ui-base-bronze/src";
-@source "../../../packages/ui-base-silver/src";
-@source "../../../packages/ui-base-gold/src";
+@source "../../../packages/forge-ui-uno/src";
+@source "../../../packages/forge-ui-base-bronze/src";
+@source "../../../packages/forge-ui-base-silver/src";
+@source "../../../packages/forge-ui-base-gold/src";
+@source "../../../packages/forge-ui-dos/src";

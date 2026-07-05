@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useTierComponents, useTier, TierSwitcher } from "@handharr-labs/ui-tier-runtime"
 import { cn } from "./utils/cn"
-import type { EventCardProps } from "@handharr-labs/ui-base-bronze"
+import type { EventCardProps } from "@handharr-labs/forge-ui-base-bronze"
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 

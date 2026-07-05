@@ -2,8 +2,8 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {},
   "references": [
-    { "path": "packages/core" },
-    { "path": "packages/web-client" },
+    { "path": "packages/forge-core" },
+    { "path": "packages/forge-web-client" },
     { "path": "playground" }
   ],
   "include": [],

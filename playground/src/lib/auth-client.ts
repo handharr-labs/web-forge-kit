@@ -1,4 +1,4 @@
-import { defineAuthClient } from "@handharr-labs/web-auth/client";
+import { defineAuthClient } from "@handharr-labs/forge-auth/client";
 
 /**
  * Reference wiring — the ONE client-side auth call an app writes.

@@ -6,14 +6,15 @@ const nextConfig: NextConfig = {
   basePath: process.env.NEXT_BASE_PATH || "",
   images: { unoptimized: true },
   transpilePackages: [
-    "@handharr-labs/core",
-    "@handharr-labs/ui-base-bronze",
-    "@handharr-labs/ui-base-silver",
-    "@handharr-labs/ui-base-gold",
+    "@handharr-labs/forge-core",
+    "@handharr-labs/forge-ui-base-bronze",
+    "@handharr-labs/forge-ui-base-silver",
+    "@handharr-labs/forge-ui-base-gold",
     "@handharr-labs/ui-cikal-showcase",
-    "@handharr-labs/ui-xpnsio",
-    "@handharr-labs/web-client",
-    "@handharr-labs/web-auth",
+    "@handharr-labs/forge-ui-uno",
+    "@handharr-labs/forge-ui-dos",
+    "@handharr-labs/forge-web-client",
+    "@handharr-labs/forge-auth",
   ],
 };
 

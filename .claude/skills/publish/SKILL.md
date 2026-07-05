@@ -59,9 +59,9 @@ npm publish --workspace packages/{name}
 Print a summary:
 ```
 Published:
-  @handharr-labs/core@0.1.1
-  @handharr-labs/ui-xpnsio@0.1.1
-  @handharr-labs/web-client@0.1.1
+  @handharr-labs/forge-core@0.1.1
+  @handharr-labs/forge-ui-uno@0.1.1
+  @handharr-labs/forge-web-client@0.1.1
 
 Registry: https://npm.pkg.github.com
 ```

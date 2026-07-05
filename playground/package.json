@@ -10,17 +10,18 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@handharr-labs/core": "*",
-    "@handharr-labs/ui-base-bronze": "*",
-    "@handharr-labs/ui-base-silver": "*",
-    "@handharr-labs/ui-base-gold": "*",
     "@handharr-labs/ui-cikal-showcase": "*",
-    "@handharr-labs/ui-xpnsio": "*",
-    "@handharr-labs/web-client": "*",
-    "@handharr-labs/web-auth": "*",
     "next": "16.2.9",
     "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react-dom": "19.2.7",
+    "@handharr-labs/forge-core": "*",
+    "@handharr-labs/forge-ui-base-bronze": "*",
+    "@handharr-labs/forge-ui-base-silver": "*",
+    "@handharr-labs/forge-ui-base-gold": "*",
+    "@handharr-labs/forge-ui-uno": "*",
+    "@handharr-labs/forge-ui-dos": "*",
+    "@handharr-labs/forge-web-client": "*",
+    "@handharr-labs/forge-auth": "*"
   },
   "devDependencies": {
     "@types/node": "25.9.3",
