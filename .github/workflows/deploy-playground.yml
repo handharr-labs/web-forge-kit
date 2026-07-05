@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -47,8 +47,20 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      # Pages backend intermittently returns "Deployment failed, try again
+      # later"; a single automatic retry clears the transient case.
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment-retry.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
         id: deployment
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+
+      - name: Wait before retry
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 20
+
+      - name: Deploy to GitHub Pages (retry)
+        id: deployment-retry
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
