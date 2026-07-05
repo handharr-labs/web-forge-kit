@@ -4,6 +4,7 @@ import * as React from "react"
 import { cn } from "../../utils/cn"
 import { Reveal } from "../atoms/reveal"
 import { Button } from "../atoms/button"
+import { useToast } from "../../providers/toast"
 
 export type GiftAccount = {
   /** e.g. "BCA", "GoPay", "Bank Mandiri". */
@@ -19,16 +20,18 @@ export type GiftAccount = {
 /** One account card with a copy-to-clipboard number — the signature interaction. */
 export function GiftCard({ account }: { account: GiftAccount }) {
   const [copied, setCopied] = React.useState(false)
+  const { toast } = useToast()
 
   const copy = React.useCallback(async () => {
     try {
       await navigator.clipboard.writeText(account.number.replace(/\s+/g, ""))
       setCopied(true)
+      toast(`Nomor ${account.provider} disalin`, { tone: "success" })
       setTimeout(() => setCopied(false), 1800)
     } catch {
       /* clipboard blocked — no-op */
     }
-  }, [account.number])
+  }, [account.number, account.provider, toast])
 
   return (
     <div className="rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-md)]">

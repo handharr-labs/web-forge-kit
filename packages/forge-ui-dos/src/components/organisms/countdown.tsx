@@ -37,7 +37,10 @@ export function Countdown({
     () => (target instanceof Date ? target : new Date(target)),
     [target]
   )
-  const [time, setTime] = React.useState(() => diff(targetDate))
+  // Start null so the server and the client's first (hydration) render agree on
+  // a static placeholder; the real, time-dependent value is computed only after
+  // mount. Otherwise `Date.now()` differs across the SSR/hydration boundary.
+  const [time, setTime] = React.useState<ReturnType<typeof diff> | null>(null)
 
   React.useEffect(() => {
     setTime(diff(targetDate))
@@ -45,7 +48,7 @@ export function Countdown({
     return () => clearInterval(id)
   }, [targetDate])
 
-  if (time.total <= 0) {
+  if (time && time.total <= 0) {
     return (
       <p className={cn("typo-display text-center text-[var(--primary-deep)]", className)}>
         {endedLabel}
@@ -54,10 +57,10 @@ export function Countdown({
   }
 
   const cells = [
-    { value: time.days, label: labels.days },
-    { value: time.hours, label: labels.hours },
-    { value: time.minutes, label: labels.minutes },
-    { value: time.seconds, label: labels.seconds },
+    { value: time?.days, label: labels.days },
+    { value: time?.hours, label: labels.hours },
+    { value: time?.minutes, label: labels.minutes },
+    { value: time?.seconds, label: labels.seconds },
   ]
 
   return (
@@ -68,7 +71,7 @@ export function Countdown({
           className="flex min-w-[4.5rem] flex-1 flex-col items-center rounded-[var(--radius)] border border-[var(--border)] bg-[var(--surface)] px-2 py-4 shadow-[var(--shadow-sm)]"
         >
           <span className="font-[var(--font-display)] text-3xl font-600 tabular-nums text-[var(--foreground)] sm:text-4xl">
-            {String(c.value).padStart(2, "0")}
+            {c.value == null ? "00" : String(c.value).padStart(2, "0")}
           </span>
           <span className="typo-eyebrow mt-2 !text-[0.6rem] !tracking-[0.2em]">{c.label}</span>
         </div>

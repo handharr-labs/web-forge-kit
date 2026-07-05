@@ -4,6 +4,7 @@ import * as React from "react"
 import { cn } from "../../utils/cn"
 import { Reveal } from "../atoms/reveal"
 import { Button, buttonVariants } from "../atoms/button"
+import { useToast } from "../../providers/toast"
 
 export type WishlistItem = {
   id: string
@@ -37,6 +38,7 @@ export function WishlistCard({
   const [name, setName] = React.useState("")
   const [busy, setBusy] = React.useState(false)
   const claimed = Boolean(claimedBy)
+  const { toast } = useToast()
 
   async function claim() {
     if (!name.trim()) return
@@ -45,6 +47,7 @@ export function WishlistCard({
       await onClaim?.(item.id, name.trim())
       setClaimedBy(name.trim())
       setAsking(false)
+      toast(`Terima kasih! "${item.name}" tercatat 🤍`, { tone: "success" })
     } finally {
       setBusy(false)
     }

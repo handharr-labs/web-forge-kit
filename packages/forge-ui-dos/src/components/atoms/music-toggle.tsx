@@ -18,7 +18,9 @@ export function MusicToggle({
   floating = true,
   className,
 }: {
-  src: string
+  /** Audio file URL. When omitted, the control renders without an `<audio>`
+   *  element (handy for static previews / the catalog). */
+  src?: string
   playing?: boolean
   defaultPlaying?: boolean
   onToggle?: (next: boolean) => void
@@ -45,7 +47,7 @@ export function MusicToggle({
 
   return (
     <>
-      <audio ref={audioRef} src={src} loop preload="auto" />
+      {src && <audio ref={audioRef} src={src} loop preload="auto" />}
       <button
         type="button"
         onClick={toggle}

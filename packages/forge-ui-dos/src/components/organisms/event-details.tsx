@@ -4,8 +4,9 @@ import * as React from "react"
 import { cn } from "../../utils/cn"
 import { Reveal } from "../atoms/reveal"
 import { buttonVariants } from "../atoms/button"
+import { AddToCalendar } from "../atoms/add-to-calendar"
 import { OrnamentDivider } from "../atoms/ornament"
-import { googleCalendarUrl, type CalendarEvent } from "../../utils/calendar"
+import { type CalendarEvent } from "../../utils/calendar"
 
 export type EventSession = {
   /** e.g. "Akad Nikah", "Resepsi". */
@@ -59,14 +60,12 @@ export function EventCard({
             </a>
           )}
           {session.calendar && (
-            <a
-              href={googleCalendarUrl(session.calendar)}
-              target="_blank"
-              rel="noreferrer"
-              className={buttonVariants({ variant: "ghost", size: "sm" })}
-            >
-              {session.calendarLabel ?? "+ Kalender"}
-            </a>
+            <AddToCalendar
+              event={session.calendar}
+              variant="ghost"
+              size="sm"
+              label={session.calendarLabel ?? "+ Kalender"}
+            />
           )}
         </div>
       )}

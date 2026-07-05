@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "../../utils/cn"
 import { Reveal } from "../atoms/reveal"
-import { CornerFlourish } from "../atoms/ornament"
+import { PhotoFrame } from "../atoms/photo-frame"
 
 export type PartnerProfile = {
   name: string
@@ -33,26 +33,14 @@ export function ProfileCard({
         className
       )}
     >
-      <div className="relative mb-6">
-        <CornerFlourish className="absolute -left-6 -top-6 h-14 w-14 opacity-60" />
-        <CornerFlourish
-          className="absolute -bottom-6 -right-6 h-14 w-14 opacity-60"
-          style={{ transform: "rotate(180deg)" }}
-        />
-        <div className="h-44 w-44 overflow-hidden rounded-full border border-[var(--gold)]/50 p-1.5 shadow-[var(--shadow-md)]">
-          {partner.photoUrl ? (
-            <img
-              src={partner.photoUrl}
-              alt={partner.name}
-              className="h-full w-full rounded-full object-cover"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center rounded-full bg-[var(--primary-soft)] font-[var(--font-script)] text-5xl text-[var(--primary-deep)]">
-              {partner.name.charAt(0)}
-            </div>
-          )}
-        </div>
-      </div>
+      <PhotoFrame
+        shape="circle"
+        flourish
+        src={partner.photoUrl}
+        alt={partner.name}
+        fallback={partner.name.charAt(0)}
+        className="mb-6 w-44"
+      />
 
       <h3 className="typo-display text-3xl text-[var(--foreground)]">{partner.name}</h3>
       {partner.fullName && (
