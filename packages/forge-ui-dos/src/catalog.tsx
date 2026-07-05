@@ -10,12 +10,27 @@ import {
   OrnamentDivider,
   CornerFlourish,
   BotanicalBackdrop,
+  Monogram,
+  MusicToggle,
+  LanguageToggle,
+  InvitationColumn,
   CoverScreen,
   Countdown,
   CoupleProfile,
   LoveStory,
+  EventDetails,
   GiftEnvelope,
+  Wishlist,
+  Gallery,
+  Guestbook,
+  QuoteVerse,
+  LiveStream,
+  ClosingSection,
   RsvpForm,
+  TeamPoll,
+  TriviaQuiz,
+  SongRequestWall,
+  BingoCard,
 } from "./index"
 
 /* ----------------------------------------------------------------------------
@@ -177,6 +192,36 @@ export function MekarCatalog() {
             </Frame>
           </Group>
 
+          {/* Chrome atoms */}
+          <Group title="Atoms — Chrome (monogram · music · language)">
+            <div className="flex flex-wrap items-center gap-3">
+              <Frame label="Monogram (foil initials)"><Monogram left="Vania" right="Arbi" /></Frame>
+              <Frame label="MusicToggle (inline, playing)"><MusicToggle src="" floating={false} defaultPlaying /></Frame>
+              <Frame label="LanguageToggle (ID/EN)"><LanguageToggle /></Frame>
+            </div>
+          </Group>
+
+          {/* Layout */}
+          <Group title="Layout — Invitation column & page shells">
+            <Frame
+              label="InvitationColumn (framed) — the phone-width body shared by SingleInvitation & SplitInvitation"
+              className="!p-0 overflow-hidden bg-[var(--surface-2)]"
+            >
+              <div className="max-h-[420px] overflow-hidden py-6">
+                <InvitationColumn framed width="22rem">
+                  <div className="px-6 py-8 text-center">
+                    <p className="typo-eyebrow">The Wedding Of</p>
+                    <p className="typo-script !text-5xl">Vania &amp; Arbi</p>
+                    <OrnamentDivider className="my-4" />
+                    <p className="typo-body text-sm">
+                      Single-scroll or fixed-aside split — same column, two page layouts.
+                    </p>
+                  </div>
+                </InvitationColumn>
+              </div>
+            </Frame>
+          </Group>
+
           {/* Organisms */}
           <Group title="Organisms — CoverScreen">
             <Frame label="Full-screen opener with personalized greeting (clipped preview)" className="!p-0 overflow-hidden">
@@ -233,6 +278,156 @@ export function MekarCatalog() {
           <Group title="Organisms — RsvpForm">
             <Frame label="Attendance form with segmented control + confirmation state">
               <RsvpForm defaultName="Keluarga Handharmahua" onSubmit={() => {}} />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — EventDetails">
+            <Frame label="Ceremony sessions with map + add-to-calendar actions">
+              <EventDetails
+                sessions={[
+                  {
+                    title: "Akad Nikah",
+                    dateLabel: "Sabtu, 12 Desember 2026",
+                    timeLabel: "08.00 – 10.00 WIB",
+                    venueName: "Masjid Agung",
+                    address: "Jl. Merdeka No. 1, Bandung",
+                    mapsUrl: "https://maps.google.com",
+                    calendar: {
+                      title: "Akad Nikah Vania & Arbi",
+                      start: "2026-12-12T08:00:00",
+                      end: "2026-12-12T10:00:00",
+                      location: "Masjid Agung, Bandung",
+                    },
+                  },
+                  {
+                    title: "Resepsi",
+                    dateLabel: "Sabtu, 12 Desember 2026",
+                    timeLabel: "11.00 – 14.00 WIB",
+                    venueName: "Balai Sartika",
+                    address: "Jl. Merdeka No. 2, Bandung",
+                    mapsUrl: "https://maps.google.com",
+                  },
+                ]}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — Gallery">
+            <Frame label="Thumbnail grid → full-screen lightbox with position indicator">
+              <Gallery
+                images={Array.from({ length: 6 }, (_, i) => `https://picsum.photos/seed/mekar${i}/400/400`)}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — Wishlist">
+            <Frame label="Claimable gift items (unclaimed + already-claimed)">
+              <Wishlist
+                items={[
+                  { id: "1", name: "Coffee Machine", description: "Espresso maker untuk pagi berdua.", price: "± Rp 2.500.000", shopUrl: "https://example.com" },
+                  { id: "2", name: "Air Purifier", description: "Udara bersih di rumah baru.", price: "± Rp 1.200.000", claimedBy: "Keluarga Sari" },
+                ]}
+                onClaim={() => {}}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — Guestbook (Doa & Ucapan)">
+            <Frame label="Submit form over a scrolling feed of wishes">
+              <Guestbook
+                messages={[
+                  { name: "Rani", message: "Selamat menempuh hidup baru! 🤍" },
+                  { name: "Dimas", message: "Bahagia selalu untuk kalian berdua." },
+                ]}
+                onSubmit={() => {}}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — QuoteVerse">
+            <Frame label="Decorative verse block framed by botanical dividers">
+              <QuoteVerse source="QS. Ar-Rum: 21">
+                &ldquo;Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan pasangan
+                untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram
+                kepadanya…&rdquo;
+              </QuoteVerse>
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — LiveStream">
+            <Frame label="Prominent live-streaming CTA with pulsing live dot">
+              <LiveStream
+                url="https://youtube.com"
+                platform="YouTube Live"
+                note="Bagi yang berhalangan hadir, saksikan momen kami secara langsung."
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — ClosingSection">
+            <Frame label="Thank-you, monogram, names, hashtag">
+              <ClosingSection
+                brideName="Vania"
+                groomName="Arbi"
+                hashtag="#VaniaArbi2026"
+                message="Merupakan suatu kebahagiaan dan kehormatan bagi kami apabila Bapak/Ibu berkenan hadir memberikan doa restu."
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — TeamPoll (gamification)">
+            <Frame label="Team Bride vs Team Groom — vote reveals live standings">
+              <TeamPoll
+                eyebrow="After reading our story, it's time to choose your side!"
+                title="Which team are you?"
+                description="Team Groom — quietly noticing from afar, secretly crushing long before making a move? Or Team Bride — blissfully unbothered, but once pursued with intention, ready to say yes to forever?"
+                options={[
+                  { id: "bride", label: "Team Bride", tagline: "Unbothered, Then Married", icon: "🌸", accent: "rose" },
+                  { id: "groom", label: "Team Groom", tagline: "Quietly Crushing First", icon: "🌿", accent: "sage" },
+                ]}
+                results={{ bride: 82, groom: 55 }}
+                footnote="Results may or may not become a lifelong debate."
+                onVote={() => {}}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — TriviaQuiz (gamification)">
+            <Frame label="Multiple-choice quiz with inline right/wrong + final score">
+              <TriviaQuiz
+                questions={[
+                  { question: "Di mana kami pertama bertemu?", options: ["Kampus", "Kantor", "Kafe", "Online"], answerIndex: 0 },
+                  { question: "Siapa yang menembak duluan?", options: ["Arbi", "Vania"], answerIndex: 0 },
+                ]}
+                onComplete={() => {}}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — SongRequestWall (gamification)">
+            <Frame label="Reception playlist requests over a scrolling list">
+              <SongRequestWall
+                requests={[
+                  { title: "Perfect", artist: "Ed Sheeran", from: "Rani" },
+                  { title: "Akhir Cerita Cinta", artist: "Glenn Fredly" },
+                ]}
+                onSubmit={() => {}}
+              />
+            </Frame>
+          </Group>
+
+          <Group title="Organisms — BingoCard (gamification)">
+            <Frame label="5×5 reception bingo — tap moments, detects a completed line">
+              <BingoCard
+                cells={[
+                  "Pengantin menangis", "Ada yang telat", "Lagu dangdut", "Foto kabur", "Anak kecil lari",
+                  "MC salah nama", "Selfie booth", "Buket dilempar", "Makanan habis", "Tamu joget",
+                  "Pidato panjang", "Tiba-tiba hujan", "Free space", "Cincin susah", "Tepuk tangan",
+                  "Doa haru", "Kue dipotong", "Tos sampanye", "Video call", "Sepatu copot",
+                  "Konfeti", "Ketawa lepas", "Baju kembaran", "Salaman lama", "Momen haru",
+                ]}
+                onBingo={() => {}}
+              />
             </Frame>
           </Group>
         </div>
