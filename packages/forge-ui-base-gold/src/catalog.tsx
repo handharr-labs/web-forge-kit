@@ -1,7 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { Inbox, Moon, Sun } from "lucide-react"
+import {
+  Inbox, Moon, Sun, MoreHorizontal, Pencil, Copy, Trash2, Info, Settings,
+  Home, LayoutDashboard, Users, CalendarDays,
+} from "lucide-react"
 import {
   Avatar,
   Badge,
@@ -47,8 +50,36 @@ import {
   SummaryRow,
   FilterBar,
   PreviewModal,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  Tooltip,
+  TooltipProvider,
+  Breadcrumbs,
+  DashboardShell,
+  DataTable,
+  SelectionToolbar,
+  SortableList,
+  Tabs, TabsList, TabsTab, TabsPanel,
+  Accordion, AccordionItem, AccordionTrigger, AccordionPanel,
+  SegmentedControl,
+  Slider,
+  SwatchPicker,
+  Drawer,
+  FormSection,
+  FormFooter,
+  ToastProvider,
+  useToast,
+  CopyButton,
+  CopyField,
+  Progress,
+  Meter,
+  PreviewFrame,
 } from "./index"
-import type { EventCardProps } from "./index"
+import type { EventCardProps, DataTableColumn, SortState } from "./index"
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -62,7 +93,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function PreviewCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="rounded-[var(--radius)] border border-[var(--border)] bg-[var(--card)] p-4">
+      <div className="rounded-[var(--radius)] border border-[var(--border)] bg-[var(--card)] p-6">
         {children}
       </div>
       <p className="typo-caption">{label}</p>
@@ -100,6 +131,29 @@ const MOCK_ITEMS: EventCardProps[] = [
   { title: "Security Audit", description: "Infrastructure review", meta: "Completed", badge: "Done", badgeVariant: "muted" },
 ]
 
+interface SiteRow {
+  id: string
+  couple: string
+  slug: string
+  date: string
+  rsvps: number
+  status: "Published" | "Draft"
+}
+
+const SITE_ROWS: SiteRow[] = [
+  { id: "1", couple: "Inka & Riyadi", slug: "inka-riyadi", date: "2026-08-14", rsvps: 142, status: "Published" },
+  { id: "2", couple: "Dewa & Vania", slug: "dewa-vania", date: "2026-09-02", rsvps: 38, status: "Published" },
+  { id: "3", couple: "Aisyah & Luthfi", slug: "aisyah-luthfi", date: "2026-10-19", rsvps: 0, status: "Draft" },
+  { id: "4", couple: "Rangga & Cinta", slug: "rangga-cinta", date: "2026-07-27", rsvps: 91, status: "Draft" },
+]
+
+const SITE_COLUMNS: DataTableColumn<SiteRow>[] = [
+  { key: "couple", header: "Couple", sortable: true, sortAccessor: (r) => r.couple, cell: (r) => <span className="font-medium">{r.couple}</span> },
+  { key: "slug", header: "Slug", cell: (r) => <span className="text-[var(--muted-foreground)]">/{r.slug}</span> },
+  { key: "date", header: "Date", sortable: true, sortAccessor: (r) => r.date, cell: (r) => r.date },
+  { key: "rsvps", header: "RSVPs", sortable: true, sortAccessor: (r) => r.rsvps, align: "right", cell: (r) => r.rsvps },
+]
+
 const NAV_LINKS = [
   { label: "Home", href: "#" },
   { label: "About", href: "#" },
@@ -122,6 +176,23 @@ function LogoMark() {
   )
 }
 
+function ToastDemo() {
+  const toast = useToast()
+  return (
+    <div className="flex flex-wrap gap-2">
+      <Button variant="outline" onClick={() => toast.add({ title: "Saved", description: "Changes published to the site.", type: "success" })}>
+        Success
+      </Button>
+      <Button variant="outline" onClick={() => toast.add({ title: "Copy failed", description: "Clipboard unavailable.", type: "error" })}>
+        Error
+      </Button>
+      <Button variant="outline" onClick={() => toast.add({ title: "Draft autosaved", type: "info" })}>
+        Info
+      </Button>
+    </div>
+  )
+}
+
 export function GoldCatalog() {
   const [dark, setDark] = React.useState(false)
   const [search, setSearch] = React.useState("")
@@ -135,6 +206,20 @@ export function GoldCatalog() {
   const [confirmOpen, setConfirmOpen] = React.useState(false)
   const [previewOpen, setPreviewOpen] = React.useState(false)
   const [role, setRole] = React.useState("")
+  const [dtSelected, setDtSelected] = React.useState<string[]>([])
+  const [dtSort, setDtSort] = React.useState<SortState | null>({ key: "date", direction: "asc" })
+  const [dtLoading, setDtLoading] = React.useState(false)
+  const [sections, setSections] = React.useState([
+    { id: "cover", label: "Cover", enabled: true },
+    { id: "couple", label: "Couple", enabled: true },
+    { id: "event", label: "Event details", enabled: true },
+    { id: "gallery", label: "Gallery", enabled: false },
+    { id: "gift", label: "Gift", enabled: true },
+  ])
+  const [layout, setLayout] = React.useState("split")
+  const [hue, setHue] = React.useState(140)
+  const [palette, setPalette] = React.useState("sage")
+  const [drawerOpen, setDrawerOpen] = React.useState(false)
 
   return (
     <div className={`tier-gold bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300${dark ? " dark" : ""}`}>
@@ -732,6 +817,332 @@ export function GoldCatalog() {
                 <span className="typo-caption text-[var(--muted-foreground)]">proof-152.jpg</span>
               </PreviewModal>
             )}
+          </Section>
+
+          {/* ── Batch 5 — Metrics & preview ── */}
+
+          <Section title="Molecules — Progress + Meter">
+            <div className="flex max-w-md flex-col gap-5">
+              <PreviewCard label="Progress — RSVP completion (determinate)">
+                <Progress label="RSVP responses" showValue value={68} />
+              </PreviewCard>
+              <PreviewCard label="Progress — indeterminate">
+                <Progress label="Publishing…" value={null} />
+              </PreviewCard>
+              <PreviewCard label="Meter — attending vs. capacity">
+                <Meter
+                  label="Attending"
+                  showValue
+                  value={142}
+                  max={200}
+                  renderValue={(v, max) => `${v} / ${max}`}
+                />
+              </PreviewCard>
+            </div>
+          </Section>
+
+          <Section title="Organisms — PreviewFrame (iframe-isolated)">
+            <PreviewCard label="device-width toggle · styles synced into an isolated iframe (app injects <Invitation config/>)">
+              <PreviewFrame title="Invitation preview" dark={dark} defaultDevice="mobile" height={480}>
+                {/* Placeholder stand-in for the injected <Invitation/>. */}
+                <div className="flex min-h-full flex-col items-center justify-center gap-3 bg-[var(--card)] p-8 text-center text-[var(--foreground)]">
+                  <div className="typo-page-title">Inka &amp; Riyadi</div>
+                  <p className="typo-body text-[var(--muted-foreground)]">14 August 2026</p>
+                  <Badge variant="success">Preview renders inside an isolated iframe</Badge>
+                </div>
+              </PreviewFrame>
+            </PreviewCard>
+          </Section>
+
+          {/* ── Batch 4 — Feedback & links ── */}
+
+          <Section title="Molecules — Toast + useToast">
+            <PreviewCard label="transient save / publish / copy confirmation (auto-dismiss)">
+              <ToastProvider>
+                <ToastDemo />
+              </ToastProvider>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — CopyButton + CopyField">
+            <div className="flex flex-col gap-4">
+              <PreviewCard label="CopyButton — icon + labelled">
+                <div className="flex items-center gap-2">
+                  <CopyButton value="https://invitatio.app/inka-riyadi?g=adi-santoso" aria-label="Copy link" />
+                  <CopyButton value="https://invitatio.app/inka-riyadi?g=adi-santoso">Copy link</CopyButton>
+                </div>
+              </PreviewCard>
+              <PreviewCard label="CopyField — personalized guest link">
+                <CopyField label="Guest link" value="https://invitatio.app/inka-riyadi?g=adi-santoso" />
+              </PreviewCard>
+            </div>
+          </Section>
+
+          {/* ── Batch 3 — Config editor / builder ── */}
+
+          <Section title="Molecules — SortableList (the config sections control)">
+            <PreviewCard label="drag the handle, or focus it and press ↑/↓ · per-row enable switch">
+              <SortableList
+                items={sections}
+                itemId={(s) => s.id}
+                onReorder={setSections}
+                handleLabel={(s) => `Reorder ${s.label}`}
+                renderItem={(s) => <span className="text-sm font-medium">{s.label}</span>}
+                renderEnable={(s) => (
+                  <Switch
+                    checked={s.enabled}
+                    onCheckedChange={(v) =>
+                      setSections((prev) => prev.map((p) => (p.id === s.id ? { ...p, enabled: v } : p)))
+                    }
+                    aria-label={`Enable ${s.label}`}
+                  />
+                )}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — Tabs">
+            <PreviewCard label="editor organization — animated indicator">
+              <Tabs defaultValue="content">
+                <TabsList>
+                  <TabsTab value="content">Content</TabsTab>
+                  <TabsTab value="theme">Theme</TabsTab>
+                  <TabsTab value="chrome">Chrome</TabsTab>
+                </TabsList>
+                <TabsPanel value="content"><p className="text-sm text-[var(--muted-foreground)]">Section content fields…</p></TabsPanel>
+                <TabsPanel value="theme"><p className="text-sm text-[var(--muted-foreground)]">Palette, typeface, day/night…</p></TabsPanel>
+                <TabsPanel value="chrome"><p className="text-sm text-[var(--muted-foreground)]">Music, language, nav…</p></TabsPanel>
+              </Tabs>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — Accordion">
+            <PreviewCard label="collapsible per-section prop groups">
+              <Accordion defaultValue={["0"]}>
+                <AccordionItem value="0">
+                  <AccordionTrigger>Cover</AccordionTrigger>
+                  <AccordionPanel>Bride/groom names, date label, background image.</AccordionPanel>
+                </AccordionItem>
+                <AccordionItem value="1">
+                  <AccordionTrigger>Event details</AccordionTrigger>
+                  <AccordionPanel>Sessions, venue, maps link, add-to-calendar.</AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — SegmentedControl">
+            <PreviewCard label="single-select enum picker (layout single·split)">
+              <SegmentedControl
+                aria-label="Layout"
+                value={layout}
+                onValueChange={setLayout}
+                options={[
+                  { value: "single", label: "Single" },
+                  { value: "split", label: "Split" },
+                ]}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — Slider">
+            <PreviewCard label="scalar dial — app feeds fine --*-hue">
+              <div className="w-64">
+                <Slider label="Hue" showValue value={hue} onValueChange={setHue} min={0} max={360} formatValue={(v) => `${v}°`} />
+              </div>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — SwatchPicker">
+            <PreviewCard label="generic swatch grid (app feeds DOS_PALETTES)">
+              <SwatchPicker
+                aria-label="Palette"
+                value={palette}
+                onValueChange={setPalette}
+                options={[
+                  { value: "sage", label: "Sage", colors: ["#8a9a7b", "#d8c3a5", "#c9a227"] },
+                  { value: "rose", label: "Rose", colors: ["#c98a9a", "#e8c3c9", "#c9a227"] },
+                  { value: "terracotta", label: "Terracotta", colors: ["#c9744f", "#e0b088", "#9c5a34"] },
+                  { value: "dusk", label: "Dusk", colors: ["#5a6a8a", "#9aa5c3", "#c9a227"] },
+                  { value: "crimson", label: "Crimson", colors: ["#9a2a3a", "#c98a9a", "#c9a227"] },
+                ]}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — Drawer">
+            <PreviewCard label="slide-over edit surface (Escape / scrim to close)">
+              <Button onClick={() => setDrawerOpen(true)}>Edit section…</Button>
+            </PreviewCard>
+            <Drawer
+              open={drawerOpen}
+              title="Edit — Cover"
+              onClose={() => setDrawerOpen(false)}
+              footer={
+                <>
+                  <Button variant="outline" onClick={() => setDrawerOpen(false)}>Cancel</Button>
+                  <Button onClick={() => setDrawerOpen(false)}>Save</Button>
+                </>
+              }
+            >
+              <FormSection title="Cover" description="Shown first, before the guest opens the invitation.">
+                <Field label="Bride name" htmlFor="dw-bride-g"><Input id="dw-bride-g" defaultValue="Inka" placeholder=" " /></Field>
+                <Field label="Groom name" htmlFor="dw-groom-g"><Input id="dw-groom-g" defaultValue="Riyadi" placeholder=" " /></Field>
+                <Field label="Date label" htmlFor="dw-date-g"><Input id="dw-date-g" defaultValue="14 August 2026" placeholder=" " /></Field>
+              </FormSection>
+            </Drawer>
+          </Section>
+
+          <Section title="Molecules — FormSection + FormFooter">
+            <PreviewCard label="grouped fields over a save/cancel action bar">
+              <div className="flex flex-col gap-5">
+                <FormSection title="Couple" description="Displayed on the profile block.">
+                  <Field label="Bride" htmlFor="fs-bride-g"><Input id="fs-bride-g" defaultValue="Inka" placeholder=" " /></Field>
+                  <Field label="Groom" htmlFor="fs-groom-g"><Input id="fs-groom-g" defaultValue="Riyadi" placeholder=" " /></Field>
+                </FormSection>
+                <FormFooter info="Unsaved changes">
+                  <Button variant="outline">Cancel</Button>
+                  <Button>Save changes</Button>
+                </FormFooter>
+              </div>
+            </PreviewCard>
+          </Section>
+
+          {/* ── Batch 2 — Data management ── */}
+
+          <Section title="Molecules — DataTable">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={() => { setDtLoading(true); setTimeout(() => setDtLoading(false), 1200) }}>
+                  Simulate loading
+                </Button>
+                <span className="typo-caption text-[var(--muted-foreground)]">
+                  sortable headers · select-all (tri-state) · bulk actions · loading skeleton
+                </span>
+              </div>
+              <DataTable
+                data={SITE_ROWS}
+                columns={SITE_COLUMNS}
+                rowId={(r) => r.id}
+                selectable
+                selectedIds={dtSelected}
+                onSelectionChange={setDtSelected}
+                sort={dtSort}
+                onSortChange={setDtSort}
+                loading={dtLoading}
+                selectionNoun="site"
+                stickyHeader={false}
+                bulkActions={
+                  <>
+                    <Button size="sm" variant="outline">Publish</Button>
+                    <Button size="sm" variant="danger">Delete</Button>
+                  </>
+                }
+              />
+            </div>
+          </Section>
+
+          <Section title="Molecules — SelectionToolbar (standalone)">
+            <SelectionToolbar count={3} itemNoun="guest" onClear={() => {}}>
+              <Button size="sm" variant="outline">Export</Button>
+              <Button size="sm" variant="danger">Remove</Button>
+            </SelectionToolbar>
+          </Section>
+
+          {/* ── Batch 1 — App shell & navigation ── */}
+
+          <Section title="Molecules — DropdownMenu">
+            <PreviewCard label="row / user actions — keyboard + a11y via Base UI menu">
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button variant="outline" size="icon" aria-label="Row actions">
+                      <MoreHorizontal />
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                  <DropdownMenuItem><Pencil />Edit</DropdownMenuItem>
+                  <DropdownMenuItem><Copy />Duplicate</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem variant="danger"><Trash2 />Delete</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </PreviewCard>
+          </Section>
+
+          <Section title="Molecules — Tooltip">
+            <TooltipProvider>
+              <PreviewCard label="icon-button affordances in dense toolbars">
+                <div className="flex items-center gap-2">
+                  <Tooltip content="Settings">
+                    <Button variant="ghost" size="icon" aria-label="Settings"><Settings /></Button>
+                  </Tooltip>
+                  <Tooltip content="More info" side="right">
+                    <Button variant="ghost" size="icon" aria-label="Info"><Info /></Button>
+                  </Tooltip>
+                </div>
+              </PreviewCard>
+            </TooltipProvider>
+          </Section>
+
+          <Section title="Molecules — Breadcrumbs">
+            <PreviewCard label="path trail for nested admin pages">
+              <Breadcrumbs
+                items={[
+                  { label: "Dashboard", href: "#", icon: <Home /> },
+                  { label: "Sites", href: "#" },
+                  { label: "Inka & Riyadi" },
+                ]}
+              />
+            </PreviewCard>
+          </Section>
+
+          <Section title="Organisms — DashboardShell">
+            <PreviewCard label="sidebar + sticky topbar + scrollable content (mobile: hamburger opens drawer)">
+              <div className="h-[440px] overflow-hidden rounded-[var(--radius)] border border-[var(--border)]">
+                <DashboardShell
+                  className="!min-h-0 h-full"
+                  maxWidth="full"
+                  sidebar={
+                    <Sidebar
+                      brandName="Invitatio"
+                      logo={<LogoMark />}
+                      groups={[
+                        { items: [
+                          { label: "Overview", href: "#", icon: <LayoutDashboard />, active: true },
+                          { label: "Sites", href: "#", icon: <CalendarDays /> },
+                          { label: "Guests", href: "#", icon: <Users /> },
+                        ] },
+                      ]}
+                      user={{ name: "Admin" }}
+                    />
+                  }
+                  topbar={
+                    <Breadcrumbs items={[{ label: "Dashboard", href: "#" }, { label: "Overview" }]} />
+                  }
+                  topbarActions={
+                    <DropdownMenu>
+                      <DropdownMenuTrigger
+                        render={<Button variant="outline" size="icon" aria-label="Menu"><MoreHorizontal /></Button>}
+                      />
+                      <DropdownMenuContent>
+                        <DropdownMenuItem><Pencil />New site</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  }
+                >
+                  <div className="flex flex-col gap-3">
+                    <h3 className="typo-section-title">Overview</h3>
+                    <p className="typo-body text-[var(--muted-foreground)]">
+                      Content column scrolls under the sticky top bar; the sidebar collapses to a
+                      hamburger drawer below the <code>md</code> breakpoint.
+                    </p>
+                  </div>
+                </DashboardShell>
+              </div>
+            </PreviewCard>
           </Section>
 
         </div>
