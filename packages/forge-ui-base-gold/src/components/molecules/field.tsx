@@ -58,7 +58,11 @@ function Field({ label, htmlFor, description, error, required, children, classNa
                   children as React.ReactElement<{ className?: string; placeholder?: string }>,
                   {
                     className: cn(
+                      // Taller box (Input only — Textarea keeps its min-height) so the
+                      // floated label gets more room above and the value more below.
+                      // pt sets the label→value gap (smaller pt = tighter pair).
                       "peer pt-5",
+                      (children as React.ReactElement).type === Input && "h-14",
                       (children as React.ReactElement<{ className?: string }>).props.className
                     ),
                     // Ensure a placeholder exists so :placeholder-shown pseudo-class works.
@@ -84,9 +88,9 @@ function Field({ label, htmlFor, description, error, required, children, classNa
                       // Default: label centered (acts as placeholder)
                       "top-1/2 -translate-y-1/2 font-normal text-[var(--muted-foreground)] text-sm",
                       // Floated via focus
-                      "peer-focus:top-1.5 peer-focus:translate-y-0 peer-focus:font-semibold peer-focus:text-[0.625rem] peer-focus:text-[var(--ring)]",
+                      "peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:font-semibold peer-focus:text-[0.625rem] peer-focus:text-[var(--ring)]",
                       // Floated when input has value (placeholder not visible)
-                      "peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-[0.625rem] peer-[:not(:placeholder-shown)]:text-[var(--ring)]",
+                      "peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-[0.625rem] peer-[:not(:placeholder-shown)]:text-[var(--ring)]",
                     )
               )}
               style={isSelectChild
