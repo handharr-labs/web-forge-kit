@@ -139,7 +139,50 @@ function PreviewFrame({
     if (root) root.classList.toggle("dark", dark)
   }, [dark, mountNode])
 
-  const width = DEVICE_WIDTH[active]
+  // Measure the available preview area so a fixed device wider than the pane can
+  // be scaled to fit while keeping its true viewport width — so the previewed
+  // design's viewport media queries fire exactly as they do at that real width
+  // (e.g. a split layout that only appears past a `lg` breakpoint).
+  const paneRef = React.useRef<HTMLDivElement>(null)
+  const [pane, setPane] = React.useState<{ w: number; h: number } | null>(null)
+  React.useEffect(() => {
+    const el = paneRef.current
+    if (!el) return
+    const measure = () => setPane({ w: el.clientWidth, h: el.clientHeight })
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  const deviceWidth = DEVICE_WIDTH[active]
+  const scale =
+    deviceWidth && pane && deviceWidth > pane.w ? pane.w / deviceWidth : 1
+
+  // `outerStyle` reserves the post-transform footprint; `frameStyle` is the
+  // frame's own pre-transform size (the true device viewport when scaled).
+  let outerStyle: React.CSSProperties
+  let frameStyle: React.CSSProperties
+  if (!deviceWidth) {
+    // "fit" — fill the pane, no scaling.
+    outerStyle = { width: "100%", height: "100%" }
+    frameStyle = { width: "100%", height: "100%" }
+  } else if (scale < 1 && pane) {
+    // Wider than the pane: render at the true device width and scale down to
+    // fit. A taller frame (pane.h / scale) scales back to the pane height, so
+    // the iframe gets a genuine `deviceWidth × (pane.h / scale)` viewport.
+    outerStyle = { width: pane.w, height: pane.h }
+    frameStyle = {
+      width: deviceWidth,
+      height: pane.h / scale,
+      transform: `scale(${scale})`,
+      transformOrigin: "top left",
+    }
+  } else {
+    // Fits at 1:1.
+    outerStyle = { width: deviceWidth, maxWidth: "100%", height: "100%" }
+    frameStyle = { width: "100%", height: "100%" }
+  }
 
   return (
     <div
@@ -166,18 +209,22 @@ function PreviewFrame({
       </div>
 
       <div
-        className="flex justify-center overflow-auto bg-[var(--muted)]/40 p-4"
+        className="overflow-auto bg-[var(--muted)]/40 p-4"
         style={{ height: typeof height === "number" ? `${height}px` : height }}
       >
-        <div
-          className="h-full shrink-0 overflow-hidden rounded-lg bg-white shadow-[var(--shadow-md)] ring-1 ring-[var(--border)] transition-[width] duration-300"
-          style={{ width: width ? `${width}px` : "100%", maxWidth: "100%" }}
-        >
-          <iframe
-            ref={iframeRef}
-            title={typeof title === "string" ? title : "Preview"}
-            className="size-full border-0"
-          />
+        <div ref={paneRef} className="flex h-full justify-center">
+          <div className="shrink-0" style={outerStyle}>
+            <div
+              className="overflow-hidden rounded-lg bg-white shadow-[var(--shadow-md)] ring-1 ring-[var(--border)]"
+              style={frameStyle}
+            >
+              <iframe
+                ref={iframeRef}
+                title={typeof title === "string" ? title : "Preview"}
+                className="size-full border-0"
+              />
+            </div>
+          </div>
           {mountNode && createPortal(children, mountNode)}
         </div>
       </div>
