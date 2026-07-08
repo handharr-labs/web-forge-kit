@@ -70,6 +70,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Welcome Note",
     navLabel: "Welcome",
     description: "A short personal greeting to set the tone.",
+    singleton: true,
     defaults: () => ({
       eyebrow: "Selamat Datang",
       title: "Dengan penuh syukur",
@@ -93,6 +94,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "The Couple",
     navLabel: "Couple",
     description: "Introduce the bride and groom with photos and parentage.",
+    singleton: true,
     defaults: () => ({
       bride: {
         name: "Mempelai Wanita",
@@ -109,6 +111,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Love Story",
     navLabel: "Story",
     description: "A timeline of your journey together.",
+    singleton: true,
     defaults: () => ({
       milestones: [
         { period: "2020", title: "Pertama Bertemu", body: "Ceritakan bagaimana kalian pertama bertemu." },
@@ -138,6 +141,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Countdown",
     navLabel: "Countdown",
     description: "A live countdown to the big day.",
+    singleton: true,
     defaults: () => ({
       target: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
     }),
@@ -158,6 +162,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "QR Check-in",
     navLabel: "Check-in",
     description: "A guest QR pass with check-in status.",
+    singleton: true,
     defaults: () => ({
       title: "Kartu Masuk Anda",
       guestName: "Nama Tamu",
@@ -169,6 +174,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "RSVP",
     navLabel: "RSVP",
     description: "Let guests confirm their attendance.",
+    singleton: true,
     defaults: () => ({}),
   },
   guestbook: {
@@ -176,6 +182,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Guestbook",
     navLabel: "Wishes",
     description: "Collect wishes and prayers from your guests.",
+    singleton: true,
     defaults: () => ({ messages: [] }),
   },
   gallery: {
@@ -195,6 +202,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Wishlist",
     navLabel: "Wishlist",
     description: "A claimable list of gift ideas.",
+    singleton: true,
     defaults: () => ({
       items: [
         { id: "1", name: "Nama Hadiah", description: "Deskripsi singkat hadiah.", price: "± Rp 0" },
@@ -206,6 +214,7 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Wedding Gift",
     navLabel: "Gift",
     description: "Share bank or e-wallet details for gifts.",
+    singleton: true,
     defaults: () => ({
       accounts: [
         { provider: "Bank", number: "0000 0000 00", holder: "Nama Pemilik Rekening" },
