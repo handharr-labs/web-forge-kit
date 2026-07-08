@@ -40,6 +40,7 @@ import { GuessDetail } from "../components/organisms/guess-detail"
 import { PhotoChallengeWall } from "../components/organisms/photo-challenge"
 import { BestDressedVote } from "../components/organisms/best-dressed"
 import { QRCheckIn } from "../components/organisms/qr-check-in"
+import { SECTION_CATALOG } from "./section-catalog"
 
 /* ----------------------------------------------------------------------------
    The "menu": every orderable section type mapped to its props. Deriving props
@@ -47,7 +48,7 @@ import { QRCheckIn } from "../components/organisms/qr-check-in"
    no separate prop types to maintain.
    -------------------------------------------------------------------------- */
 
-type SectionPropsMap = {
+export type SectionPropsMap = {
   cover: React.ComponentProps<typeof CoverScreen>
   welcome: React.ComponentProps<typeof WelcomeNote>
   couple: React.ComponentProps<typeof CoupleProfile>
@@ -100,33 +101,6 @@ export type SectionConfig = {
     nav?: boolean
   }
 }[SectionType]
-
-/** Fallback nav-rail labels when a section has no heading title. */
-const DEFAULT_NAV_LABELS: Record<SectionType, string> = {
-  cover: "Home",
-  welcome: "Welcome",
-  couple: "Couple",
-  loveStory: "Story",
-  event: "Event",
-  countdown: "Countdown",
-  rsvp: "RSVP",
-  guestbook: "Wishes",
-  gallery: "Gallery",
-  gift: "Gift",
-  wishlist: "Wishlist",
-  quote: "Quote",
-  liveStream: "Live",
-  closing: "Thanks",
-  teamPoll: "Poll",
-  triviaQuiz: "Quiz",
-  songRequest: "Songs",
-  bingo: "Bingo",
-  scratchCard: "Lucky Draw",
-  guessDetail: "Guess",
-  photoChallenge: "Photos",
-  bestDressed: "Best Dressed",
-  qrCheckIn: "Check-in",
-}
 
 type RegistryEntry = {
   component: React.ComponentType<any>
@@ -303,7 +277,8 @@ export function Invitation({
         .filter(({ s }) => s.nav !== false)
         .map(({ s, i }) => ({
           id: idOf(s, i),
-          label: s.navLabel ?? s.heading?.title ?? DEFAULT_NAV_LABELS[s.type],
+          label:
+            s.navLabel ?? s.heading?.title ?? SECTION_CATALOG[s.type].navLabel,
         }))
     : []
 

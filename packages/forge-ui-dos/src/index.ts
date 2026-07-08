@@ -90,11 +90,16 @@ export type {
   InvitationChrome,
   SectionConfig,
   SectionType,
+  SectionPropsMap,
   SectionHeading,
 } from "./composition/invitation"
 export { sampleInvitationConfig } from "./composition/sample"
 export { PRESETS } from "./composition/presets"
 export type { InvitationPreset } from "./composition/presets"
+
+// Composition — section catalog (taxonomy · labels · seed defaults for builders)
+export { SECTION_CATEGORIES, SECTION_CATALOG } from "./composition/section-catalog"
+export type { SectionCategory, SectionMeta } from "./composition/section-catalog"
 
 // Organisms — gamification
 export { TeamPoll } from "./components/organisms/team-poll"
