@@ -29,6 +29,58 @@ export const SECTION_CATEGORIES: { id: SectionCategory; label: string }[] = [
   { id: "closing", label: "Closing" },
 ]
 
+/* ----------------------------------------------------------------------------
+   Form schema. `defaults()` yields valid starter props; `fields` describes how a
+   builder should let an operator *edit* them — so a consumer can render one
+   generic form instead of hand-writing a form per section. Both live on the same
+   catalog entry and are typechecked against the same `SectionPropsMap[K]`, so
+   they can't drift. `fields` is optional: a section without it falls back to a
+   raw-props editor in the consumer (the migration escape hatch).
+   -------------------------------------------------------------------------- */
+
+/** The control a field maps to. Kept small and presentational — the consumer
+ *  owns the actual widgets (a `select` needs `options`, a `list` needs `of`). */
+export type FieldKind =
+  | "text"
+  | "textarea"
+  | "number"
+  | "boolean"
+  | "date"
+  | "select"
+  | "image"
+  | "url"
+  | "list"
+
+/** One editable field, addressed by a dot-path into the section's props. */
+export type FieldDescriptor = {
+  /** Dot-path into props, e.g. `"bride.name"`. For `list`, the array path. */
+  path: string
+  label: string
+  kind: FieldKind
+  /** Optional cluster heading (e.g. "Bride" / "Groom") for grouped rendering. */
+  group?: string
+  help?: string
+  placeholder?: string
+  required?: boolean
+  /**
+   * Marks guest-facing copy that reads differently per language — the bilingual
+   * model (Part C) renders an ID/EN input pair for it. Left off for language-
+   * neutral data: proper nouns (names, handles), URLs, images, emoji, numbers,
+   * enums, and factual values (addresses, bank details, prices).
+   */
+  localizable?: boolean
+  /** `select` options. */
+  options?: { value: string; label: string }[]
+  /**
+   * `list` item sub-fields (paths are relative to the item). For a list of
+   * scalars (e.g. `string[]`), use a single descriptor with `path: ""` to
+   * address the item value itself.
+   */
+  of?: FieldDescriptor[]
+  /** Singular noun for a `list`'s add control, e.g. "Milestone". */
+  itemLabel?: string
+}
+
 export type SectionMeta<K extends SectionType = SectionType> = {
   category: SectionCategory
   /** Full picker label — "Trivia Quiz". */
@@ -46,6 +98,12 @@ export type SectionMeta<K extends SectionType = SectionType> = {
    * constant) so adding two of the same section never aliases props.
    */
   defaults: () => SectionPropsMap[K]
+  /**
+   * Ordered edit schema for the section's props. Optional during rollout — when
+   * absent, a builder should fall back to a raw editor. When present, it must
+   * cover every operator-editable prop (handlers / personalized fields excluded).
+   */
+  fields?: FieldDescriptor[]
 }
 
 /**
@@ -64,6 +122,21 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
       groomName: "Mempelai Pria",
       dateLabel: "Tanggal Acara",
     }),
+    fields: [
+      { path: "eyebrow", label: "Eyebrow", kind: "text", localizable: true, placeholder: "The Wedding Of" },
+      { path: "brideName", label: "Bride name", kind: "text", required: true },
+      { path: "groomName", label: "Groom name", kind: "text", required: true },
+      {
+        path: "dateLabel",
+        label: "Date label",
+        kind: "text",
+        required: true,
+        localizable: true,
+        help: 'Shown under the names, e.g. "Sabtu, 12 Juli 2026".',
+      },
+      { path: "imageUrl", label: "Background image", kind: "image" },
+      { path: "openLabel", label: "Open button label", kind: "text", localizable: true, placeholder: "Buka Undangan" },
+    ],
   },
   welcome: {
     category: "opening",
@@ -78,6 +151,18 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         "Kami mengundang Anda untuk berbagi kebahagiaan di hari istimewa kami. Terima kasih telah menjadi bagian dari perjalanan ini.",
       signature: "Kedua Mempelai",
     }),
+    fields: [
+      { path: "eyebrow", label: "Eyebrow", kind: "text", localizable: true, placeholder: "Selamat Datang" },
+      { path: "title", label: "Title", kind: "text", localizable: true },
+      { path: "message", label: "Message", kind: "textarea", required: true, localizable: true },
+      {
+        path: "signature",
+        label: "Signature",
+        kind: "text",
+        localizable: true,
+        help: "Script sign-off, e.g. the couple's names.",
+      },
+    ],
   },
   quote: {
     category: "opening",
@@ -88,6 +173,10 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
       source: "Sumber Kutipan",
       children: "Tuliskan kutipan atau ayat favorit kalian di sini.",
     }),
+    fields: [
+      { path: "children", label: "Quote", kind: "textarea", required: true, localizable: true },
+      { path: "source", label: "Source", kind: "text", localizable: true, placeholder: "QS. Ar-Rum: 21" },
+    ],
   },
   couple: {
     category: "couple",
@@ -105,6 +194,20 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         parentage: "Putra dari Bpk. … & Ibu …",
       },
     }),
+    fields: [
+      { path: "bride.name", label: "Name", kind: "text", group: "Bride", required: true },
+      { path: "bride.fullName", label: "Full name", kind: "text", group: "Bride" },
+      { path: "bride.parentage", label: "Parentage", kind: "text", group: "Bride", localizable: true },
+      { path: "bride.bio", label: "Bio", kind: "textarea", group: "Bride", localizable: true },
+      { path: "bride.photoUrl", label: "Photo", kind: "image", group: "Bride" },
+      { path: "bride.instagram", label: "Instagram", kind: "text", group: "Bride", placeholder: "@handle" },
+      { path: "groom.name", label: "Name", kind: "text", group: "Groom", required: true },
+      { path: "groom.fullName", label: "Full name", kind: "text", group: "Groom" },
+      { path: "groom.parentage", label: "Parentage", kind: "text", group: "Groom", localizable: true },
+      { path: "groom.bio", label: "Bio", kind: "textarea", group: "Groom", localizable: true },
+      { path: "groom.photoUrl", label: "Photo", kind: "image", group: "Groom" },
+      { path: "groom.instagram", label: "Instagram", kind: "text", group: "Groom", placeholder: "@handle" },
+    ],
   },
   loveStory: {
     category: "couple",
@@ -118,6 +221,20 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         { period: "2024", title: "Lamaran", body: "Momen ketika semuanya menjadi resmi." },
       ],
     }),
+    fields: [
+      {
+        path: "milestones",
+        label: "Milestones",
+        kind: "list",
+        itemLabel: "Milestone",
+        of: [
+          { path: "period", label: "Period", kind: "text", localizable: true, placeholder: "2024" },
+          { path: "title", label: "Title", kind: "text", required: true, localizable: true },
+          { path: "body", label: "Story", kind: "textarea", localizable: true },
+          { path: "photoUrl", label: "Photo", kind: "image" },
+        ],
+      },
+    ],
   },
   event: {
     category: "event",
@@ -135,6 +252,22 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         },
       ],
     }),
+    fields: [
+      {
+        path: "sessions",
+        label: "Sessions",
+        kind: "list",
+        itemLabel: "Session",
+        of: [
+          { path: "title", label: "Title", kind: "text", required: true, localizable: true, placeholder: "Akad Nikah" },
+          { path: "dateLabel", label: "Date", kind: "text", required: true, localizable: true },
+          { path: "timeLabel", label: "Time", kind: "text", localizable: true, placeholder: "08.00 WIB" },
+          { path: "venueName", label: "Venue", kind: "text", required: true },
+          { path: "address", label: "Address", kind: "textarea" },
+          { path: "mapsUrl", label: "Maps link", kind: "url" },
+        ],
+      },
+    ],
   },
   countdown: {
     category: "event",
@@ -145,6 +278,9 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     defaults: () => ({
       target: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
     }),
+    fields: [
+      { path: "target", label: "Target date", kind: "date", required: true },
+    ],
   },
   liveStream: {
     category: "event",
@@ -156,6 +292,12 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
       platform: "Live Streaming",
       note: "Bagi yang berhalangan hadir, saksikan momen kami secara langsung.",
     }),
+    fields: [
+      { path: "url", label: "Stream URL", kind: "url", required: true },
+      { path: "platform", label: "Platform", kind: "text", localizable: true, placeholder: "YouTube Live" },
+      { path: "note", label: "Note", kind: "textarea", localizable: true },
+      { path: "label", label: "Button label", kind: "text", localizable: true },
+    ],
   },
   qrCheckIn: {
     category: "event",
@@ -168,6 +310,13 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
       guestName: "Nama Tamu",
       code: "INV-0000",
     }),
+    // `guestName` / `code` / `qrSrc` are per-guest data, not authored template copy.
+    fields: [
+      { path: "eyebrow", label: "Eyebrow", kind: "text", localizable: true },
+      { path: "title", label: "Title", kind: "text", localizable: true },
+      { path: "instructions", label: "Instructions", kind: "textarea", localizable: true },
+      { path: "checkInLabel", label: "Check-in button label", kind: "text", localizable: true },
+    ],
   },
   rsvp: {
     category: "guests",
@@ -176,6 +325,8 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     description: "Let guests confirm their attendance.",
     singleton: true,
     defaults: () => ({}),
+    // No authored copy — the form is self-contained; guest replies are runtime.
+    fields: [],
   },
   guestbook: {
     category: "guests",
@@ -184,6 +335,8 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     description: "Collect wishes and prayers from your guests.",
     singleton: true,
     defaults: () => ({ messages: [] }),
+    // `messages` is the runtime guest feed, not authored content.
+    fields: [],
   },
   gallery: {
     category: "guests",
@@ -196,6 +349,16 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         (_, i) => `https://picsum.photos/seed/dos-gallery${i}/400/400`
       ),
     }),
+    fields: [
+      {
+        path: "images",
+        label: "Photos",
+        kind: "list",
+        itemLabel: "Photo",
+        // Scalar list — each item is a bare image URL (empty item path).
+        of: [{ path: "", label: "Image", kind: "image" }],
+      },
+    ],
   },
   wishlist: {
     category: "guests",
@@ -208,6 +371,21 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         { id: "1", name: "Nama Hadiah", description: "Deskripsi singkat hadiah.", price: "± Rp 0" },
       ],
     }),
+    fields: [
+      {
+        path: "items",
+        label: "Items",
+        kind: "list",
+        itemLabel: "Item",
+        of: [
+          { path: "name", label: "Name", kind: "text", required: true },
+          { path: "description", label: "Description", kind: "textarea", localizable: true },
+          { path: "price", label: "Price", kind: "text", placeholder: "± Rp 0" },
+          { path: "imageUrl", label: "Image", kind: "image" },
+          { path: "shopUrl", label: "Shopping link", kind: "url" },
+        ],
+      },
+    ],
   },
   gift: {
     category: "guests",
@@ -220,6 +398,21 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         { provider: "Bank", number: "0000 0000 00", holder: "Nama Pemilik Rekening" },
       ],
     }),
+    fields: [
+      { path: "note", label: "Note", kind: "textarea", localizable: true },
+      {
+        path: "accounts",
+        label: "Accounts",
+        kind: "list",
+        itemLabel: "Account",
+        of: [
+          { path: "provider", label: "Provider", kind: "text", required: true, placeholder: "BCA" },
+          { path: "number", label: "Number", kind: "text", required: true },
+          { path: "holder", label: "Account holder", kind: "text", required: true },
+          { path: "qrUrl", label: "QR image", kind: "image" },
+        ],
+      },
+    ],
   },
   teamPoll: {
     category: "games",
@@ -234,6 +427,33 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         { id: "groom", label: "Team Groom", icon: "🌿", accent: "sage" },
       ],
     }),
+    fields: [
+      { path: "eyebrow", label: "Eyebrow", kind: "text", localizable: true },
+      { path: "title", label: "Title", kind: "text", localizable: true },
+      { path: "description", label: "Description", kind: "textarea", localizable: true },
+      {
+        path: "options",
+        label: "Options",
+        kind: "list",
+        itemLabel: "Option",
+        of: [
+          { path: "label", label: "Label", kind: "text", required: true, localizable: true },
+          { path: "tagline", label: "Tagline", kind: "text", localizable: true },
+          { path: "icon", label: "Icon (emoji)", kind: "text" },
+          {
+            path: "accent",
+            label: "Accent",
+            kind: "select",
+            options: [
+              { value: "rose", label: "Rose" },
+              { value: "sage", label: "Sage" },
+              { value: "gold", label: "Gold" },
+            ],
+          },
+        ],
+      },
+      { path: "footnote", label: "Footnote", kind: "text", localizable: true },
+    ],
   },
   triviaQuiz: {
     category: "games",
@@ -245,6 +465,25 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         { question: "Di mana kami pertama bertemu?", options: ["Kampus", "Kantor", "Kafe", "Online"], answerIndex: 0 },
       ],
     }),
+    fields: [
+      {
+        path: "questions",
+        label: "Questions",
+        kind: "list",
+        itemLabel: "Question",
+        of: [
+          { path: "question", label: "Question", kind: "text", required: true, localizable: true },
+          {
+            path: "options",
+            label: "Answer options",
+            kind: "list",
+            itemLabel: "Option",
+            of: [{ path: "", label: "Option", kind: "text", localizable: true }],
+          },
+          { path: "answerIndex", label: "Correct option (0-based index)", kind: "number", required: true },
+        ],
+      },
+    ],
   },
   songRequest: {
     category: "games",
@@ -252,6 +491,8 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     navLabel: "Songs",
     description: "Let guests request songs for the reception.",
     defaults: () => ({ requests: [] }),
+    // `requests` is the runtime guest feed, not authored content.
+    fields: [],
   },
   bingo: {
     category: "games",
@@ -267,6 +508,15 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         "Konfeti", "Ketawa lepas", "Baju kembaran", "Salaman lama", "Momen haru",
       ],
     }),
+    fields: [
+      {
+        path: "cells",
+        label: "Cells",
+        kind: "list",
+        itemLabel: "Cell",
+        of: [{ path: "", label: "Cell", kind: "text", localizable: true }],
+      },
+    ],
   },
   scratchCard: {
     category: "games",
@@ -276,6 +526,10 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     defaults: () => ({
       prize: "Selamat! Anda mendapatkan hadiah.",
     }),
+    fields: [
+      { path: "prize", label: "Prize", kind: "textarea", required: true, localizable: true },
+      { path: "coverLabel", label: "Cover label", kind: "text", localizable: true, placeholder: "Gosok di sini ✨" },
+    ],
   },
   guessDetail: {
     category: "games",
@@ -287,6 +541,13 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
       question: "Tuliskan pertanyaan tebakan di sini.",
       answer: "Jawabannya 🎉",
     }),
+    fields: [
+      { path: "eyebrow", label: "Eyebrow", kind: "text", localizable: true },
+      { path: "title", label: "Title", kind: "text", localizable: true },
+      { path: "question", label: "Question", kind: "textarea", required: true, localizable: true },
+      { path: "answer", label: "Answer", kind: "text", required: true, localizable: true },
+      { path: "hint", label: "Hint", kind: "text", localizable: true },
+    ],
   },
   photoChallenge: {
     category: "games",
@@ -297,6 +558,17 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
       prompts: ["Selfie bersama pengantin", "Foto meja terbaik"],
       photos: [],
     }),
+    // `photos` is the runtime upload feed, not authored content.
+    fields: [
+      {
+        path: "prompts",
+        label: "Prompts",
+        kind: "list",
+        itemLabel: "Prompt",
+        of: [{ path: "", label: "Prompt", kind: "text", localizable: true }],
+      },
+      { path: "uploadLabel", label: "Upload button label", kind: "text", localizable: true },
+    ],
   },
   bestDressed: {
     category: "games",
@@ -310,6 +582,23 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
         { id: "b", name: "Nominasi 2" },
       ],
     }),
+    fields: [
+      { path: "eyebrow", label: "Eyebrow", kind: "text", localizable: true },
+      { path: "title", label: "Title", kind: "text", localizable: true },
+      { path: "description", label: "Description", kind: "textarea", localizable: true },
+      {
+        path: "nominees",
+        label: "Nominees",
+        kind: "list",
+        itemLabel: "Nominee",
+        of: [
+          { path: "name", label: "Name", kind: "text", required: true },
+          { path: "photoUrl", label: "Photo", kind: "image" },
+          { path: "note", label: "Note", kind: "text", localizable: true },
+        ],
+      },
+      { path: "footnote", label: "Footnote", kind: "text", localizable: true },
+    ],
   },
   closing: {
     category: "closing",
@@ -323,5 +612,13 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
       message:
         "Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu berkenan hadir memberikan doa restu.",
     }),
+    fields: [
+      { path: "title", label: "Title", kind: "text", localizable: true },
+      { path: "message", label: "Message", kind: "textarea", localizable: true },
+      { path: "brideName", label: "Bride name", kind: "text" },
+      { path: "groomName", label: "Groom name", kind: "text" },
+      { path: "hashtag", label: "Hashtag", kind: "text" },
+      { path: "initials", label: "Monogram initials", kind: "text" },
+    ],
   },
 }
