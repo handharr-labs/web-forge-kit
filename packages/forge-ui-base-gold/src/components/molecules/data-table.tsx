@@ -194,7 +194,7 @@ function DataTable<T>({
       )}
 
       <div
-        className="rounded-[var(--radius)] border border-[var(--border)] bg-[var(--card)]"
+        className="overflow-hidden rounded-[var(--radius)] border border-[var(--border)] bg-[var(--card)]"
         style={scrollStyle}
       >
         <Table>
