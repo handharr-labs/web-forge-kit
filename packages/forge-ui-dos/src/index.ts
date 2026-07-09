@@ -99,7 +99,23 @@ export type { InvitationPreset } from "./composition/presets"
 
 // Composition — section catalog (taxonomy · labels · seed defaults for builders)
 export { SECTION_CATEGORIES, SECTION_CATALOG } from "./composition/section-catalog"
-export type { SectionCategory, SectionMeta } from "./composition/section-catalog"
+export type {
+  SectionCategory,
+  SectionMeta,
+  FieldDescriptor,
+  FieldKind,
+} from "./composition/section-catalog"
+
+// Composition — bilingual (per-language) content model
+export {
+  loc,
+  resolveLocalized,
+  resolveSectionProps,
+  DEFAULT_LANG,
+} from "./utils/localized"
+export type { Localized, LocalizedMap } from "./utils/localized"
+export { DosLanguageProvider, useDosLanguage } from "./providers/language"
+export type { DosLanguageContext } from "./providers/language"
 
 // Organisms — gamification
 export { TeamPoll } from "./components/organisms/team-poll"

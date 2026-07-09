@@ -41,6 +41,12 @@ import { PhotoChallengeWall } from "../components/organisms/photo-challenge"
 import { BestDressedVote } from "../components/organisms/best-dressed"
 import { QRCheckIn } from "../components/organisms/qr-check-in"
 import { SECTION_CATALOG } from "./section-catalog"
+import { DosLanguageProvider } from "../providers/language"
+import {
+  resolveSectionProps,
+  resolveLocalized,
+  DEFAULT_LANG,
+} from "../utils/localized"
 
 /* ----------------------------------------------------------------------------
    The "menu": every orderable section type mapped to its props. Deriving props
@@ -219,6 +225,14 @@ export function Invitation({
     autoplayMusic: chrome?.music?.autoplay,
   })
 
+  // Active language for bilingual copy. Seeded from the first configured option
+  // (falls back to the default); the LanguageToggle drives it, the resolver
+  // swaps `localizable` fields per section.
+  const langOptions = Array.isArray(chrome?.language) ? chrome.language : undefined
+  const [lang, setLang] = React.useState(
+    () => langOptions?.[0]?.code ?? DEFAULT_LANG
+  )
+
   const hueStyle: React.CSSProperties = {}
   if (theme.hue?.sage != null)
     (hueStyle as Record<string, string | number>)["--sage-hue"] = theme.hue.sage
@@ -235,8 +249,15 @@ export function Invitation({
     const entry = SECTION_REGISTRY[s.type]
     const Component = entry.component
 
+    // Resolve per-language copy for the active language before rendering, so
+    // organisms stay language-agnostic (they receive plain resolved strings).
+    let props = resolveSectionProps(
+      s.props,
+      SECTION_CATALOG[s.type].fields,
+      lang
+    ) as Record<string, unknown>
+
     // The cover's Open gesture is the audio-unlock moment.
-    let props = s.props as Record<string, unknown>
     if (s.type === "cover" && chrome?.music) {
       const original = props.onOpen as (() => void) | undefined
       props = {
@@ -261,8 +282,8 @@ export function Invitation({
       <Section
         key={i}
         id={id}
-        eyebrow={h.eyebrow}
-        title={h.title}
+        eyebrow={resolveLocalized(h.eyebrow, lang)}
+        title={resolveLocalized(h.title, lang)}
         tone={h.tone}
         divider={h.divider}
       >
@@ -278,7 +299,8 @@ export function Invitation({
         .map(({ s, i }) => ({
           id: idOf(s, i),
           label:
-            s.navLabel ?? s.heading?.title ?? SECTION_CATALOG[s.type].navLabel,
+            resolveLocalized(s.navLabel ?? s.heading?.title, lang) ??
+            SECTION_CATALOG[s.type].navLabel,
         }))
     : []
 
@@ -307,33 +329,35 @@ export function Invitation({
       style={hueStyle}
       className={className}
     >
-      <ToastProvider>
-        {shell}
+      <DosLanguageProvider value={lang} onChange={setLang}>
+        <ToastProvider>
+          {shell}
 
-        {hasTopBar && (
-          <div className="fixed right-4 top-4 z-40 flex items-center gap-2">
-            {chrome?.language && (
-              <LanguageToggle
-                options={
-                  Array.isArray(chrome.language) ? chrome.language : undefined
-                }
-              />
-            )}
-            {chrome?.music && (
-              <MusicToggle
-                src={chrome.music.src}
-                floating={false}
-                playing={musicPlaying}
-                onToggle={setMusicPlaying}
-              />
-            )}
-          </div>
-        )}
+          {hasTopBar && (
+            <div className="fixed right-4 top-4 z-40 flex items-center gap-2">
+              {chrome?.language && (
+                <LanguageToggle
+                  value={lang}
+                  onChange={setLang}
+                  options={langOptions}
+                />
+              )}
+              {chrome?.music && (
+                <MusicToggle
+                  src={chrome.music.src}
+                  floating={false}
+                  playing={musicPlaying}
+                  onToggle={setMusicPlaying}
+                />
+              )}
+            </div>
+          )}
 
-        {navItems.length > 0 && (
-          <SectionNav items={navItems} side={chrome?.navSide} />
-        )}
-      </ToastProvider>
+          {navItems.length > 0 && (
+            <SectionNav items={navItems} side={chrome?.navSide} />
+          )}
+        </ToastProvider>
+      </DosLanguageProvider>
     </DosRoot>
   )
 }
