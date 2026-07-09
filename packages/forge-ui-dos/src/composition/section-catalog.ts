@@ -3,9 +3,16 @@ import type { SectionType, SectionPropsMap } from "./invitation"
 /* ----------------------------------------------------------------------------
    The catalog: metadata *about* the menu. `SECTION_REGISTRY` maps a type to its
    component (how to render); this maps a type to how to *present and seed* it in
-   a builder — which category it belongs to, its human copy, whether it's a
-   singleton, and valid starter props to drop in on add. Kept exhaustive over
-   `SectionType` so adding an organism forces its classification here.
+   a builder — which category it belongs to, its human copy, and valid starter
+   props to drop in on add. Kept exhaustive over `SectionType` so adding an
+   organism forces its classification here.
+
+   NOTE: cardinality ("can this type be added more than once") intentionally
+   does NOT live here. It's a business rule about how a given product wants
+   operators composing things, not a fact about the organism — a consumer
+   should own and configure it itself (invitatio does, as DB-backed admin
+   settings; see personal-workdocs/invitatio-docs/initiatives/
+   2026-07-09-section-cardinality-ownership.md).
    -------------------------------------------------------------------------- */
 
 /** Picker groups, in the order an invitation naturally reads top to bottom. */
@@ -89,8 +96,6 @@ export type SectionMeta<K extends SectionType = SectionType> = {
   navLabel: string
   /** One line for the picker card. */
   description: string
-  /** Only one allowed in a config (cover, closing). Default false. */
-  singleton?: boolean
   /**
    * Valid, handler-free starter props seeded on add — the data-only shape that
    * already renders a working optimistic preview under `<Invitation>`. Generic
@@ -116,7 +121,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Cover",
     navLabel: "Home",
     description: "Full-screen opener with the couple's names and an Open gesture.",
-    singleton: true,
     defaults: () => ({
       brideName: "Mempelai Wanita",
       groomName: "Mempelai Pria",
@@ -143,7 +147,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Welcome Note",
     navLabel: "Welcome",
     description: "A short personal greeting to set the tone.",
-    singleton: true,
     defaults: () => ({
       eyebrow: "Selamat Datang",
       title: "Dengan penuh syukur",
@@ -183,7 +186,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "The Couple",
     navLabel: "Couple",
     description: "Introduce the bride and groom with photos and parentage.",
-    singleton: true,
     defaults: () => ({
       bride: {
         name: "Mempelai Wanita",
@@ -214,7 +216,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Love Story",
     navLabel: "Story",
     description: "A timeline of your journey together.",
-    singleton: true,
     defaults: () => ({
       milestones: [
         { period: "2020", title: "Pertama Bertemu", body: "Ceritakan bagaimana kalian pertama bertemu." },
@@ -274,7 +275,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Countdown",
     navLabel: "Countdown",
     description: "A live countdown to the big day.",
-    singleton: true,
     defaults: () => ({
       target: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
     }),
@@ -304,7 +304,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "QR Check-in",
     navLabel: "Check-in",
     description: "A guest QR pass with check-in status.",
-    singleton: true,
     defaults: () => ({
       title: "Kartu Masuk Anda",
       guestName: "Nama Tamu",
@@ -323,7 +322,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "RSVP",
     navLabel: "RSVP",
     description: "Let guests confirm their attendance.",
-    singleton: true,
     defaults: () => ({}),
     // No authored copy — the form is self-contained; guest replies are runtime.
     fields: [],
@@ -333,7 +331,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Guestbook",
     navLabel: "Wishes",
     description: "Collect wishes and prayers from your guests.",
-    singleton: true,
     defaults: () => ({ messages: [] }),
     // `messages` is the runtime guest feed, not authored content.
     fields: [],
@@ -365,7 +362,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Wishlist",
     navLabel: "Wishlist",
     description: "A claimable list of gift ideas.",
-    singleton: true,
     defaults: () => ({
       items: [
         { id: "1", name: "Nama Hadiah", description: "Deskripsi singkat hadiah.", price: "± Rp 0" },
@@ -392,7 +388,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Wedding Gift",
     navLabel: "Gift",
     description: "Share bank or e-wallet details for gifts.",
-    singleton: true,
     defaults: () => ({
       accounts: [
         { provider: "Bank", number: "0000 0000 00", holder: "Nama Pemilik Rekening" },
@@ -605,7 +600,6 @@ export const SECTION_CATALOG: { [K in SectionType]: SectionMeta<K> } = {
     label: "Closing",
     navLabel: "Thanks",
     description: "A closing thank-you with your monogram and hashtag.",
-    singleton: true,
     defaults: () => ({
       brideName: "Mempelai Wanita",
       groomName: "Mempelai Pria",
