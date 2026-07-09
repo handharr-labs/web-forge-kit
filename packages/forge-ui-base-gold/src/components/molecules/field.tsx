@@ -32,6 +32,16 @@ function Field({ label, htmlFor, description, error, required, children, classNa
     : undefined
   const selectIsFloating = isSelectOpen || Boolean(selectPropValue)
 
+  // A real placeholder is visible content, so the label must float out of its
+  // way even while empty/unfocused — an empty input with a placeholder still
+  // matches `:placeholder-shown`, which would otherwise keep the label centered
+  // on top of the placeholder text. (The injected " " placeholder doesn't count.)
+  const childPlaceholder = React.isValidElement(children)
+    ? (children.props as { placeholder?: string }).placeholder
+    : undefined
+  const hasRealPlaceholder =
+    typeof childPlaceholder === "string" && childPlaceholder.trim().length > 0
+
   return (
     <div data-slot="field" className={cn("flex flex-col gap-1.5", className)}>
       {label ? (
@@ -58,11 +68,13 @@ function Field({ label, htmlFor, description, error, required, children, classNa
                   children as React.ReactElement<{ className?: string; placeholder?: string }>,
                   {
                     className: cn(
-                      // Taller box (Input only — Textarea keeps its min-height) so the
-                      // floated label gets more room above and the value more below.
-                      // pt sets the label→value gap (smaller pt = tighter pair).
-                      "peer pt-5",
-                      (children as React.ReactElement).type === Input && "h-14",
+                      // Top padding sets the floated-label→value gap. Input gets a
+                      // taller box (h-14) for balance; Textarea keeps its min-height
+                      // but needs extra top padding so the floated label clears its
+                      // first line of text (pt-5 was too tight).
+                      "peer",
+                      (children as React.ReactElement).type === Input && "h-14 pt-5",
+                      (children as React.ReactElement).type === Textarea && "pt-7",
                       (children as React.ReactElement<{ className?: string }>).props.className
                     ),
                     // Ensure a placeholder exists so :placeholder-shown pseudo-class works.
@@ -83,15 +95,20 @@ function Field({ label, htmlFor, description, error, required, children, classNa
                     selectIsFloating
                       ? "top-1.5 font-semibold text-[var(--ring)]"
                       : "top-1/2 -translate-y-1/2 font-normal text-[var(--muted-foreground)]"
-                  : // Input / Textarea: CSS peer-driven via :placeholder-shown + :focus
-                    cn(
-                      // Default: label centered (acts as placeholder)
-                      "top-1/2 -translate-y-1/2 font-normal text-[var(--muted-foreground)] text-sm",
-                      // Floated via focus
-                      "peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:font-semibold peer-focus:text-[0.625rem] peer-focus:text-[var(--ring)]",
-                      // Floated when input has value (placeholder not visible)
-                      "peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-[0.625rem] peer-[:not(:placeholder-shown)]:text-[var(--ring)]",
-                    )
+                  : hasRealPlaceholder
+                    ? // A visible placeholder keeps the label permanently floated,
+                      // matching the has-value look (empty still matches
+                      // :placeholder-shown, so the peer rules can't float it).
+                      "top-2.5 translate-y-0 font-semibold text-[0.625rem] text-[var(--ring)]"
+                    : // Input / Textarea: CSS peer-driven via :placeholder-shown + :focus
+                      cn(
+                        // Default: label centered (acts as placeholder)
+                        "top-1/2 -translate-y-1/2 font-normal text-[var(--muted-foreground)] text-sm",
+                        // Floated via focus
+                        "peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:font-semibold peer-focus:text-[0.625rem] peer-focus:text-[var(--ring)]",
+                        // Floated when input has value (placeholder not visible)
+                        "peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-[0.625rem] peer-[:not(:placeholder-shown)]:text-[var(--ring)]",
+                      )
               )}
               style={isSelectChild
                 ? { fontSize: selectIsFloating ? "0.625rem" : "0.875rem" }
