@@ -1103,7 +1103,7 @@ export function GoldCatalog() {
             <PreviewCard label="sidebar + sticky topbar + scrollable content (mobile: hamburger opens drawer)">
               <div className="h-[440px] overflow-hidden rounded-[var(--radius)] border border-[var(--border)]">
                 <DashboardShell
-                  className="!min-h-0 h-full"
+                  className="h-full"
                   maxWidth="full"
                   sidebar={
                     <Sidebar

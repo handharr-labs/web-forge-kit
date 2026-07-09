@@ -53,7 +53,7 @@ function DashboardShell({
   return (
     <div
       data-slot="dashboard-shell"
-      className={cn("flex min-h-svh w-full bg-[var(--background)] text-[var(--foreground)]", className)}
+      className={cn("flex h-svh w-full bg-[var(--background)] text-[var(--foreground)]", className)}
     >
       {sidebarEl}
 
