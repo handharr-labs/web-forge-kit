@@ -1,6 +1,6 @@
 {
   "name": "@handharr-labs/forge-ui-base-gold",
-  "version": "0.11.3",
+  "version": "0.11.4",
   "description": "Gold tier design system \u2014 premium, animated, elevated interactions",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
